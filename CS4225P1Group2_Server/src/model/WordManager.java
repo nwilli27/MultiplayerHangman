@@ -40,7 +40,7 @@ public class WordManager {
 	}
 
 	public String getSentence() {
-		return sentence;
+		return this.sentence;
 	}
 
 	public void setSentence(String sentence) {
