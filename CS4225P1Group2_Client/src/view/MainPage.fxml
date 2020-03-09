@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainPageCodeBehind">
+   <children>
+      <TextArea fx:id="guessedLettersTextArea" editable="false" layoutX="465.0" layoutY="86.0" prefHeight="200.0" prefWidth="200.0" />
+      <Text layoutX="523.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Guessed Letters" />
+      <Line fx:id="hmTallLine" endX="50.0" endY="100.0" layoutX="225.0" layoutY="186.0" startX="50.0" startY="-100.0" />
+      <Line fx:id="hmHorizontalLine" endX="50.0" layoutX="224.0" layoutY="86.0" startX="-50.0" />
+      <Line fx:id="hmShortLine" layoutX="173.0" layoutY="124.0" startY="-38.0" />
+      <Line fx:id="hmBaseLine" endX="50.0" layoutX="325.0" layoutY="287.0" startX="-150.0" />
+   </children>
+</AnchorPane>
