@@ -19,6 +19,8 @@ public class RequestHandler {
 		switch (requestType)
 		{
 			case "guess":
+				var guessedCharacter = parsedRequest[1];
+				this.gameManager.handleCharacterGuess(guessedCharacter);
 				
 			case "sentence":
 				

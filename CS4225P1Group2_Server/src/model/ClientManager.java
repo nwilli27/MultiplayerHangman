@@ -6,6 +6,7 @@ import java.util.List;
 public class ClientManager {
 
 	private List<Client> clients;
+	private Client currentClient;
 	
 	public ClientManager() 
 	{
@@ -18,7 +19,35 @@ public class ClientManager {
 	
 	public boolean addClient(Client client)
 	{
+		this.checkToSetCurrentClient(client);
 		return this.clients.add(client);
+	}
+
+	private void checkToSetCurrentClient(Client client) {
+		
+		if (this.clients.size() == 0)
+		{
+			this.currentClient = client;
+		}
+	}
+	
+	public void switchToNextClientTurn()
+	{
+		var totalClientMax = this.clients.size() - 1;
+		var currentClientIndex = this.clients.indexOf(this.currentClient);
+		
+		if (currentClientIndex == totalClientMax)
+		{
+			this.currentClient = this.clients.get(0);
+		}
+		else
+		{
+			this.currentClient = this.clients.get(++currentClientIndex);
+		}
+	}
+
+	public Client getCurrentClient() {
+		return this.currentClient;
 	}
 	
 }

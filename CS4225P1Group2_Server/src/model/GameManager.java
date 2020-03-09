@@ -13,9 +13,11 @@ public class GameManager {
 		this.wordManager = new WordManager();
 	}
 	
-	public void handleCharacterGuess(char character)
+	public boolean handleCharacterGuess(String character)
 	{
 		var isValidGuess = this.wordManager.guessCharacter(character);
+		
+		return false;
 	}
 	
 }

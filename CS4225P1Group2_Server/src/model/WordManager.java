@@ -6,14 +6,14 @@ import java.util.List;
 public class WordManager {
 
 	private String sentence;
-	private List<Character> guessedCharacters;
+	private List<String> guessedCharacters;
 	
 	public WordManager()
 	{
-		this.guessedCharacters = new ArrayList<Character>();
+		this.guessedCharacters = new ArrayList<String>();
 	}
 	
-	public boolean guessCharacter(char guessedCharacter)
+	public boolean guessCharacter(String guessedCharacter)
 	{
 		if (!this.guessedCharacters.contains(guessedCharacter))
 		{
@@ -24,19 +24,7 @@ public class WordManager {
 			// TODO send message back to client to guess again
 		}
 		
-		return this.isCharacterInSentence(guessedCharacter);
-	}
-	
-	private boolean isCharacterInSentence(char character)
-	{
-		var charIndex = this.sentence.indexOf(character);
-		
-		if (charIndex >= 0)
-		{
-			return true;
-		}
-		
-		return false;
+		return this.sentence.contains(guessedCharacter);
 	}
 
 	public String getSentence() {
@@ -47,7 +35,7 @@ public class WordManager {
 		this.sentence = sentence;
 	}
 
-	public List<Character> getGuessedCharacters() {
+	public List<String> getGuessedCharacters() {
 		return guessedCharacters;
 	}
 	
