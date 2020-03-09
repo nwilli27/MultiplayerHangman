@@ -12,8 +12,12 @@ public class Controller {
 
 	public void handleGuess(String guess) {
 		
-		client.sendRequest(guess);
+		client.sendRequest("guess-" + guess);
 		
+	}
+
+	public void handleLogin(String username) {
+		client.sendRequest("login-" + username);
 	}
 
 

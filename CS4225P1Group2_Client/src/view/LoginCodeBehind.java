@@ -30,8 +30,18 @@ public class LoginCodeBehind {
     
     private Controller controller;
 
+   
+
+    @FXML
+    void initialize() {
+    	this.controller = new Controller();
+    }
+	
+    
     @FXML
     void handleLogin(MouseEvent event) throws IOException {
+    	
+    	this.controller.handleLogin(this.createUsernameText.getText());
     	Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource(Main.MAIN_PAGE_VIEW));
@@ -39,13 +49,4 @@ public class LoginCodeBehind {
 		Scene sceneToNavigateTo = new Scene(loader.getRoot());
 		currentStage.setScene(sceneToNavigateTo);
     }
-
-    @FXML
-    void initialize() {
-    	
-    	this.controller = new Controller();
-        
-
-    }
-	
 }
