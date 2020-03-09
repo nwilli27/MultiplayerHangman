@@ -26,8 +26,18 @@ public class RequestHandler {
 				var guessedSentence = parsedRequest[1];
 				this.gameManager.handleSentenceGuess(guessedSentence);
 				
+			case "login":
+				var loginUser = parsedRequest[1];
+				this.gameManager.handleLogin(loginUser);
+				
 			case "timeout":
-		
+				var timeoutUser = parsedRequest[1];
+				this.gameManager.handleTimeout(timeoutUser);
+			
+			case "disconnect":
+				var disconnectUser = parsedRequest[1];
+				this.gameManager.handleDisconnect(disconnectUser);
+				
 		}
 	}
 }
