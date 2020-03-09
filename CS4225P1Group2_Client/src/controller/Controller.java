@@ -17,7 +17,8 @@ public class Controller {
 	}
 
 	public void handleLogin(String username) {
-		System.out.println(CLIENT.sendRequest("login-" + username));
+		System.out.println(CLIENT.sendRequest("login-" + username)); //TODO remove print
+		
 	}
 
 
