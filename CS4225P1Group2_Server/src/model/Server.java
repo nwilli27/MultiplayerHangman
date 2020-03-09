@@ -41,7 +41,6 @@ public class Server {
 		}
 	}
 
-
 	private void handleRequestResponse() throws ClassNotFoundException, IOException { //TODO Probably refactored into two methods maybe
 
 		if (this.clientSocket != null && this.outgoingMessages != null && this.incomingMessages != null) {
