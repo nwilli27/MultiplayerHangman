@@ -10,6 +10,12 @@ public class Controller {
 		client = new ClientConnection();
 	}
 
+	public void handleGuess(String guess) {
+		
+		client.sendRequest(guess);
+		
+	}
+
 
 
 	
