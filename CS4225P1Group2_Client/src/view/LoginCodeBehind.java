@@ -3,6 +3,7 @@ package view;
 import java.io.IOException;
 
 import application.Main;
+import controller.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -26,10 +27,11 @@ public class LoginCodeBehind {
 
     @FXML
     private Button loginButton;
+    
+    private Controller controller;
 
     @FXML
     void handleLogin(MouseEvent event) throws IOException {
-    	//this.handleMouseClickToNavigateToDifferentPage(event, Main.MAIN_PAGE_VIEW);
     	Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource(Main.MAIN_PAGE_VIEW));
@@ -40,6 +42,8 @@ public class LoginCodeBehind {
 
     @FXML
     void initialize() {
+    	
+    	this.controller = new Controller();
         
 
     }

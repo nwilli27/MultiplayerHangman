@@ -1,32 +1,16 @@
 package controller;
 
-import java.util.ArrayList;
-
+import clientConnection.ClientConnection;
 
 public class Controller {
 
+	private static ClientConnection client;
 	
-	
-	private static Controller instance;
-
-
-	private Controller() {
-
+	public Controller() {
+		client = new ClientConnection();
 	}
 
-	/**
-	 * Returns an instance of the data class
-	 * 
-	 * @precondition none
-	 * @postcondition none
-	 * @return the instance of the data class
-	 */
-	public static Controller getInstance() {
-		if (instance == null) {
-			instance = new Controller();
-		}
 
-		return instance;
-	}
+
 	
 }
