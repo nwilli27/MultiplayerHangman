@@ -22,13 +22,14 @@ public class ClientConnection {
 	/**
 	 * Creates a client object
 	 * 
-	 * @precondition fileName != null && fileName != empty
-	 * @postcondition matrixReader is created with the passed in file name
+	 * @precondition 
+	 * @postcondition 
 	 * 
-	 * @param fileName The name of the file containing matrices
+	 * 
 	 * 
 	 */
 	public ClientConnection() {
+		this.setupStreams();
 	}
 	
 	private void printMessage(String message) {
@@ -37,36 +38,38 @@ public class ClientConnection {
 		System.out.println("Client " + threadName + " - " + message);
 	}
 
-	public void sendRequest(String request) { //TODO Probably change String to some message class that implements serializable
+	public String sendRequest(String request) { //TODO Probably change String to some message class that implements serializable
 
-			this.setupStreams();
+			
+			String message = null;
 
 			if (this.clientSocket != null && this.outgoingMessages != null && this.incomingMessages != null) {
 
 				try {
 
 					this.outgoingMessages.writeObject(request);
-					this.handleMatrixResult();
+					this.outgoingMessages.flush();
+					message = this.handleMatrixResult();
 
 				} catch (IOException e) {
 
 					e.printStackTrace();
 				}
 			}
+			
+			return message;
 		} 
 
-	private void handleMatrixResult() {
+	private String handleMatrixResult() {
 
+		String message = null;
 		try {
-			this.incomingMessages.readObject();
-
-			this.printErrMessage("Session ended." + System.lineSeparator());
-
+		    message = (String) this.incomingMessages.readObject();
 			
-			this.outgoingMessages.flush();
 //			this.outgoingMessages.close();
 //			this.incomingMessages.close();
 //			this.clientSocket.close();
+			
 
 		} catch (IOException e) {
 
@@ -76,6 +79,7 @@ public class ClientConnection {
 
 			this.printErrMessage("ClassNotFoundException: " + e);
 		}
+		return message;
 	}
 	
 	private void printErrMessage(String message) {

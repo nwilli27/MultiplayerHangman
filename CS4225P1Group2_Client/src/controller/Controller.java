@@ -4,20 +4,20 @@ import clientConnection.ClientConnection;
 
 public class Controller {
 
-	private static ClientConnection client;
+	private static final ClientConnection CLIENT = new ClientConnection();
 	
 	public Controller() {
-		client = new ClientConnection();
+		
 	}
 
 	public void handleGuess(String guess) {
 		
-		client.sendRequest("guess-" + guess);
+		CLIENT.sendRequest("guess-" + guess);
 		
 	}
 
 	public void handleLogin(String username) {
-		client.sendRequest("login-" + username);
+		System.out.println(CLIENT.sendRequest("login-" + username));
 	}
 
 
