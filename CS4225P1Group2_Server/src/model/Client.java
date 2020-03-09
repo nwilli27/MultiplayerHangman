@@ -4,8 +4,7 @@ public class Client {
 
 	private String username;
 	
-	public Client(String username)
-	{
+	public Client(String username) {
 		this.username = username;
 	}
 
@@ -13,8 +12,7 @@ public class Client {
 		return this.username;
 	}
 	
-	public void notifyCharacterGuessed(String guessedCharacter)
-	{
+	public void notifyCharacterGuessed(String guessedCharacter) {
 		// maybe?
 	}
 	

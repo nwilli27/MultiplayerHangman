@@ -11,8 +11,8 @@ public class RequestHandler {
 		this.gameManager = new GameManager();
 	}
 	
-	public void handleRequest(String request)
-	{
+	public void handleRequest(String request) {
+		
 		var parsedRequest = request.split(DELIMITER);
 		var requestType = parsedRequest[0];
 		
@@ -22,8 +22,9 @@ public class RequestHandler {
 				var guessedCharacter = parsedRequest[1];
 				this.gameManager.handleCharacterGuess(guessedCharacter);
 				
-				
 			case "sentence":
+				var guessedSentence = parsedRequest[1];
+				this.gameManager.handleSentenceGuess(guessedSentence);
 				
 			case "timeout":
 		

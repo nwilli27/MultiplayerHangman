@@ -1,60 +1,52 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+import enums.BodyType;
+
 public class Stickman {
 
-	private boolean head;
-	private boolean body;
-	private boolean leftArm;
-	private boolean rightArm;
-	private boolean leftLeg;
-	private boolean rightLeg;
+	private List<BodyPart> bodyParts;
+	private int bodyPartCounter;
 	
-	public boolean isHead() {
-		return this.head;
+	public Stickman() {
+		this.initializeBodyParts();
 	}
 	
-	public void setHead(boolean head) {
-		this.head = head;
+	public void enableNextBodyPart() {
+		
+		this.bodyPartCounter++;
+		
+		for (int i = 0; i < this.bodyPartCounter; i++) {
+			var bodyPart = this.bodyParts.get(i);
+			bodyPart.setIsActive(true);
+		}
 	}
 	
-	public boolean isBody() {
-		return this.body;
+	public BodyPart getRecentBodyPart() {
+		return this.bodyParts.get(this.bodyPartCounter);
 	}
 	
-	public void setBody(boolean body) {
-		this.body = body;
+	public boolean areAllBodyPartsActive() {
+		
+		for (var bodyPart : this.bodyParts) {
+			if (!bodyPart.isActive()) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
-	public boolean isLeftArm() {
-		return this.leftArm;
-	}
-	
-	public void setLeftArm(boolean leftArm) {
-		this.leftArm = leftArm;
-	}
-	
-	public boolean isRightArm() {
-		return this.rightArm;
-	}
-	
-	public void setRightArm(boolean rightArm) {
-		this.rightArm = rightArm;
-	}
-	
-	public boolean isLeftLeg() {
-		return this.leftLeg;
-	}
-	
-	public void setLeftLeg(boolean leftLeg) {
-		this.leftLeg = leftLeg;
-	}
-	
-	public boolean isRightLeg() {
-		return this.rightLeg;
-	}
-	
-	public void setRightLeg(boolean rightLeg) {
-		this.rightLeg = rightLeg;
+	private void initializeBodyParts() {
+		
+		this.bodyParts = new ArrayList<BodyPart>();
+		this.bodyParts.add(new BodyPart(BodyType.Head));
+		this.bodyParts.add(new BodyPart(BodyType.Body));
+		this.bodyParts.add(new BodyPart(BodyType.LeftArm));
+		this.bodyParts.add(new BodyPart(BodyType.RightArm));
+		this.bodyParts.add(new BodyPart(BodyType.LeftLeg));
+		this.bodyParts.add(new BodyPart(BodyType.RightLeg));
 	}
 
 }
