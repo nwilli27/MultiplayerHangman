@@ -13,4 +13,9 @@ public class Client {
 		return this.username;
 	}
 	
+	public void notifyCharacterGuessed(String guessedCharacter)
+	{
+		// maybe?
+	}
+	
 }

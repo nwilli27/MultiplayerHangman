@@ -13,18 +13,26 @@ public class WordManager {
 		this.guessedCharacters = new ArrayList<String>();
 	}
 	
+	/**
+	 * Handles guessing a character.
+	 * @precondition: none
+	 * @postcondition: none
+	 * @param guessedCharacter the character guessed
+	 * @return true if valid guess; otherwise false
+	 */
 	public boolean guessCharacter(String guessedCharacter)
 	{
-		if (!this.guessedCharacters.contains(guessedCharacter))
+		if (this.hasGuessedAlready(guessedCharacter))
 		{
 			this.guessedCharacters.add(guessedCharacter);
 		}
-		else
-		{
-			// TODO send message back to client to guess again
-		}
 		
 		return this.sentence.contains(guessedCharacter);
+	}
+	
+	public boolean hasGuessedAlready(String guessedCharacter)
+	{
+		return this.guessedCharacters.contains(guessedCharacter);
 	}
 
 	public String getSentence() {

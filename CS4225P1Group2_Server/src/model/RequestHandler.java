@@ -22,6 +22,7 @@ public class RequestHandler {
 				var guessedCharacter = parsedRequest[1];
 				this.gameManager.handleCharacterGuess(guessedCharacter);
 				
+				
 			case "sentence":
 				
 			case "timeout":

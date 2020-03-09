@@ -20,7 +20,26 @@ public class ClientManager {
 	public boolean addClient(Client client)
 	{
 		this.checkToSetCurrentClient(client);
+		
+		if (this.doesClientExists(client.getUsername()))
+		{
+			return false;
+		}
+		
 		return this.clients.add(client);
+	}
+	
+	private boolean doesClientExists(String username)
+	{
+		for (var client : this.clients)
+		{
+			if (client.getUsername().equalsIgnoreCase(username))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	private void checkToSetCurrentClient(Client client) {
