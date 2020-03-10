@@ -16,10 +16,11 @@ public class Server implements Runnable {
 	private ObjectInputStream serverInputStream;
 	private ObjectOutputStream serverOutputStream;
 	
-	private ClientManager clientManager;
-	
+	/**
+	 * Constructor for Server
+	 */
 	public Server() {
-		this.clientManager = new ClientManager();
+		ClientManager.initializeClientList();
 		this.setupSocket();
 	}
 	
@@ -75,20 +76,20 @@ public class Server implements Runnable {
 
 	private void handleCreateClientRequest(String username) throws IOException {
 		
-		if (this.clientManager.hasMaxClients()) {
+		if (ClientManager.hasMaxClients()) {
 			
 			this.sendMessage("userLimit#" + username);
 			
 		} else {
 			
-			if (!this.clientManager.doesClientExists(username)) {
+			if (!ClientManager.doesClientExists(username)) {
 			
 				var client = new ClientHandler(username, this.clientSocket, this.serverOutputStream);
-				this.clientManager.addClient(client);
+				ClientManager.addClient(client);
 				var thread = new Thread(client);
 				thread.start();
 				
-				this.clientManager.broadcastMessage("playerConnect#" + username);
+				ClientManager.broadcastMessage("playerConnect#" + username);
 				
 			} else {
 

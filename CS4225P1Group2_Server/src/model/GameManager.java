@@ -7,12 +7,10 @@ import java.util.Scanner;
 
 public class GameManager {
 
-	private ClientManager clientManager;
 	private WordManager wordManager;
 	private ArrayList<String> dictionary;
 
 	public GameManager() {
-		this.clientManager = new ClientManager();
 		this.wordManager = new WordManager();
 		this.dictionary = new ArrayList<String>();
 	}
@@ -47,17 +45,17 @@ public class GameManager {
 	public void handleGuess(String character) {
 		
 		this.wordManager.makeGuess(character);
-		this.clientManager.broadcastGuessUpdate(this.wordManager.formattedCurrentWord(), character, this.wordManager.getInvalidGuessCounter());
+		ClientManager.broadcastGuessUpdate(this.wordManager.formattedCurrentWord(), character, this.wordManager.getInvalidGuessCounter());
 
 		if (this.wordManager.isOutOfGuesses()) {
 			
-			this.clientManager.broadcastMessage("gameOver");
+			ClientManager.broadcastMessage("gameOver");
 		} else if (this.wordManager.isWordComplete()) {
 			
-			this.clientManager.broadcastMessage("wordComplete");
+			ClientManager.broadcastMessage("wordComplete");
 		}
 		
-		this.clientManager.switchToNextClientTurn();
+		ClientManager.switchToNextClientTurn();
 	}
 
 	public void handleTimeout(String username) {
@@ -66,7 +64,7 @@ public class GameManager {
 
 	public void handleDisconnect(String username) {
 
-		this.clientManager.handleClientDisconnect(username);
+		ClientManager.handleClientDisconnect(username);
 	}
 
 }

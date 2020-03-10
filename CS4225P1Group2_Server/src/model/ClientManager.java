@@ -8,18 +8,18 @@ public class ClientManager {
 
 	private static final int MAX_CLIENT_COUNT = 4;
 	
-	public static List<ClientHandler> Clients;
-	private ClientHandler currentClient;
+	private static List<ClientHandler> clients;
+	private static ClientHandler currentClient;
 	
 	public ClientManager() {
-		Clients = new ArrayList<ClientHandler>();
+		clients = new ArrayList<ClientHandler>();
 	}
 	
-	public void broadcastMessage(String message) {
+	public static void broadcastMessage(String message) {
 		
 		var messageSerialized = new Message(message);
 		
-		for (var client : Clients) {
+		for (var client : clients) {
 
 			try {
 				var outputStream = client.getOutgoingMessages();
@@ -31,63 +31,63 @@ public class ClientManager {
 		}
 	}
 	
-	public void handleClientDisconnect(String username) {
+	public static void handleClientDisconnect(String username) {
 		
-		var clientToDisconnect = this.getClient(username);
-		Clients.remove(clientToDisconnect);
-		this.broadcastMessage("disconnect#" + username);
+		var clientToDisconnect = getClient(username);
+		clients.remove(clientToDisconnect);
+		broadcastMessage("disconnect#" + username);
 	}
 	
-	public void broadcastGuessUpdate(String formattedWord, String guess, int bodyCount) {
+	public static void broadcastGuessUpdate(String formattedWord, String guess, int bodyCount) {
 		
 		if (guess.length() > 1) {
-			this.broadcastMessage("wordGuess#" + guess + "#" + this.currentClient.getUsername());
+			broadcastMessage("wordGuess#" + guess + "#" + currentClient.getUsername());
 		} else {
-			this.broadcastMessage("characterGuess#" + guess + "#" + this.currentClient.getUsername());
+			broadcastMessage("characterGuess#" + guess + "#" + currentClient.getUsername());
 		}
 		
-		this.broadcastMessage("updatedWord#" + formattedWord);
-		this.broadcastMessage("bodyCount#" + bodyCount);
+		broadcastMessage("updatedWord#" + formattedWord);
+		broadcastMessage("bodyCount#" + bodyCount);
 	}
 	
-	public boolean addClient(ClientHandler client) {
-		this.checkToSetCurrentClient(client);
+	public static boolean addClient(ClientHandler client) {
+		checkToSetCurrentClient(client);
 		
-		if (this.doesClientExists(client.getUsername()))
+		if (doesClientExists(client.getUsername()))
 		{
 			return false;
 		}
 		
-		return Clients.add(client);
+		return clients.add(client);
 	}
 	
-	public boolean hasMaxClients() {
-		return Clients.size() == MAX_CLIENT_COUNT;
+	public static boolean hasMaxClients() {
+		return clients.size() == MAX_CLIENT_COUNT;
 	}
 	
-	public void switchToNextClientTurn() {
-		var totalClientMax = Clients.size() - 1;
-		var currentClientIndex = Clients.indexOf(this.currentClient);
+	public static void switchToNextClientTurn() {
+		var totalClientMax = clients.size() - 1;
+		var currentClientIndex = clients.indexOf(currentClient);
 		
 		if (currentClientIndex == totalClientMax)
 		{
-			this.currentClient = Clients.get(0);
+			currentClient = clients.get(0);
 		}
 		else
 		{
-			this.currentClient = Clients.get(++currentClientIndex);
+			currentClient = clients.get(++currentClientIndex);
 		}
 		
-		this.broadcastMessage("clientChoosing#" + this.currentClient.getUsername());
+		broadcastMessage("clientChoosing#" + currentClient.getUsername());
 	}
 
-	public ClientHandler getCurrentClient() {
-		return this.currentClient;
+	public static ClientHandler getCurrentClient() {
+		return currentClient;
 	}
 	
-	private ClientHandler getClient(String username) {
+	private static ClientHandler getClient(String username) {
 		
-		for (var client : Clients) {
+		for (var client : clients) {
 			if (client.getUsername().equalsIgnoreCase(username)) {
 				return client;
 			}
@@ -96,9 +96,9 @@ public class ClientManager {
 		return null;
 	}
 	
-	public boolean doesClientExists(String username) {
+	public static boolean doesClientExists(String username) {
 		
-		for (var client : Clients) {
+		for (var client : clients) {
 			if (client.getUsername().equalsIgnoreCase(username)) {
 				return true;
 			}
@@ -107,12 +107,16 @@ public class ClientManager {
 		return false;
 	}
 
-	private void checkToSetCurrentClient(ClientHandler client) {
+	private static void checkToSetCurrentClient(ClientHandler client) {
 		
-		if (Clients.size() == 0)
+		if (clients.size() == 0)
 		{
-			this.currentClient = client;
+			currentClient = client;
 		}
+	}
+
+	public static void initializeClientList() {
+		clients = new ArrayList<ClientHandler>();
 	}
 	
 }

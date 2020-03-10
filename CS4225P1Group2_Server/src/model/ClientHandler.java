@@ -24,17 +24,6 @@ public class ClientHandler implements Runnable {
 	public String getUsername() {
 		return this.username;
 	}
-	
-	public void notifyCharacterGuessed(String guessedCharacter) {
-		// maybe?
-	}
-	
-	public void sendMessage(String message) {
-		 
-		
-	}
-	
-	
 
 	public ObjectOutputStream getOutgoingMessages() {
 		return outgoingMessages;
