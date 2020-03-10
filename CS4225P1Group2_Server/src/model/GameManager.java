@@ -45,26 +45,6 @@ public class GameManager {
 			}
 		}
 	}
-
-	public void handleLogin(String username) {
-		
-		if (this.clientManager.hasMaxClients()) {
-			
-			// Notify client that "Game room full - please try again later."
-		} else {
-			
-			var wasClientAdded = this.clientManager.addClient(new Client(username, new Socket()));
-			
-			if (wasClientAdded) {
-				
-				// Notify client they're signed in
-				// Notify all other clients that a new user joined
-			} else {
-				
-				// Notify client that they need to choose different user name as it already exists
-			}
-		}
-	}
 	
 	public void handleTimeout(String username) {
 		

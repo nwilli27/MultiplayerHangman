@@ -7,11 +7,11 @@ public class ClientManager {
 
 	private static final int MAX_CLIENT_COUNT = 4;
 	
-	private List<Client> clients;
-	private Client currentClient;
+	public static List<ClientHandler> Clients;
+	private ClientHandler currentClient;
 	
 	public ClientManager() {
-		this.clients = new ArrayList<Client>();
+		Clients = new ArrayList<ClientHandler>();
 	}
 	
 	public void disconnectClient(String username) {
@@ -20,7 +20,13 @@ public class ClientManager {
 		// Disconnect from server
 	}
 	
-	public boolean addClient(Client client) {
+	public void sendMessageToClient(String username, String message) {
+		
+		var client = this.getClient(username);
+		
+	}
+	
+	public boolean addClient(ClientHandler client) {
 		this.checkToSetCurrentClient(client);
 		
 		if (this.doesClientExists(client.getUsername()))
@@ -28,34 +34,34 @@ public class ClientManager {
 			return false;
 		}
 		
-		return this.clients.add(client);
+		return this.Clients.add(client);
 	}
 	
 	public boolean hasMaxClients() {
-		return this.clients.size() == MAX_CLIENT_COUNT;
+		return this.Clients.size() == MAX_CLIENT_COUNT;
 	}
 	
 	public void switchToNextClientTurn() {
-		var totalClientMax = this.clients.size() - 1;
-		var currentClientIndex = this.clients.indexOf(this.currentClient);
+		var totalClientMax = this.Clients.size() - 1;
+		var currentClientIndex = this.Clients.indexOf(this.currentClient);
 		
 		if (currentClientIndex == totalClientMax)
 		{
-			this.currentClient = this.clients.get(0);
+			this.currentClient = this.Clients.get(0);
 		}
 		else
 		{
-			this.currentClient = this.clients.get(++currentClientIndex);
+			this.currentClient = this.Clients.get(++currentClientIndex);
 		}
 	}
 
-	public Client getCurrentClient() {
+	public ClientHandler getCurrentClient() {
 		return this.currentClient;
 	}
 	
-	private Client getClient(String username) {
+	private ClientHandler getClient(String username) {
 		
-		for (var client : this.clients) {
+		for (var client : this.Clients) {
 			if (client.getUsername().equalsIgnoreCase(username)) {
 				return client;
 			}
@@ -64,9 +70,9 @@ public class ClientManager {
 		return null;
 	}
 	
-	private boolean doesClientExists(String username) {
+	public boolean doesClientExists(String username) {
 		
-		for (var client : this.clients) {
+		for (var client : Clients) {
 			if (client.getUsername().equalsIgnoreCase(username)) {
 				return true;
 			}
@@ -75,9 +81,9 @@ public class ClientManager {
 		return false;
 	}
 
-	private void checkToSetCurrentClient(Client client) {
+	private void checkToSetCurrentClient(ClientHandler client) {
 		
-		if (this.clients.size() == 0)
+		if (this.Clients.size() == 0)
 		{
 			this.currentClient = client;
 		}

@@ -6,57 +6,92 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
-public class Server {
+public class Server implements Runnable {
 
-	private RequestHandler requestHandler;
 	private static final int PORT = 4225;
 
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
+	private Socket gameSocket;
 	private ObjectInputStream incomingMessages;
 	private ObjectOutputStream outgoingMessages;
-
+	
+	private ClientManager clientManager;
+	
 	public Server() {
-		this.requestHandler = new RequestHandler();
+		this.clientManager = new ClientManager();
 	}
-
-	public void Run() {
-		// Run server endlessly handling request until some form of end occurs (unknown atm)
+	
+	@Override
+	public void run() {
+		
 		this.setupSocket();
-
-		try {
-
+		this.setupStreams();
+		
+		try {	
+			
 			while (true) {
-
-				this.setupStreams();
-				this.handleRequestResponse();
+				
+				this.handleRequest();
 			}
-
+			
 		} catch (IOException e) {
 			System.err.println("IOException:  " + e);
 		} catch (ClassNotFoundException e) {
 			System.err.println("ClassNotFoundException:  " + e);
 		}
 	}
-
-	private void handleRequestResponse() throws ClassNotFoundException, IOException { //TODO Probably refactored into two methods maybe
-
+	
+	private void handleRequest() throws ClassNotFoundException, IOException {
+		
 		if (this.clientSocket != null && this.outgoingMessages != null && this.incomingMessages != null) {
 
-			System.out.println("Server - Reading request from client...");
-
-			var incomingRequest = (String) this.incomingMessages.readObject(); // TODO This needs to be a Message class probably
+			var requestMsg = (String) this.incomingMessages.readObject();
+			var requestTokens = requestMsg.split("#");
+			var requestType = requestTokens[0];
 			
-			this.requestHandler.handleRequest(incomingRequest);
-
-			System.out.println("Server - handling request...");
-
-			this.outgoingMessages.writeObject(incomingRequest); // TODO
+			switch (requestType) {
+			
+				case "login":
+					var username = requestTokens[1];
+					this.handleCreateClientRequest(username);
+					
+				default:
+					// do other request
+			}
 		}
 	}
 
+	private void handleCreateClientRequest(String username) throws IOException {
+		
+		if (this.clientManager.hasMaxClients()) {
+			
+			// Notify client that "Game room full - please try again later."
+			
+		} else {
+			
+			if (!this.clientManager.doesClientExists(username)) {
+			
+				this.broadcastMessage("User " + username + " has joined the game.");
+			
+				var client = new ClientHandler(username, this.clientSocket);
+				this.clientManager.addClient(client);
+				var thread = new Thread(client);
+				thread.start();
+				
+			} else {
+				
+				this.broadcastMessage("The username " + username + " has been chosen already.");
+			}
+		}
+	}
+	
+	private void broadcastMessage(String message) throws IOException {
+		
+		this.outgoingMessages.writeObject(message);
+	}
+	
 	private void setupSocket() {
 
 		try {
@@ -99,4 +134,5 @@ public class Server {
 			System.err.println("Unable to connect; very likely that the server was not started.");
 		}
 	}
+
 }
