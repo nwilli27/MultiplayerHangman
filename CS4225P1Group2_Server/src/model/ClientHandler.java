@@ -13,9 +13,10 @@ public class ClientHandler implements Runnable {
 	private ObjectInputStream incomingMessages;
 	private ObjectOutputStream outgoingMessages;
 	
-	public ClientHandler(String username, Socket clientSocket) {
+	public ClientHandler(String username, Socket clientSocket, ObjectOutputStream output) {
 		this.username = username;
 		this.socket = clientSocket;
+		this.outgoingMessages = output;
 	}
 
 	public String getUsername() {
@@ -30,6 +31,12 @@ public class ClientHandler implements Runnable {
 		 
 		
 	}
+	
+	
+
+	public ObjectOutputStream getOutgoingMessages() {
+		return outgoingMessages;
+	}
 
 	@Override
 	public void run() {
@@ -38,6 +45,7 @@ public class ClientHandler implements Runnable {
 		System.out.println(this.username + " is here.");
 		
 		this.setupStreams();
+		
         //while (true) {
         	
         	//try {
@@ -83,7 +91,9 @@ public class ClientHandler implements Runnable {
 		
 		try {
 			this.incomingMessages = new ObjectInputStream(this.socket.getInputStream());
-			this.outgoingMessages = new ObjectOutputStream(this.socket.getOutputStream());
+			//this.outgoingMessages = new ObjectOutputStream(this.socket.getOutputStream());
+			
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

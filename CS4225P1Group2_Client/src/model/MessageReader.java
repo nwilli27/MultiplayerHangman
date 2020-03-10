@@ -31,6 +31,7 @@ public class MessageReader implements Runnable {
 
 			try {
 				var message = (String) this.inputMessage.readObject();
+				System.out.println(message);
 				this.controller.handleIncomingMessages(message);
 				
 			} catch (IOException e) {
