@@ -11,6 +11,8 @@ import javafx.scene.shape.QuadCurve;
 import javafx.scene.text.Text;
 
 public class MainPageController {
+	
+	//private int 
 
 	@FXML
 	private Text serverLabel;
