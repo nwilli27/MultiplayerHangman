@@ -22,8 +22,6 @@ public class ClientConnection {
 	 * @precondition
 	 * @postcondition
 	 * 
-	 * 
-	 * 
 	 */
 	public ClientConnection() {
 		this.setupStreams();

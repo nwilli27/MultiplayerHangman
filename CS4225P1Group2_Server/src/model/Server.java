@@ -10,12 +10,15 @@ import java.net.UnknownHostException;
 public class Server implements Runnable {
 
 	private static final int PORT = 4225;
-
 	private ServerSocket serverSocket;
+	
 	private Socket clientSocket;
+	private ObjectInputStream serverInputStream;
+	private ObjectOutputStream serverOutputStream;
+	
 	private Socket gameSocket;
-	private ObjectInputStream incomingMessages;
-	private ObjectOutputStream outgoingMessages;
+	private ObjectInputStream gameInputStream;
+	private ObjectOutputStream gameOutputStream;
 	
 	private ClientManager clientManager;
 	
@@ -27,7 +30,7 @@ public class Server implements Runnable {
 	public void run() {
 		
 		this.setupSocket();
-		this.setupStreams();
+		this.setupServerRequestStreams();
 		
 		try {	
 			
@@ -45,9 +48,9 @@ public class Server implements Runnable {
 	
 	private void handleRequest() throws ClassNotFoundException, IOException {
 		
-		if (this.clientSocket != null && this.outgoingMessages != null && this.incomingMessages != null) {
+		if (this.clientSocket != null && this.serverOutputStream != null && this.serverInputStream != null) {
 
-			var requestMsg = (String) this.incomingMessages.readObject();
+			var requestMsg = (String) this.serverInputStream.readObject();
 			var requestTokens = requestMsg.split("#");
 			var requestType = requestTokens[0];
 			
@@ -89,7 +92,7 @@ public class Server implements Runnable {
 	
 	private void broadcastMessage(String message) throws IOException {
 		
-		this.outgoingMessages.writeObject(message);
+		this.serverOutputStream.writeObject(message);
 	}
 	
 	private void setupSocket() {
@@ -114,19 +117,33 @@ public class Server implements Runnable {
 		try {
 			this.serverSocket.close();
 			this.clientSocket.close();
-			this.incomingMessages.close();
-			this.outgoingMessages.close();
+			this.serverInputStream.close();
+			this.serverOutputStream.close();
 		} catch (IOException e) {
 			System.err.println(e);
 		}
 	}
 
-	private void setupStreams() {
+	private void setupServerRequestStreams() {
 
 		try {
 			this.clientSocket = this.serverSocket.accept();
-			this.incomingMessages = new ObjectInputStream(this.clientSocket.getInputStream());
-			this.outgoingMessages = new ObjectOutputStream(this.clientSocket.getOutputStream());
+			this.serverInputStream = new ObjectInputStream(this.clientSocket.getInputStream());
+			this.serverOutputStream = new ObjectOutputStream(this.clientSocket.getOutputStream());
+
+		} catch (UnknownHostException e) {
+			System.err.println("Problem with the host.");
+		} catch (IOException e) {
+			System.err.println("Unable to connect; very likely that the server was not started.");
+		}
+	}
+	
+	private void setupGameRequestStreams() {
+
+		try {
+			this.gameSocket = this.serverSocket.accept();
+			this.gameInputStream = new ObjectInputStream(this.clientSocket.getInputStream());
+			this.gameOutputStream = new ObjectOutputStream(this.clientSocket.getOutputStream());
 
 		} catch (UnknownHostException e) {
 			System.err.println("Problem with the host.");
