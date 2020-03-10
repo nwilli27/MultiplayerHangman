@@ -31,16 +31,23 @@ public class ClientManager {
 		}
 	}
 	
-	public void disconnectClient(String username) {
+	public void handleClientDisconnect(String username) {
 		
 		var clientToDisconnect = this.getClient(username);
-		// Disconnect from server
+		Clients.remove(clientToDisconnect);
+		this.broadcastMessage("disconnect#" + username);
 	}
 	
-	public void sendMessageToClient(String username, String message) {
+	public void broadcastGuessUpdate(String formattedWord, String guess, int bodyCount) {
 		
-		var client = this.getClient(username);
+		if (guess.length() > 1) {
+			this.broadcastMessage("wordGuess#" + guess + "#" + this.currentClient.getUsername());
+		} else {
+			this.broadcastMessage("characterGuess#" + guess + "#" + this.currentClient.getUsername());
+		}
 		
+		this.broadcastMessage("updatedWord#" + formattedWord);
+		this.broadcastMessage("bodyCount#" + bodyCount);
 	}
 	
 	public boolean addClient(ClientHandler client) {
@@ -70,6 +77,8 @@ public class ClientManager {
 		{
 			this.currentClient = Clients.get(++currentClientIndex);
 		}
+		
+		this.broadcastMessage("clientChoosing#" + this.currentClient.getUsername());
 	}
 
 	public ClientHandler getCurrentClient() {

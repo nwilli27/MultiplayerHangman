@@ -44,46 +44,29 @@ public class GameManager {
 		return null;
 	}
 
-	public void handleCharacterGuess(String character) {
+	public void handleGuess(String character) {
 		
-		var isValidGuess = this.wordManager.guessCharacter(character);
+		this.wordManager.makeGuess(character);
+		this.clientManager.broadcastGuessUpdate(this.wordManager.formattedCurrentWord(), character, this.wordManager.getInvalidGuessCounter());
 
-		if (isValidGuess) {
-
+		if (this.wordManager.isOutOfGuesses()) {
 			
-			this.clientManager.broadcastMessage("");
-			// Notify all clients to update ui with valid character
-		} else {
-
-			// Notify all clients of the current clients guess like "Client guessed
-			// <character>" then replicate changes in ui
-		}
-	}
-
-	public void handleSentenceGuess(String sentence) {
-
-		var isValidGuess = this.wordManager.guessWord(sentence);
-
-		if (isValidGuess) {
-
-			// Notify all clients the current client who guessed right and that the game is
-			// over
-		} else {
-
+			this.clientManager.broadcastMessage("gameOver");
+		} else if (this.wordManager.isWordComplete()) {
 			
+			this.clientManager.broadcastMessage("wordComplete");
 		}
+		
+		this.clientManager.switchToNextClientTurn();
 	}
 
 	public void handleTimeout(String username) {
-
+		// TODO
 	}
 
 	public void handleDisconnect(String username) {
 
-		// Disconnect
-		this.clientManager.disconnectClient(username);
-
-		// Notify all other clients that the <username> client disconnected
+		this.clientManager.handleClientDisconnect(username);
 	}
 
 }

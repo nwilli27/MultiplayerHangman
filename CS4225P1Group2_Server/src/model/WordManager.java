@@ -21,21 +21,37 @@ public class WordManager {
 	 * Handles guessing a character.
 	 * @precondition: none
 	 * @postcondition: none
-	 * @param guessedCharacter the character guessed
+	 * @param guess the character guessed
 	 * @return true if valid guess; otherwise false
 	 */
-	public boolean guessCharacter(String guessedCharacter) {
+	public void makeGuess(String guess) {
 		
-		var hasBeenGuessed = this.checkToAddGuess(guessedCharacter);
-		var isValid = this.word.contains(guessedCharacter); 
-		
-		if (!hasBeenGuessed && isValid) {
-			this.validCharacters.add(guessedCharacter);
-			return true;
+		if (guess.length() > 1) {
+			
+			var guessedWordRight = this.word.equalsIgnoreCase(guess);
+			if (!guessedWordRight) {
+				this.invalidGuessCounter++;
+			}
+		} else {
+
+			var hasBeenGuessed = this.checkToAddGuess(guess);
+			var isValid = this.word.contains(guess); 
+			
+			if (!hasBeenGuessed && isValid) {
+				this.validCharacters.add(guess);
+			} else {
+				this.invalidGuessCounter++;
+			}
 		}
+	}
+
+	public int getInvalidGuessCounter() {
+		return this.invalidGuessCounter;
+	}
+	
+	public boolean isOutOfGuesses() {
 		
-		this.invalidGuessCounter++;
-		return false;
+		return this.invalidGuessCounter == MAX_GUESS_COUNT;
 	}
 
 	private boolean checkToAddGuess(String guessedCharacter) {
@@ -86,10 +102,6 @@ public class WordManager {
 	
 	public boolean hasGuessedAlready(String guessedCharacter) {
 		return this.guessedCharacters.contains(guessedCharacter);
-	}
-	
-	public boolean guessWord(String guessedWord) {
-		return this.word.equalsIgnoreCase(guessedWord);
 	}
 
 	public String getWord() {

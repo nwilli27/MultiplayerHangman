@@ -2,14 +2,8 @@ package model;
 
 public class RequestHandler {
 
-	private GameManager gameManager;
-	
-	private static String DELIMITER = "-";
-	
-	public RequestHandler() {
-		
-		this.gameManager = new GameManager();
-	}
+	private static GameManager gameManager;
+	private static String DELIMITER = "#";
 	
 	public void handleRequest(String request) {
 		
@@ -20,22 +14,17 @@ public class RequestHandler {
 		{
 			case "guess":
 				var guessedCharacter = parsedRequest[1];
-				this.gameManager.handleCharacterGuess(guessedCharacter);
+				gameManager.handleGuess(guessedCharacter);
 				break;
-				
-			case "sentence":
-				var guessedSentence = parsedRequest[1];
-				this.gameManager.handleSentenceGuess(guessedSentence);
-				break;
-				
+			
 			case "timeout":
 				var timeoutUser = parsedRequest[1];
-				this.gameManager.handleTimeout(timeoutUser);
+				gameManager.handleTimeout(timeoutUser);
 				break;
 			
 			case "disconnect":
 				var disconnectUser = parsedRequest[1];
-				// Disconnect user and notify all clients of disconnection
+				gameManager.handleDisconnect(disconnectUser);
 				break;
 				
 		}
