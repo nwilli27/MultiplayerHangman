@@ -26,7 +26,7 @@ public class ClientConnection {
 	public ClientConnection() {
 		this.setupStreams();
 		this.reader = new MessageReader(this.incomingMessages);
-		Thread messageThread= new Thread(this.reader);
+		Thread messageThread = new Thread(this.reader);
 		messageThread.start();
 	}
 

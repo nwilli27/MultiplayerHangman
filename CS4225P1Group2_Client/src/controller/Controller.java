@@ -29,7 +29,23 @@ public class Controller {
 		case "playerJoin":
 			this.handlePlayerJoin();
 			break;
+		case "correctGuess":
+			this.handleCorrectGuess();
+			break;
+		case "wrongGuess":
+			this.handleWrongGuess();
+			break;
 		}
+	}
+
+	private void handleWrongGuess() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleCorrectGuess() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void handlePlayerJoin() {
