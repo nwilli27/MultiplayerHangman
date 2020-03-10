@@ -8,6 +8,7 @@ import java.net.Socket;
 public class ClientHandler implements Runnable {
 
 	private String username;
+	private RequestHandler requestHandler;
 	
 	protected Socket socket;
 	private ObjectInputStream incomingMessages;
@@ -17,6 +18,7 @@ public class ClientHandler implements Runnable {
 		this.username = username;
 		this.socket = clientSocket;
 		this.outgoingMessages = output;
+		this.requestHandler = new RequestHandler();
 	}
 
 	public String getUsername() {
@@ -41,10 +43,28 @@ public class ClientHandler implements Runnable {
 	@Override
 	public void run() {
 		
-		String received;
-		System.out.println(this.username + " is here.");
+		System.out.println(this.username + " is now in the game.");
 		
 		this.setupStreams();
+		
+		try {
+			
+			var incomingRequest = this.incomingMessages.readObject();
+			this.requestHandler.handleRequest((String) incomingRequest);
+			
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
 		
         //while (true) {
         	

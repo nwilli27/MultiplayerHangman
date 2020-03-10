@@ -28,7 +28,6 @@ public class ClientManager {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 		}
 	}
 	
@@ -52,24 +51,24 @@ public class ClientManager {
 			return false;
 		}
 		
-		return this.Clients.add(client);
+		return Clients.add(client);
 	}
 	
 	public boolean hasMaxClients() {
-		return this.Clients.size() == MAX_CLIENT_COUNT;
+		return Clients.size() == MAX_CLIENT_COUNT;
 	}
 	
 	public void switchToNextClientTurn() {
-		var totalClientMax = this.Clients.size() - 1;
-		var currentClientIndex = this.Clients.indexOf(this.currentClient);
+		var totalClientMax = Clients.size() - 1;
+		var currentClientIndex = Clients.indexOf(this.currentClient);
 		
 		if (currentClientIndex == totalClientMax)
 		{
-			this.currentClient = this.Clients.get(0);
+			this.currentClient = Clients.get(0);
 		}
 		else
 		{
-			this.currentClient = this.Clients.get(++currentClientIndex);
+			this.currentClient = Clients.get(++currentClientIndex);
 		}
 	}
 
@@ -79,7 +78,7 @@ public class ClientManager {
 	
 	private ClientHandler getClient(String username) {
 		
-		for (var client : this.Clients) {
+		for (var client : Clients) {
 			if (client.getUsername().equalsIgnoreCase(username)) {
 				return client;
 			}
@@ -101,7 +100,7 @@ public class ClientManager {
 
 	private void checkToSetCurrentClient(ClientHandler client) {
 		
-		if (this.Clients.size() == 0)
+		if (Clients.size() == 0)
 		{
 			this.currentClient = client;
 		}
