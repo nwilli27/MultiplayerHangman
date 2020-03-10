@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import controller.Controller;
+
 public class MessageReader implements Runnable {
 
 	
@@ -11,13 +13,13 @@ public class MessageReader implements Runnable {
 	
 	private String message;
 	
-	private MessageHandler messageHandler;
+	private Controller controller;
 	
 	
 	
 	public MessageReader(ObjectInputStream input) {
 		this.inputMessage = input;
-		this.messageHandler = new MessageHandler();
+		this.controller = new Controller();
 	}
 	
 	
@@ -29,7 +31,7 @@ public class MessageReader implements Runnable {
 
 			try {
 				var message = (String) this.inputMessage.readObject();
-				this.messageHandler.handleMessage(message);
+				this.controller.handleIncomingMessages(message);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
