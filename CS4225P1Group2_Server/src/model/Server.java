@@ -97,7 +97,7 @@ public class Server implements Runnable {
 				thread.start();
 				
 			} else {
-				var message = new Message("The username " + username + " has been chosen already.");
+				var message = new Message("taken#" + username);
 				this.sendMessage(message);
 			}
 		}

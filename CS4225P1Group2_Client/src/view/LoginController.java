@@ -3,7 +3,6 @@ package view;
 import java.io.IOException;
 
 import application.Main;
-import controller.Controller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +35,9 @@ public class LoginController {
     @FXML
     private Button loginButton;
     
+    @FXML
+    private Text userNameTakenText;
+    
     private Scene scene;
     
     private static LoginController instance;
@@ -61,19 +63,23 @@ public class LoginController {
 			return;
 		} else {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
+			@SuppressWarnings("unused")
 			Parent window = (Pane) fxmlLoader.load();
-			controller = fxmlLoader.<MainPageController>getController();
+			controller =  fxmlLoader.<MainPageController>getController();
 			Listener reader = new Listener(username, controller);
 			Thread thread = new Thread(reader);
 			thread.start();
-			this.scene = new Scene(window);
+			
 		}
 		
     }
     
   
     
-    public void showScene() {
+    public void showScene() throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPage.fxml"));
+		Parent window = (Pane) fxmlLoader.load();
+    	this.scene = new Scene(window);
     	Platform.runLater(() -> {
     		Stage stage = (Stage) this.createUsernameText.getScene().getWindow();
 //            stage.setResizable(true);
@@ -90,4 +96,9 @@ public class LoginController {
 //            stage.centerOnScreen();
         });
     }
+
+	public void showServerMessage(String message) {
+		this.userNameTakenText.setText(message);
+		
+	}
 }
