@@ -1,4 +1,4 @@
-package clientConnection;
+package model;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -6,84 +6,69 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-
 public class ClientConnection {
-	
-	
+
 	private static final String HOST = "localhost";
 	private static final int PORT = 4225;
-
-
 
 	private ObjectInputStream incomingMessages;
 	private ObjectOutputStream outgoingMessages;
 	private Socket clientSocket;
+	private MessageReader reader;
 
 	/**
 	 * Creates a client object
 	 * 
-	 * @precondition 
-	 * @postcondition 
+	 * @precondition
+	 * @postcondition
 	 * 
 	 * 
 	 * 
 	 */
 	public ClientConnection() {
 		this.setupStreams();
+		this.reader = new MessageReader(this.incomingMessages);
+		Thread messageThread= new Thread(this.reader);
+		messageThread.start();
 	}
+
 	
-	private void printMessage(String message) {
-		
-		var threadName = Thread.currentThread().getName();
-		System.out.println("Client " + threadName + " - " + message);
-	}
 
-	public String sendRequest(String request) { //TODO Probably change String to some message class that implements serializable
+	public void sendRequest(String request) { // TODO Probably change String to some message class that implements
+		if (this.clientSocket != null && this.outgoingMessages != null && this.incomingMessages != null) {
 
-			
-			String message = null;
-
-			if (this.clientSocket != null && this.outgoingMessages != null && this.incomingMessages != null) {
-
-				try {
-
-					this.outgoingMessages.writeObject(request);
-					this.outgoingMessages.flush();
-					message = this.handleMatrixResult();
-
-				} catch (IOException e) {
-
-					e.printStackTrace();
-				}
+			try {
+				this.outgoingMessages.writeObject(request);
+				this.outgoingMessages.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			
-			return message;
-		} 
-
-	private String handleMatrixResult() {
-
-		String message = null;
-		try {
-		    message = (String) this.incomingMessages.readObject();
-			
-//			this.outgoingMessages.close();
-//			this.incomingMessages.close();
-//			this.clientSocket.close();
-			
-
-		} catch (IOException e) {
-
-			this.printErrMessage("IOException: " + e);
-
-		} catch (ClassNotFoundException e) {
-
-			this.printErrMessage("ClassNotFoundException: " + e);
 		}
-		return message;
 	}
-	
+
+//	private String handleResult() {
+//
+//		String message = null;
+//		try {
+//			message = (String) this.incomingMessages.readObject();
+//
+////			this.outgoingMessages.close();
+////			this.incomingMessages.close();
+////			this.clientSocket.close();
+//
+//		} catch (IOException e) {
+//
+//			this.printErrMessage("IOException: " + e);
+//
+//		} catch (ClassNotFoundException e) {
+//
+//			this.printErrMessage("ClassNotFoundException: " + e);
+//		}
+//		return message;
+//	}
+
 	private void printErrMessage(String message) {
-		
+
 		var threadName = Thread.currentThread().getName();
 		System.err.println("Client " + threadName + " - " + message);
 	}
@@ -104,5 +89,10 @@ public class ClientConnection {
 		}
 	}
 	
+	private void printMessage(String message) {
+
+		var threadName = Thread.currentThread().getName();
+		System.out.println("Client " + threadName + " - " + message);
+	}
 
 }

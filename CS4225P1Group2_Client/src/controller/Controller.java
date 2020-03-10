@@ -1,6 +1,6 @@
 package controller;
 
-import clientConnection.ClientConnection;
+import model.ClientConnection;
 
 public class Controller {
 
@@ -12,12 +12,12 @@ public class Controller {
 
 	public void handleGuess(String guess) {
 		
-		CLIENT.sendRequest("guess-" + guess);
+		CLIENT.sendRequest("guess#" + guess);
 		
 	}
 
 	public void handleLogin(String username) {
-		System.out.println(CLIENT.sendRequest("login-" + username)); //TODO remove print
+		CLIENT.sendRequest("login#" + username); //TODO remove print
 		
 	}
 
