@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,23 @@ public class ClientManager {
 	
 	public ClientManager() {
 		Clients = new ArrayList<ClientHandler>();
+	}
+	
+	public void broadcastMessage(String message) {
+		
+		var messageSerialized = new Message(message);
+		
+		for (var client : Clients) {
+
+			try {
+				var outputStream = client.getOutgoingMessages();
+				outputStream.writeObject(messageSerialized);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
 	}
 	
 	public void disconnectClient(String username) {

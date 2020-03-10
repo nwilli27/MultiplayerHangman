@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.QuadCurve?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainPageController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainPageController">
    <children>
       <TextArea fx:id="guessedLettersTextArea" editable="false" layoutX="465.0" layoutY="86.0" prefHeight="200.0" prefWidth="200.0" />
       <Text layoutX="523.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Guessed Letters" />
@@ -33,6 +33,7 @@
       <QuadCurve fx:id="mouthUpper" controlX="30.0" controlY="-21.25" endX="50.0" fill="WHITE" layoutX="143.0" layoutY="172.0" startX="10.0" stroke="BLACK" strokeType="INSIDE" />
       <Line fx:id="mouthLower" endX="80.0" endY="51.0" layoutX="111.0" layoutY="121.0" startX="43.75" startY="51.0" />
       <Text fx:id="wordGuessBox" layoutX="275.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="195.13671875" />
-      <Text fx:id="messageFromServerText" layoutX="298.0" layoutY="518.0" strokeType="OUTSIDE" strokeWidth="0.0" text="hello" textAlignment="CENTER" wrappingWidth="149.00000095367432" />
+      <TextArea fx:id="messageFromServerText" editable="false" layoutX="14.0" layoutY="423.0" prefHeight="162.0" prefWidth="234.0" />
+      <Text fx:id="serverLabel" layoutX="14.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server:" />
    </children>
 </AnchorPane>

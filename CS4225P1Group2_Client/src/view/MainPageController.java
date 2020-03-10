@@ -13,6 +13,9 @@ import javafx.scene.text.Text;
 public class MainPageController {
 
 	@FXML
+	private Text serverLabel;
+	
+	@FXML
 	private TextArea guessedLettersTextArea;
 
 	@FXML
@@ -76,8 +79,7 @@ public class MainPageController {
 	private Text wordGuessBox;
 	
 	@FXML
-    private Text messageFromServerText;
-
+    private TextArea messageFromServerText;
 
 	@FXML
 	void initialize() {
@@ -171,7 +173,7 @@ public class MainPageController {
 	}
 
 	public void showServerMessage(String message) {
-		this.messageFromServerText.setText(message);
+		this.messageFromServerText.setText(message + System.lineSeparator());
 		
 	}
 

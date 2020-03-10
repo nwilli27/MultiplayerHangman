@@ -88,36 +88,23 @@ public class Server implements Runnable {
 			
 			if (!this.clientManager.doesClientExists(username)) {
 			
-				var message = new Message("playerConnect#"+username);
-				this.sendMessage(message);
-			
 				var client = new ClientHandler(username, this.clientSocket, this.serverOutputStream);
 				this.clientManager.addClient(client);
 				var thread = new Thread(client);
 				thread.start();
 				
+				this.clientManager.broadcastMessage("playerConnect#" + username);
+				
 			} else {
-				var message = new Message("taken#" + username);
-				this.sendMessage(message);
+
+				this.sendMessage("taken#" + username);
 			}
 		}
-		
-		// HERE FOR TESTING PURPOSES
-//		if (ClientManager.Clients.size() >= 2) {
-//			try {
-//				for (var client : ClientManager.Clients) {
-//					var output = client.getOutgoingMessages();
-//					output.writeObject("nudge");
-//				}
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
 	}
 	
-	private void sendMessage(Message message) throws IOException {
+	private void sendMessage(String message) throws IOException {
 		
-		this.serverOutputStream.writeObject(message);
+		this.serverOutputStream.writeObject(new Message(message));
 	}
 	
 	private void setupSocket() {
