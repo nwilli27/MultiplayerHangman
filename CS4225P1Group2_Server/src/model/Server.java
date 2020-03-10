@@ -11,14 +11,10 @@ public class Server implements Runnable {
 
 	private static final int PORT = 4225;
 	private ServerSocket serverSocket;
-	
 	private Socket clientSocket;
+	
 	private ObjectInputStream serverInputStream;
 	private ObjectOutputStream serverOutputStream;
-	
-	private Socket gameSocket;
-	private ObjectInputStream gameInputStream;
-	private ObjectOutputStream gameOutputStream;
 	
 	private ClientManager clientManager;
 	
@@ -75,14 +71,13 @@ public class Server implements Runnable {
 					// do other request
 			}
 		}
-		
 	}
 
 	private void handleCreateClientRequest(String username) throws IOException {
 		
 		if (this.clientManager.hasMaxClients()) {
 			
-			// Notify client that "Game room full - please try again later."
+			this.sendMessage("userLimit#" + username);
 			
 		} else {
 			
@@ -133,34 +128,6 @@ public class Server implements Runnable {
 			this.serverOutputStream.close();
 		} catch (IOException e) {
 			System.err.println(e);
-		}
-	}
-
-	private void setupServerRequestStreams() {
-
-		try {
-			this.clientSocket = this.serverSocket.accept();
-			this.serverInputStream = new ObjectInputStream(this.clientSocket.getInputStream());
-			this.serverOutputStream = new ObjectOutputStream(this.clientSocket.getOutputStream());
-
-		} catch (UnknownHostException e) {
-			System.err.println("Problem with the host.");
-		} catch (IOException e) {
-			System.err.println("Unable to connect; very likely that the server was not started.");
-		}
-	}
-	
-	private void setupGameRequestStreams() {
-
-		try {
-			this.gameSocket = this.serverSocket.accept();
-			this.gameInputStream = new ObjectInputStream(this.clientSocket.getInputStream());
-			this.gameOutputStream = new ObjectOutputStream(this.clientSocket.getOutputStream());
-
-		} catch (UnknownHostException e) {
-			System.err.println("Problem with the host.");
-		} catch (IOException e) {
-			System.err.println("Unable to connect; very likely that the server was not started.");
 		}
 	}
 

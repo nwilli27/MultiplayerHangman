@@ -1,7 +1,5 @@
 package model;
 
-import java.net.Socket;
-
 public class RequestHandler {
 
 	private GameManager gameManager;
@@ -13,7 +11,7 @@ public class RequestHandler {
 		this.gameManager = new GameManager();
 	}
 	
-	public void handleRequest(String request, Socket clientSocket) {
+	public void handleRequest(String request) {
 		
 		var parsedRequest = request.split(DELIMITER);
 		var requestType = parsedRequest[0];
@@ -37,7 +35,7 @@ public class RequestHandler {
 			
 			case "disconnect":
 				var disconnectUser = parsedRequest[1];
-				this.gameManager.handleDisconnect(disconnectUser);
+				// Disconnect user and notify all clients of disconnection
 				break;
 				
 		}

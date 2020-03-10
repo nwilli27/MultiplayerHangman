@@ -5,9 +5,12 @@ import java.util.List;
 
 public class WordManager {
 
-	private String sentence;
+	private static final int MAX_GUESS_COUNT = 6;
+	
+	private String word;
 	private List<String> guessedCharacters;
 	private List<String> validCharacters;
+	private int invalidGuessCounter;
 	
 	public WordManager() {
 		this.guessedCharacters = new ArrayList<String>();
@@ -23,14 +26,15 @@ public class WordManager {
 	 */
 	public boolean guessCharacter(String guessedCharacter) {
 		
-		var hasBeenGuessed = checkToAddGuess(guessedCharacter);
-		var isValid = this.sentence.contains(guessedCharacter); 
+		var hasBeenGuessed = this.checkToAddGuess(guessedCharacter);
+		var isValid = this.word.contains(guessedCharacter); 
 		
 		if (!hasBeenGuessed && isValid) {
 			this.validCharacters.add(guessedCharacter);
 			return true;
 		}
 		
+		this.invalidGuessCounter++;
 		return false;
 	}
 
@@ -43,18 +47,34 @@ public class WordManager {
 		}
 	}
 	
-	public boolean isSentenceComplete() {
+	public String formattedCurrentWord() {
 		
-		var sentenceCharacters = this.getSentenceCharacters();
-		return this.validCharacters.size() == sentenceCharacters.size();
+		var output = "";
+		
+		for (char character : this.word.toCharArray()) {
+			
+			if (this.validCharacters.contains(String.valueOf(character))) {
+				output += character;
+			} else {
+				output += "_";
+			}
+		}
+		
+		return output;
 	}
 	
-	public List<Character> getSentenceCharacters() {
+	public boolean isWordComplete() {
+		
+		var wordCharacters = this.getWordCharacters();
+		return this.validCharacters.size() == wordCharacters.size();
+	}
+	
+	public List<Character> getWordCharacters() {
 		
 		List<Character> characters = new ArrayList<Character>();
-		var sentence = this.sentence.replace(" ", "");
+		var word = this.word.replace(" ", "");
 		
-		for (var currChar : sentence.toCharArray()) {
+		for (var currChar : word.toCharArray()) {
 			
 			if (!characters.contains(currChar)) {
 				characters.add(currChar);
@@ -68,21 +88,20 @@ public class WordManager {
 		return this.guessedCharacters.contains(guessedCharacter);
 	}
 	
-	public boolean guessSentence(String guessedSentence) {
-		return this.sentence.equalsIgnoreCase(guessedSentence);
+	public boolean guessWord(String guessedWord) {
+		return this.word.equalsIgnoreCase(guessedWord);
 	}
 
-	public String getSentence() {
-		return this.sentence;
+	public String getWord() {
+		return this.word;
 	}
 
-	public void setSentence(String sentence) {
-		this.sentence = sentence;
+	public void setWord(String word) {
+		this.word = word;
 	}
 
 	public List<String> getGuessedCharacters() {
-		return guessedCharacters;
+		return this.guessedCharacters;
 	}
-	
 	
 }
