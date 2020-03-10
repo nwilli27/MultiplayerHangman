@@ -14,7 +14,7 @@ public class ClientConnection {
 	private ObjectInputStream incomingMessages;
 	private ObjectOutputStream outgoingMessages;
 	private Socket clientSocket;
-	private MessageReader reader;
+	private Listener reader;
 
 	/**
 	 * Creates a client object
@@ -24,10 +24,10 @@ public class ClientConnection {
 	 * 
 	 */
 	public ClientConnection() {
-		this.setupStreams();
-		this.reader = new MessageReader(this.incomingMessages);
-		Thread messageThread = new Thread(this.reader);
-		messageThread.start();
+		//this.setupStreams();
+		//this.reader = new Listener(this.incomingMessages);
+//		Thread messageThread = new Thread(this.reader);
+//		messageThread.start();
 	}
 
 	
@@ -42,6 +42,10 @@ public class ClientConnection {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public ObjectInputStream getIncomingMessages() {
+		return this.incomingMessages;
 	}
 
 //	private String handleResult() {

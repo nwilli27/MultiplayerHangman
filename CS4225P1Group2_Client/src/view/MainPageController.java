@@ -1,6 +1,5 @@
 package view;
 
-import controller.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -11,7 +10,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
 import javafx.scene.text.Text;
 
-public class MainPageCodeBehind {
+public class MainPageController {
 
 	@FXML
 	private TextArea guessedLettersTextArea;
@@ -75,19 +74,22 @@ public class MainPageCodeBehind {
 
 	@FXML
 	private Text wordGuessBox;
+	
+	@FXML
+    private Text messageFromServerText;
 
-	private Controller controller;
 
 	@FXML
 	void initialize() {
-		this.controller = new Controller();
 		this.hideAll();
 	}
 
 	@FXML
 	void handleGuessButtonClicked(MouseEvent event) {
-		this.controller.handleGuess(this.guessTextField.getText());
+		this.messageFromServerText.setText("Hello");
+//		this.controller.handleGuess(this.guessTextField.getText());
 	}
+	
 	
 	private void hideAll() {
 		this.hideHead();
@@ -166,6 +168,16 @@ public class MainPageCodeBehind {
 
 	private void hideBody() {
 		this.body.setVisible(false);
+	}
+
+	public void showServerMessage(String message) {
+		this.messageFromServerText.setText(message);
+		
+	}
+
+	public void handleNextWrongGuess() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

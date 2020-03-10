@@ -60,7 +60,8 @@ public class Server implements Runnable {
 		
 		if (this.clientSocket != null && this.serverOutputStream != null && this.serverInputStream != null) {
 
-			var requestMsg = (String) this.serverInputStream.readObject();
+			var request = (Message) this.serverInputStream.readObject();
+			var requestMsg = request.getMessage();
 			var requestTokens = requestMsg.split("#");
 			var requestType = requestTokens[0];
 			
@@ -87,7 +88,8 @@ public class Server implements Runnable {
 			
 			if (!this.clientManager.doesClientExists(username)) {
 			
-				this.sendMessage("User " + username + " has joined the game.");
+				var message = new Message("playerConnect#"+username);
+				this.sendMessage(message);
 			
 				var client = new ClientHandler(username, this.clientSocket, this.serverOutputStream);
 				this.clientManager.addClient(client);
@@ -95,25 +97,25 @@ public class Server implements Runnable {
 				thread.start();
 				
 			} else {
-				
-				this.sendMessage("The username " + username + " has been chosen already.");
+				var message = new Message("The username " + username + " has been chosen already.");
+				this.sendMessage(message);
 			}
 		}
 		
 		// HERE FOR TESTING PURPOSES
-		if (ClientManager.Clients.size() >= 2) {
-			try {
-				for (var client : ClientManager.Clients) {
-					var output = client.getOutgoingMessages();
-					output.writeObject("Broadcasting same message.");
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+//		if (ClientManager.Clients.size() >= 2) {
+//			try {
+//				for (var client : ClientManager.Clients) {
+//					var output = client.getOutgoingMessages();
+//					output.writeObject("nudge");
+//				}
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 	
-	private void sendMessage(String message) throws IOException {
+	private void sendMessage(Message message) throws IOException {
 		
 		this.serverOutputStream.writeObject(message);
 	}
