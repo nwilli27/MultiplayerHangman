@@ -1,5 +1,8 @@
 package view;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -80,6 +83,7 @@ public class MainPageController {
 	
 	@FXML
     private TextArea messageFromServerText;
+	
 
 	@FXML
 	void initialize() {
@@ -88,7 +92,10 @@ public class MainPageController {
 
 	@FXML
 	void handleGuessButtonClicked(MouseEvent event) {
-		this.messageFromServerText.setText("Hello");
+		Platform.runLater(() -> {
+			this.messageFromServerText.appendText("hello");
+		}
+		);
 //		this.controller.handleGuess(this.guessTextField.getText());
 	}
 	
@@ -173,11 +180,16 @@ public class MainPageController {
 	}
 
 	public void showServerMessage(String message) {
-		this.messageFromServerText.setText(message + System.lineSeparator());
+
 		
 	}
 
 	public void handleNextWrongGuess() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateGuessedCharacters() {
 		// TODO Auto-generated method stub
 		
 	}

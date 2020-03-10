@@ -86,9 +86,10 @@ public class Listener implements Runnable {
 			case "correctGuess":
 				this.controller.showServerMessage("");
 				break;
-			case "repeatGuess":
-				this.controller.showServerMessage("");
-				break;
+			case "wordGuess":
+				this.controller.showServerMessage(response + " was guessed.");
+			case "characterGuess":
+				this.controller.updateGuessedCharacters();
 			case "taken":
 				LoginController.getInstance()
 					.showServerMessage("The username: " + response + " has been taken. Please try another.");
