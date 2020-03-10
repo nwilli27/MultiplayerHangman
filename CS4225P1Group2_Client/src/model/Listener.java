@@ -10,6 +10,11 @@ import java.net.Socket;
 import view.LoginController;
 import view.MainPageController;
 
+/**
+ * Class that sends and receives messages from server
+ * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
+ *
+ */
 public class Listener implements Runnable {
 
 	private static final String HOST = "localhost";
@@ -25,6 +30,11 @@ public class Listener implements Runnable {
 	private ObjectInputStream input;
 	private OutputStream outputStream;
 
+	/**
+	 * Creates a listener object with the given username and controller
+	 * @param name username of the person logged in
+	 * @param con controller for the mainpage
+	 */
 	public Listener(String name, MainPageController con) {
 		username = name;
 		this.controller = con;
@@ -100,11 +110,20 @@ public class Listener implements Runnable {
 
 	}
 
+	/**
+	 * Sends a message to the server
+	 * @param msg Message to be sent
+	 * @throws IOException Exception
+	 */
 	public static void send(String msg) throws IOException {
 		oos.writeObject(msg);
 		oos.flush();
 	}
 
+	/**
+	 * Sends an initial log in message to server
+	 * @throws IOException exception
+	 */
 	public static void connect() throws IOException {
 		Message message = new Message("login#" + username);
 		oos.writeObject(message);

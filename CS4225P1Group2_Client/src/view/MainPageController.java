@@ -181,16 +181,26 @@ public class MainPageController {
 		this.body.setVisible(false);
 	}
 
+	/**
+	 * Shows message from server on gui
+	 * @param message Message from server
+	 */
 	public void showServerMessage(String message) {
 
 		
 	}
 
+	/**
+	 * Updates the gui after a wrong guess
+	 */
 	public void handleNextWrongGuess() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * Updates the gui to reflect guessed characters
+	 */
 	public void updateGuessedCharacters() {
 		// TODO Auto-generated method stub
 		
