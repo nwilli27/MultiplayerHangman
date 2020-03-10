@@ -17,36 +17,43 @@ import javafx.stage.Stage;
 public class LoginCodeBehind {
 
 	@FXML
-    private TextField usernameTextField;
+	private TextField usernameTextField;
 
-    @FXML
-    private Text welcomeText;
+	@FXML
+	private Text welcomeText;
 
-    @FXML
-    private Text createUsernameText;
+	@FXML
+	private Text errorText;
 
-    @FXML
-    private Button loginButton;
-    
-    private Controller controller;
+	@FXML
+	private Text createUsernameText;
 
-   
+	@FXML
+	private Button loginButton;
 
-    @FXML
-    void initialize() {
-    	this.controller = new Controller();
-    }
-	
-    
-    @FXML
-    void handleLogin(MouseEvent event) throws IOException {
-    	
-    	this.controller.handleLogin(this.usernameTextField.getText());
-    	Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource(Main.MAIN_PAGE_VIEW));
-		loader.load();
-		Scene sceneToNavigateTo = new Scene(loader.getRoot());
-		currentStage.setScene(sceneToNavigateTo);
-    }
+	private Controller controller;
+
+	@FXML
+	void initialize() {
+		this.controller = new Controller();
+	}
+
+	@FXML
+	void handleLogin(MouseEvent event) throws IOException {
+
+		String username = this.usernameTextField.getText();
+		if (username.isEmpty() || username.isBlank()) {
+			this.errorText.setVisible(true);
+			return;
+		} else {
+			this.controller.handleLogin(username);
+			Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource(Main.MAIN_PAGE_VIEW));
+			loader.load();
+			Scene sceneToNavigateTo = new Scene(loader.getRoot());
+			currentStage.setScene(sceneToNavigateTo);
+		}
+
+	}
 }
