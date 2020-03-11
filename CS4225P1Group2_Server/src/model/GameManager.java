@@ -89,18 +89,18 @@ public class GameManager {
 
 	private void checkGameState() {
 		
-		if (this.wordManager.isWordComplete()) {
+		if (this.wordManager.isWordComplete() && !this.wordManager.isOutOfGuesses()) {
 			
 			ClientManager.broadcastWinner();
 			
 		} else if (!this.wordManager.isOutOfGuesses()) {
 			
 			ClientManager.switchToNextClientTurn();
-			
 		}
 	}
 	
 	private void checkIfOutOfGuesses() {
+		
 		if (this.wordManager.isOutOfGuesses()) {
 			this.wordManager.addRestOfWord();
 		}
