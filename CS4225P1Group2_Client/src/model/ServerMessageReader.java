@@ -26,21 +26,18 @@ public class ServerMessageReader implements Runnable {
 			var otherTurn = LoginController.getClient().getFirstOfMessage(MessageType.OtherGuessTurn);
 			var winner = LoginController.getClient().getFirstOfMessage(MessageType.UserWon);
 			var disconnect = LoginController.getClient().getFirstOfMessage(MessageType.Disconnect);
+			var nudge = LoginController.getClient().getFirstOfMessage(MessageType.Nudge);
+			var timeout = LoginController.getClient().getFirstOfMessage(MessageType.UserTimeout);
 
 			this.handleLoggedIn(loggedIn);
-
 			this.handleInitialState(initialState);
-
 			this.handleDisconnect(disconnect);
-
+			this.handleNudge(nudge);
+			this.handleUserTimeout(timeout);
 			this.handleUserTurn(turn);
-
 			this.handleUserGuess(guess);
-
 			this.handleBodyPartCount(part);
-
 			this.handleOtherTurn(otherTurn);
-
 			this.handleWinner(winner);
 
 		}
@@ -93,6 +90,30 @@ public class ServerMessageReader implements Runnable {
 
 			Platform.runLater(() -> {
 				MainPageController.alertForTurn(disconnect.getMessage() + " has disconnected");
+			});
+
+		}
+	}
+
+	private void handleNudge(Message nudge) {
+		if (nudge != null) {
+
+			nudge.setIsCompleted(true);
+
+			Platform.runLater(() -> {
+				MainPageController.alertForTurn("You have " + nudge.getMessage() + " seconds to guess");
+			});
+
+		}
+	}
+
+	private void handleUserTimeout(Message timeout) {
+		if (timeout != null) {
+
+			timeout.setIsCompleted(true);
+
+			Platform.runLater(() -> {
+				MainPageController.alertForTurn(timeout.getMessage() + " has been disconnected");
 			});
 
 		}
