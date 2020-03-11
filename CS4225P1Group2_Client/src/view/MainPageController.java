@@ -1,5 +1,6 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.application.Platform;
@@ -14,12 +15,10 @@ import javafx.scene.shape.QuadCurve;
 import javafx.scene.text.Text;
 
 public class MainPageController {
-	
-	//private int 
 
 	@FXML
 	private Text serverLabel;
-	
+
 	@FXML
 	private TextArea guessedLettersTextArea;
 
@@ -43,6 +42,12 @@ public class MainPageController {
 
 	@FXML
 	private Text guessText;
+	
+	@FXML
+	private Text gameStatusText;
+	
+	@FXML
+	private Text errorTextField;
 
 	@FXML
 	private Circle head;
@@ -82,25 +87,54 @@ public class MainPageController {
 
 	@FXML
 	private Text wordGuessBox;
-	
+
 	@FXML
-    private TextArea messageFromServerText;
-	
+    private TextArea messageFromServerText;	
+
+	private ArrayList<String> lettersGuessed;
+
 	@FXML
 	void initialize() {
 		this.hideAll();
+		this.lettersGuessed = new ArrayList<String>();
 	}
 
 	@FXML
 	void handleGuessButtonClicked(MouseEvent event) {
-		Platform.runLater(() -> {
-			this.messageFromServerText.appendText("hello");
+
+		if (!this.guessTextField.getText().isEmpty()) {
+
+			String guess = this.guessTextField.getText();
+			if (guess.length() == 1) {
+				if (this.lettersGuessed.contains(guess)) {
+
+					this.errorTextField.setText(guess + " has already been guessed.");
+
+				} else {
+
+					this.errorTextField.setText("");
+					this.lettersGuessed.add(guess);
+					this.setGuessedLettersextArea();
+					// SEND LETTER GUESS
+					System.out.println("letter guess");
+				}
+			} else {
+				this.errorTextField.setText("");
+				// SEND WORD GUESS
+				System.out.println("word guess");
+			}
 		}
-		);
-//		this.controller.handleGuess(this.guessTextField.getText());
+
+		this.guessTextField.setText("");
 	}
-	
-	
+
+	private void setGuessedLettersextArea() {
+		this.guessedLettersTextArea.setText("");
+		for (var letter : this.lettersGuessed) {
+			this.guessedLettersTextArea.appendText(letter + System.lineSeparator());
+		}
+	}
+
 	private void hideAll() {
 		this.hideHead();
 		this.hideLeftArm();
@@ -109,7 +143,7 @@ public class MainPageController {
 		this.hideRightLeg();
 		this.hideBody();
 	}
-	
+
 	private void showAll() {
 		this.showHead();
 		this.showLeftArm();
@@ -117,6 +151,78 @@ public class MainPageController {
 		this.showLeftLeg();
 		this.showRightLeg();
 		this.showBody();
+	}
+
+	/**
+	 * Shows message from server on gui
+	 * 
+	 * @param message Message from server
+	 */
+	public void showServerMessage(String message) {
+
+	}
+
+	/**
+	 * Updates the gui after a wrong guess
+	 */
+	public void handleNextWrongGuess() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Updates the gui to reflect guessed characters
+	 */
+	public void updateGuessedCharacters() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Updates the hangman word with the guessed and the blank characters
+	 * 
+	 * @param word The word to update with the new value
+	 */
+	public void updateWordBox(String word) {
+		this.wordGuessBox.setText(word);
+	}
+
+	public void setWrongGuesses(int amount) {
+
+		if (amount == 0) {
+			this.hideAll();
+		} else if (amount == 1) {
+			this.showHead();
+		} else if (amount == 2) {
+			this.showHead();
+			this.showBody();
+		} else if (amount == 3) {
+			this.showHead();
+			this.showBody();
+			this.showLeftArm();
+		} else if (amount == 4) {
+			this.showHead();
+			this.showBody();
+			this.showLeftArm();
+			this.showRightArm();
+		} else if (amount == 5) {
+			this.showHead();
+			this.showBody();
+			this.showLeftArm();
+			this.showRightArm();
+			this.showLeftLeg();
+		} else if (amount == 6) {
+			this.showHead();
+			this.showBody();
+			this.showLeftArm();
+			this.showRightArm();
+			this.showLeftLeg();
+			this.showRightLeg();
+			this.guessTextField.setDisable(true);
+			this.guessButton.setDisable(true);
+			this.gameStatusText.setText("GAME OVER");
+			this.gameStatusText.setVisible(true);
+		}
 	}
 
 	private void showHead() {
@@ -171,38 +277,13 @@ public class MainPageController {
 	private void hideRightLeg() {
 		this.rightLeg.setVisible(false);
 	}
-	
+
 	private void showBody() {
 		this.body.setVisible(true);
 	}
 
 	private void hideBody() {
 		this.body.setVisible(false);
-	}
-
-	/**
-	 * Shows message from server on gui
-	 * @param message Message from server
-	 */
-	public void showServerMessage(String message) {
-		
-		System.out.println(message);
-	}
-
-	/**
-	 * Updates the gui after a wrong guess
-	 */
-	public void handleNextWrongGuess() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/**
-	 * Updates the gui to reflect guessed characters
-	 */
-	public void updateGuessedCharacters() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
