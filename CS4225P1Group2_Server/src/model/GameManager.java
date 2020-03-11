@@ -37,8 +37,9 @@ public class GameManager {
 		
 		ClientManager.incrementCurrentClientGuessCount();
 		this.wordManager.makeGuess(guess);
-		this.checkGameState();
+		this.checkIfOutOfGuesses();
 		ClientManager.broadcastGuessUpdate(this.wordManager.getFormattedWord(), guess, this.wordManager.getInvalidGuessCount());
+		this.checkGameState();
 	}
 	
 	/**
@@ -96,8 +97,11 @@ public class GameManager {
 			
 			ClientManager.switchToNextClientTurn();
 			
-		} else {
-			
+		}
+	}
+	
+	private void checkIfOutOfGuesses() {
+		if (this.wordManager.isOutOfGuesses()) {
 			this.wordManager.addRestOfWord();
 		}
 	}

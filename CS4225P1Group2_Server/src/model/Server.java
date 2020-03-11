@@ -80,7 +80,6 @@ public class Server implements Runnable {
 					this.handleCreateClientRequest(username);
 					
 				default:
-					System.out.println("Server does not handle the request " + request.getType());
 			}
 		}
 	}

@@ -22,7 +22,7 @@ public class ServerMessageReader implements Runnable {
 			var initialState = LoginController.getClient().getFirstOfMessage(MessageType.GameState);
 			var guess = LoginController.getClient().getFirstOfMessage(MessageType.GuessUpdate);
 			var part = LoginController.getClient().getFirstOfMessage(MessageType.BodyCount);
-			var turn = LoginController.getClient().getFirstOfMessage(MessageType.YourGuessTurn);
+			var yourTurn = LoginController.getClient().getFirstOfMessage(MessageType.YourGuessTurn);
 			var otherTurn = LoginController.getClient().getFirstOfMessage(MessageType.OtherGuessTurn);
 			var winner = LoginController.getClient().getFirstOfMessage(MessageType.UserWon);
 			var disconnect = LoginController.getClient().getFirstOfMessage(MessageType.Disconnect);
@@ -36,14 +36,13 @@ public class ServerMessageReader implements Runnable {
 			this.handleNudge(nudge);
 			this.handleUserTimeout(timeout);
 			this.handleLogout(logout);
-			this.handleUserTurn(turn);
+			this.handleUserTurn(yourTurn);
 			this.handleUserGuess(guess);
 			this.handleBodyPartCount(part);
 			this.handleOtherTurn(otherTurn);
 			this.handleWinner(winner);
 
 		}
-
 	}
 
 	private void handleOtherTurn(Message otherTurn) {
