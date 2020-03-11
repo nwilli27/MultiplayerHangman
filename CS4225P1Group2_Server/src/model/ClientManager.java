@@ -196,7 +196,6 @@ public class ClientManager {
 		if (currentClient.getUsername().equalsIgnoreCase(username) && currentClient.getGuessCount() == previousGuessCount) {
 			
 			currentClient.sendMessage(MessageType.Logout, "");
-			currentClient.closeStreams();
 			switchToNextClientTurn();
 			clients.remove(currentClient);
 			broadcastMessage(MessageType.UserTimeout, username);
