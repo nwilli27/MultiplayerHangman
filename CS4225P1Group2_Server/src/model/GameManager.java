@@ -2,7 +2,7 @@ package model;
 
 /**
  * Manages the current Game state.
- * @author Nolan W
+ * @author Nolan W, Carsen B, Tristen R
  */
 public class GameManager {
 
@@ -32,8 +32,7 @@ public class GameManager {
 		}
 		
 		this.wordManager.makeGuess(guess);
-		ClientManager.broadcastGuessUpdate(this.wordManager.formattedCurrentWord(), guess, this.wordManager.getInvalidGuessCounter());
-
+		ClientManager.broadcastGuessUpdate(this.wordManager.getFormattedWord(), guess, this.wordManager.getInvalidGuessCount());
 		this.checkGameState();
 	}
 	
@@ -56,10 +55,9 @@ public class GameManager {
 	}
 
 	private void checkGameState() {
-		if (this.wordManager.isOutOfGuesses() || this.wordManager.isWordComplete()) {
+		if (!this.wordManager.isOutOfGuesses() || !this.wordManager.isWordComplete()) {
 			
 			ClientManager.switchToNextClientTurn();
-			// send client its there turn to choose, broadcast everyone else current user is choosing
 		} 
 	}
 

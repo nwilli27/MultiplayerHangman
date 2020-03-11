@@ -2,14 +2,17 @@ package model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 /**
  * Functionality to assign a random word for the game.
- * @author Nolan W
+ * @author Nolan W, Carsen B, Tristen R
  */
 public class Dictionary {
+	
+	public static List<String> dictionary = new ArrayList<String>();
 	
 	/**
 	 * Returns a word randomly from the dictionary.
@@ -18,8 +21,6 @@ public class Dictionary {
 	 */
 	public static String getNewWordToGuess() {
 
-		var dictionary = new ArrayList<String>();
-		
 		if (dictionary.isEmpty()) {
 			try {
 				File file = new File("dictionary.txt");

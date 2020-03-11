@@ -3,18 +3,15 @@ package model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 /**
  * Class handles interactions with a distinct client.
- * @author Nolan W
+ * @author Nolan W, Carsen B, Tristen R
  */
 public class ClientHandler implements Runnable {
 
 	private String username;
-	private RequestHandler requestHandler;
-	
-	private Socket socket;
+
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
 	
@@ -24,11 +21,10 @@ public class ClientHandler implements Runnable {
 	 * @param clientSocket
 	 * @param output
 	 */
-	public ClientHandler(String username, Socket clientSocket, ObjectOutputStream output) {
+	public ClientHandler(String username, ObjectOutputStream output, ObjectInputStream input) {
 		this.username = username;
-		this.socket = clientSocket;
 		this.outputStream = output;
-		this.requestHandler = new RequestHandler();
+		this.inputStream = input;
 	}
 
 	/**
@@ -45,8 +41,24 @@ public class ClientHandler implements Runnable {
 	 * @precondition: none
 	 * @return the handlers output stream.
 	 */
-	public ObjectOutputStream getOutgoingMessages() {
+	public ObjectOutputStream getOutputStream() {
 		return outputStream;
+	}
+	
+	/**
+	 * Sends a message to the client.
+	 * @precondition none
+	 * @param message to send
+	 */
+	public void sendMessage(String message) {
+		
+		var serializedMessage = new Message(message);
+		
+		try {
+			this.outputStream.writeObject(serializedMessage);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -57,28 +69,16 @@ public class ClientHandler implements Runnable {
 		
 		System.out.println(this.username + " is now in its own thread running.");
 		
-		this.setupStreams();
-		
 		try {
 			
 			var incomingRequest = this.inputStream.readObject().toString();
-			requestHandler.handleRequest(incomingRequest);
+			RequestHandler.handleRequest(incomingRequest);
 			
 		} catch (ClassNotFoundException error) {
 			
 			error.printStackTrace();
 		} catch (IOException e) {
 
-			e.printStackTrace();
-		}
-	}
-	
-	private void setupStreams() {
-		
-		try {
-			this.inputStream = new ObjectInputStream(this.socket.getInputStream());
-			
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
