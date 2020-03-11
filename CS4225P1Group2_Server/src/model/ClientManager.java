@@ -49,6 +49,7 @@ public class ClientManager {
 			throw new IllegalArgumentException("Can not disconnect client of null username.");
 		}
 		
+		switchToNextClientTurn();
 		var clientToDisconnect = getClient(username);
 		clients.remove(clientToDisconnect);
 		clientToDisconnect.closeStreams();
