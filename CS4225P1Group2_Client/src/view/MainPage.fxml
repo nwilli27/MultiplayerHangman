@@ -36,7 +36,10 @@
       <Line fx:id="rightEye2" endX="-108.75" endY="10.0" layoutX="290.0" layoutY="143.0" startX="-100.0" />
       <QuadCurve fx:id="mouthUpper" controlX="30.0" controlY="-21.25" endX="50.0" fill="WHITE" layoutX="143.0" layoutY="172.0" startX="10.0" stroke="BLACK" strokeType="INSIDE" />
       <Line fx:id="mouthLower" endX="80.0" endY="51.0" layoutX="111.0" layoutY="121.0" startX="43.75" startY="51.0" />
-      <Text fx:id="wordGuessBox" layoutX="275.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="195.13671875" />
+      <Text fx:id="wordGuessBox" layoutX="275.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="195.13671875">
+         <font>
+            <Font size="36.0" />
+         </font></Text>
       <TextArea fx:id="messageFromServerText" editable="false" layoutX="14.0" layoutY="423.0" prefHeight="162.0" prefWidth="234.0" />
       <Text fx:id="serverLabel" layoutX="14.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server:" />
       <Text fx:id="errorTextField" fill="RED" layoutX="275.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="195.13671875" />

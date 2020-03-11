@@ -76,23 +76,32 @@ public class ClientConnection implements Runnable {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
-					firstMessage = message;
-					this.removeMessage(type);
-					break;
+					if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
+						this.removeGuess(type);
+					}
+					return message;
 				}
 			}
 		}
 		return firstMessage;
 	}
 
-	private void removeMessage(MessageType type) {
+	private void removeGuess(MessageType type) {
 		for (var message : ClientConnection.incomingMessages) {
 
-			if (message.getType() == MessageType.GuessUpdate || type == MessageType.BodyCount) {
+			if (message.getType() == type) {
 				if (!message.isCompleted()) {
+					if (type == MessageType.GuessUpdate) {
 
-					ClientConnection.incomingMessages.remove(message);
-					return;
+						ClientConnection.incomingMessages.remove(message);
+						return;
+					}
+
+					if (type == MessageType.BodyCount) {
+
+						ClientConnection.incomingMessages.remove(message);
+						return;
+					}
 				}
 			}
 		}
