@@ -89,7 +89,7 @@ public class Server implements Runnable {
 		
 		if (ClientManager.hasMaxClients()) {
 			
-			this.sendConnectingClientMsg(username, MessageType.MaxUsers);
+			this.sendConnectingClientMsg(MessageType.MaxUsers, username);
 			
 		} else {
 			
@@ -100,16 +100,17 @@ public class Server implements Runnable {
 				var thread = new Thread(client);
 				thread.start();
 				
+				this.sendConnectingClientMsg(MessageType.ValidUser, "");
 				ClientManager.broadcastMessage(MessageType.NewUser, username);
 				
 			} else {
 
-				this.sendConnectingClientMsg(username, MessageType.TakenUser);
+				this.sendConnectingClientMsg(MessageType.TakenUser, username);
 			}
 		}
 	}
 	
-	private void sendConnectingClientMsg(String message, MessageType type) throws IOException {
+	private void sendConnectingClientMsg(MessageType type, String message) throws IOException {
 		
 		this.serverOutputStream.writeObject(new Message(type, message));
 	}
