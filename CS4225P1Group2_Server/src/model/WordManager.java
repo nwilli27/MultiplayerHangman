@@ -135,5 +135,16 @@ public class WordManager {
 		
 		return characters;
 	}
+
+	public String getCombinedGuessedCharacters() {
+		
+		var combined = "";
+		
+		for (var character : this.guessedCharacters) {
+			combined += character;
+		}
+		
+		return combined;
+	}
 	
 }

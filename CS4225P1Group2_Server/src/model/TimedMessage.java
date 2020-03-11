@@ -20,7 +20,11 @@ public class TimedMessage {
 	}
 	
 	public void setTimeoutTask() {
-		//this.timer.schedule(new RemindTask(), this.seconds * 1000);
+		this.timer.schedule(new RemindTask(TimedTaskType.FinalTimeout), this.seconds * 1000);
+	}
+	
+	public void setNudgeTask() {
+		this.timer.schedule(new RemindTask(TimedTaskType.Nudge), this.seconds * 1000);
 	}
 
 	/**
@@ -30,14 +34,25 @@ public class TimedMessage {
 	 */
     class RemindTask extends TimerTask {
         
+    	private TimedTaskType type;
+    	
     	public RemindTask(TimedTaskType taskType) {
-    		
+    		this.type = taskType;
     	}
     	
 		public void run() {
             
+			switch (this.type) {
+				
+				case Nudge:
+					
+					
+				case FinalTimeout:
+					
+			}
             timer.cancel();
         }
+
     }
 
 }
