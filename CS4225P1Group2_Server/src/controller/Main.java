@@ -4,7 +4,7 @@ import model.Server;
 
 /**
  * Program launch point.
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  */
 public class Main {
 

@@ -76,7 +76,7 @@ public class Server implements Runnable {
 			switch (request.getType()) {
 			
 				case Login:
-					var username = requestTokens[1];
+					var username = requestTokens[0];
 					this.handleCreateClientRequest(username);
 					
 				default:
