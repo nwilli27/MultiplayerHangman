@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  * Functionality to assign a random word for the game.
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  */
 public class Dictionary {
 	

@@ -2,7 +2,7 @@ package model;
 
 /**
  * Handles request to manage game state and clients.
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  */
 public class RequestHandler {
 

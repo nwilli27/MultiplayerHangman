@@ -1,69 +1,48 @@
 package model;
 
 import java.util.Timer;
-import java.util.TimerTask;
 import enums.TimedTaskType;
 
 /**
  * Class holds functionality for a timed message.
- * @author Nolan W, Carsen B, Tristen R
+ * 
+ * @author Nolan W, Carson B, Tristen R
  *
  */
 public class TimedMessage {
 
 	private Timer timer;
 	private int seconds;
-	
+
 	/**
+	 * Creates a TimedMessage object with the given seconds and initializes the
+	 * timer
 	 * 
-	 * @param seconds
+	 * @param seconds Number of seconds
 	 */
 	public TimedMessage(int seconds) {
-        this.timer = new Timer();
-        this.seconds = seconds;
+		this.timer = new Timer();
+		this.seconds = seconds;
 	}
-	
+
+	/**
+	 * Sets the task to time out a user if they haven't acted in a given amount of
+	 * time
+	 * 
+	 * @param username Username of player to be timed out
+	 */
 	public void setTimeoutTask(String username) {
 		this.timer.schedule(new RemindTask(TimedTaskType.FinalTimeout, this.timer, username), this.seconds * 1000);
 	}
-	
-	public void setNudgeTask(String username) {
-		this.timer.schedule(new RemindTask(TimedTaskType.Nudge, this.timer, username), this.seconds * 1000);
-	}
 
 	/**
+	 * Sets the task to nudge a user if they haven't acted in a given amount of time
+	 * to alert them to act
 	 * 
-	 * @author csuser
-	 *
+	 * @param username Username of player to be nudged 
 	 */
-    class RemindTask extends TimerTask {
-        
-    	private TimedTaskType type;
-    	private Timer timer;
-    	private String username;
-    	
-    	public RemindTask(TimedTaskType taskType, Timer timer, String username) {
-    		this.type = taskType;
-    		this.timer = timer;
-    		this.username = username;
-    	}
-    	
-		public void run() {
-            
-			switch (this.type) {
-				
-				case Nudge:
-					ClientManager.sendCurrentClientNudge(this.username);
-					break;
-					
-				case FinalTimeout:
-					ClientManager.disconnectCurrentClient(this.username);
-					break;
-					
-			}
-            this.timer.cancel();
-        }
-
+	public void setNudgeTask(String username) { 
+		this.timer.schedule(new RemindTask(TimedTaskType.Nudge, this.timer, username), this.seconds * 1000); 
     }
 
 }

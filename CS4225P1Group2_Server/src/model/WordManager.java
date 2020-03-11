@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Class manages the chosen word and the guesses.
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  */
 public class WordManager {
 
@@ -138,6 +138,10 @@ public class WordManager {
 		return characters;
 	}
 
+	/**
+	 * Gets all the guessed characters and combines them into a string
+	 * @return The combined character string
+	 */
 	public String getCombinedGuessedCharacters() {
 		
 		var combined = "";

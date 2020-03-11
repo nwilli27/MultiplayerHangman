@@ -7,7 +7,7 @@ import enums.MessageType;
 
 /**
  * Handles interaction with all the Client Handlers
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  */
 public class ClientManager {
 
@@ -17,7 +17,6 @@ public class ClientManager {
 	
 	private static List<ClientHandler> clients;
 	private static ClientHandler currentClient;
-	private static ClientHandler previousClient;
 	
 	/**
 	 * Sends a message to all Clients.
@@ -52,7 +51,8 @@ public class ClientManager {
 		
 		var clientToDisconnect = getClient(username);
 		clients.remove(clientToDisconnect);
-		broadcastMessage(MessageType.Disconnect, username);
+		clientToDisconnect.closeStreams();
+		broadcastMessage(MessageType.Disconnect, clientToDisconnect.getUsername());
 	}
 	
 	/**
@@ -117,7 +117,6 @@ public class ClientManager {
 	public static void switchToNextClientTurn() {
 		var totalClientMax = clients.size() - 1;
 		var currentClientIndex = clients.indexOf(currentClient);
-		previousClient = currentClient;
 		
 		if (currentClientIndex == totalClientMax) {
 			currentClient = clients.get(0);
@@ -170,6 +169,8 @@ public class ClientManager {
 	 * 
 	 * @precondition none
 	 * @postcondition none
+	 * 
+	 * @param username Username of the user
 	 */
 	public static void sendCurrentClientNudge(String username) {
 		
@@ -183,8 +184,11 @@ public class ClientManager {
 	
 	/**
 	 * Disconnects the current client from the server.
+	 * 
 	 * @precondition none
 	 * @postcondition 
+	 * 
+	 * @param username Username of the user
 	 */
 	public static void disconnectCurrentClient(String username) {
 		

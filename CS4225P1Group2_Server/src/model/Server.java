@@ -11,7 +11,7 @@ import enums.MessageType;
 
 /**
  * Class holds the client handling and initialization of the game.
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  */
 public class Server implements Runnable {
 
