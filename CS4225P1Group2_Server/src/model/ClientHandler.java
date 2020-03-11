@@ -59,6 +59,7 @@ public class ClientHandler implements Runnable {
 		
 		try {
 			this.outputStream.writeObject(serializedMessage);
+			this.outputStream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
