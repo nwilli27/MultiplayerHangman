@@ -7,6 +7,7 @@ import javafx.application.Platform;
 
 /**
  * Class that listens for specific responses from the server
+ * 
  * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
  *
  */
@@ -23,80 +24,118 @@ public class ServerMessageReader implements Runnable {
 			var part = LoginController.getClient().getFirstOfMessage(MessageType.BodyCount);
 			var turn = LoginController.getClient().getFirstOfMessage(MessageType.YourGuessTurn);
 			var otherTurn = LoginController.getClient().getFirstOfMessage(MessageType.OtherGuessTurn);
+			var winner = LoginController.getClient().getFirstOfMessage(MessageType.UserWon);
 
-			if (loggedIn != null) {
+			this.handleLoggedIn(loggedIn);
 
-				var user = LoginController.getClient().getFirstOfMessage(MessageType.NewUser);
+			this.handleWinner(winner);
 
-				if (user != null) {
+			this.handleInitialState(initialState);
 
-					user.setIsCompleted(true);
+			this.handleUserTurn(turn);
 
-					Platform.runLater(() -> {
-						MainPageController.handleNewUserLogin(user.getMessage());
-					});
-				}
+			this.handleUserGuess(guess);
 
-			}
+			this.handleBodyPartCount(part);
 
-			if (initialState != null) {
-				initialState.setIsCompleted(true);
-				var messageSplit = initialState.getMessage().split("#");
-				var formattedWord = messageSplit[0];
-				var charsGuessed = messageSplit[1];
-				var bodyCount = Integer.parseInt(messageSplit[2]);
-
-				Platform.runLater(() -> {
-					MainPageController.setUpGame(formattedWord, charsGuessed, bodyCount);
-				});
-			}
-
-			if (turn != null) {
-
-				turn.setIsCompleted(true);
-
-				Platform.runLater(() -> {
-					MainPageController.enableButton();
-					MainPageController.alertForTurn("You are now choosing");
-				});
-
-			}
-
-			if (guess != null) {
-
-				var splitMessage = guess.getMessage().split("#");
-				var username = splitMessage[0];
-				var userGuess = splitMessage[1];
-				var formattedWord = splitMessage[2];
-				Platform.runLater(() -> {
-					MainPageController.userGuessed(username, userGuess);
-					MainPageController.addWordGuess(formattedWord);
-				});
-
-			}
-
-			if (part != null) {
-
-				var message = part.getMessage();
-				var count = Integer.parseInt(message);
-				Platform.runLater(() -> {
-					MainPageController.bodyPartGuesses(count);
-				});
-
-			}
-
-			if (otherTurn != null) {
-
-				otherTurn.setIsCompleted(true);
-
-				Platform.runLater(() -> {
-					MainPageController.alertForTurn(otherTurn.getMessage() + " is now choosing");
-				});
-
-			}
+			this.handleOtherTurn(otherTurn);
 
 		}
 
+	}
+
+	private void handleOtherTurn(Message otherTurn) {
+		if (otherTurn != null) {
+
+			otherTurn.setIsCompleted(true);
+
+			Platform.runLater(() -> {
+				MainPageController.alertForTurn(otherTurn.getMessage() + " is now choosing");
+			});
+
+		}
+	}
+
+	private void handleBodyPartCount(Message part) {
+		if (part != null) {
+
+			var message = part.getMessage();
+			var count = Integer.parseInt(message);
+			Platform.runLater(() -> {
+				MainPageController.bodyPartGuesses(count);
+			});
+
+		}
+	}
+
+	private void handleUserGuess(Message guess) {
+		if (guess != null) {
+
+			var splitMessage = guess.getMessage().split("#");
+			var username = splitMessage[0];
+			var userGuess = splitMessage[1];
+			var formattedWord = splitMessage[2];
+			Platform.runLater(() -> {
+				MainPageController.userGuessed(username, userGuess);
+				MainPageController.addWordGuess(formattedWord);
+			});
+
+		}
+	}
+
+	private void handleUserTurn(Message turn) {
+		if (turn != null) {
+
+			turn.setIsCompleted(true);
+
+			Platform.runLater(() -> {
+				MainPageController.enableButton();
+				MainPageController.alertForTurn("You are now choosing");
+			});
+
+		}
+	}
+
+	private void handleInitialState(Message initialState) {
+		if (initialState != null) {
+			initialState.setIsCompleted(true);
+			var messageSplit = initialState.getMessage().split("#");
+			var formattedWord = messageSplit[0];
+			var charsGuessed = messageSplit[1];
+			var bodyCount = Integer.parseInt(messageSplit[2]);
+
+			Platform.runLater(() -> {
+				MainPageController.setUpGame(formattedWord, charsGuessed, bodyCount);
+			});
+		}
+	}
+
+	private void handleWinner(Message winner) {
+		if (winner != null) {
+
+			var name = winner.getMessage();
+
+			Platform.runLater(() -> {
+				MainPageController.gameWon(name);
+			});
+		}
+	}
+
+	private void handleLoggedIn(Message loggedIn) {
+		if (loggedIn != null) {
+
+			var user = LoginController.getClient().getFirstOfMessage(MessageType.NewUser);
+
+			if (user != null) {
+
+				user.setIsCompleted(true);
+
+				Platform.runLater(() -> {
+					MainPageController.handleNewUserLogin(user.getMessage());
+				});
+			}
+
+		}
 	}
 
 }

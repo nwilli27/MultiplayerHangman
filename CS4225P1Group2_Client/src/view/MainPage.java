@@ -102,7 +102,7 @@ public class MainPage {
 		this.bodyParts = new ArrayList<BodyPart>();
 		this.addBodyParts();
 		this.guessButton.setDisable(true);
-		this.controller = new MainPageController(this.messageFromServerText, this.guessedLettersTextArea, this.guessButton, this.wordGuessBox, this.bodyParts);
+		this.controller = new MainPageController(this.messageFromServerText, this.guessedLettersTextArea, this.guessButton, this.wordGuessBox, this.gameStatusText, this.bodyParts);
 	}
 
 	private void addBodyParts() {
