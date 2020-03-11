@@ -42,28 +42,9 @@ public class ClientConnection implements Runnable {
 	@Override
 	public void run() {
 
-//		System.out.println("Connection accepted " + this.socket.getInetAddress() + ":" + this.socket.getPort());
-//
-//		try {
-//			System.out.println("Sockets in and out ready!");
-//			while (this.socket.isConnected()) {
-//				Message incomingMessage = null;
-//				incomingMessage = (Message) this.input.readObject();
-//				var message = incomingMessage.getMessage();
-//
-//				if (message != null && this.controller != null) {
-//					System.out.println("Message recieved: " + message);
-//					var splitMessage = message.split("#");
-//					var responseType = splitMessage[0];
-//					var response = splitMessage[1];
-//
-//					this.handleResponse(response, responseType);
-//
-//				}
-//			}
-//		} catch (IOException | ClassNotFoundException e) {
-//			System.out.println(e.getMessage());
-//		}
+		while(true) {
+			
+		}
 	}
 
 	private void handleResponse(String response, String responseType) throws IOException {
