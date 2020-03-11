@@ -42,7 +42,10 @@ public class MainPageController {
 
 	@FXML
 	private Text guessText;
-
+	
+	@FXML
+	private Text gameStatusText;
+	
 	@FXML
 	private Text errorTextField;
 
@@ -150,6 +153,78 @@ public class MainPageController {
 		this.showBody();
 	}
 
+	/**
+	 * Shows message from server on gui
+	 * 
+	 * @param message Message from server
+	 */
+	public void showServerMessage(String message) {
+
+	}
+
+	/**
+	 * Updates the gui after a wrong guess
+	 */
+	public void handleNextWrongGuess() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Updates the gui to reflect guessed characters
+	 */
+	public void updateGuessedCharacters() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Updates the hangman word with the guessed and the blank characters
+	 * 
+	 * @param word The word to update with the new value
+	 */
+	public void updateWordBox(String word) {
+		this.wordGuessBox.setText(word);
+	}
+
+	public void setWrongGuesses(int amount) {
+
+		if (amount == 0) {
+			this.hideAll();
+		} else if (amount == 1) {
+			this.showHead();
+		} else if (amount == 2) {
+			this.showHead();
+			this.showBody();
+		} else if (amount == 3) {
+			this.showHead();
+			this.showBody();
+			this.showLeftArm();
+		} else if (amount == 4) {
+			this.showHead();
+			this.showBody();
+			this.showLeftArm();
+			this.showRightArm();
+		} else if (amount == 5) {
+			this.showHead();
+			this.showBody();
+			this.showLeftArm();
+			this.showRightArm();
+			this.showLeftLeg();
+		} else if (amount == 6) {
+			this.showHead();
+			this.showBody();
+			this.showLeftArm();
+			this.showRightArm();
+			this.showLeftLeg();
+			this.showRightLeg();
+			this.guessTextField.setDisable(true);
+			this.guessButton.setDisable(true);
+			this.gameStatusText.setText("GAME OVER");
+			this.gameStatusText.setVisible(true);
+		}
+	}
+
 	private void showHead() {
 		this.leftEye1.setVisible(true);
 		this.leftEye2.setVisible(true);
@@ -209,40 +284,6 @@ public class MainPageController {
 
 	private void hideBody() {
 		this.body.setVisible(false);
-	}
-
-	/**
-	 * Shows message from server on gui
-	 * 
-	 * @param message Message from server
-	 */
-	public void showServerMessage(String message) {
-
-	}
-
-	/**
-	 * Updates the gui after a wrong guess
-	 */
-	public void handleNextWrongGuess() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Updates the gui to reflect guessed characters
-	 */
-	public void updateGuessedCharacters() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Updates the hangman word with the guessed and the blank characters
-	 * 
-	 * @param word The word to update with the new value
-	 */
-	public void updateWordBox(String word) {
-		this.wordGuessBox.setText(word);
 	}
 
 }
