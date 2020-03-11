@@ -75,6 +75,13 @@ public class MainPageController {
 		messageFromServer.appendText(message + " has logged in..." + System.lineSeparator());
 
 	}
+	
+	/**
+	 * Logs the current user out of the game
+	 */
+	public static void handleLogOut() {
+		LoginController.getClient().send(MessageType.Disconnect, "");
+	}
 
 	/**
 	 * Appends text to the guessed letters and message from server alerting of a
@@ -84,7 +91,7 @@ public class MainPageController {
 	 * @param userGuess The guess the user made
 	 */
 	public static void userGuessed(String username, String userGuess) {
-		if (!guessedLetters.getText().contains(userGuess)) {
+		if (!guessedLetters.getText().contains(userGuess) && userGuess.length() == 1) {
 
 			guessedLetters.appendText(userGuess + System.lineSeparator());
 		}

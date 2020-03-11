@@ -26,6 +26,7 @@ public class WordManager {
 	public WordManager() {
 		this.guessedCharacters = new ArrayList<String>();
 		this.validCharacters = new ArrayList<String>();
+		this.previousGuessedWord = "";
 	}
 	
 	/**

@@ -28,8 +28,6 @@ public class ServerMessageReader implements Runnable {
 
 			this.handleLoggedIn(loggedIn);
 
-			this.handleWinner(winner);
-
 			this.handleInitialState(initialState);
 
 			this.handleUserTurn(turn);
@@ -39,6 +37,8 @@ public class ServerMessageReader implements Runnable {
 			this.handleBodyPartCount(part);
 
 			this.handleOtherTurn(otherTurn);
+			
+			this.handleWinner(winner);
 
 		}
 
@@ -112,6 +112,7 @@ public class ServerMessageReader implements Runnable {
 
 	private void handleWinner(Message winner) {
 		if (winner != null) {
+			winner.setIsCompleted(true);
 
 			var name = winner.getMessage();
 

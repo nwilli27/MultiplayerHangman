@@ -13,7 +13,7 @@ public class BodyPart {
 	}
 
 	public ArrayList<Shape> getParts() {
-		return parts;
+		return this.parts;
 	}
 
 	public void addPart(Shape part) {

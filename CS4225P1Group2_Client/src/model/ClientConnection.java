@@ -1,17 +1,12 @@
 package model;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import enums.MessageType;
-import view.LoginPage;
-import view.MainPage;
 
 /**
  * Class that sends and receives messages from server
@@ -123,8 +118,8 @@ public class ClientConnection implements Runnable {
 	public void initializeStreams() {
 		try {
 			this.socket = new Socket(HOST, PORT);
-			output = new ObjectOutputStream(this.socket.getOutputStream());
-			input = new ObjectInputStream(this.socket.getInputStream());
+			this.output = new ObjectOutputStream(this.socket.getOutputStream());
+			this.input = new ObjectInputStream(this.socket.getInputStream());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
