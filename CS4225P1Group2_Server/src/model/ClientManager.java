@@ -12,6 +12,8 @@ import enums.MessageType;
 public class ClientManager {
 
 	private static final int MAX_CLIENT_COUNT = 4;
+	private static final int NUDGE_TIME = 15;
+	private static final int TIMEOUT_TIME = 10;
 	
 	private static List<ClientHandler> clients;
 	private static ClientHandler currentClient;
@@ -59,7 +61,8 @@ public class ClientManager {
 	 */
 	public static void broadcastGuessUpdate(String formattedWord, String guess, int bodyCount) {
 		
-		broadcastMessage(MessageType.GuessUpdate, currentClient.getUsername() + "#" + guess + "#" + formattedWord + "#" + bodyCount);
+		broadcastMessage(MessageType.GuessUpdate, currentClient.getUsername() + "#" + guess + "#" + formattedWord);
+		broadcastMessage(MessageType.BodyCount, String.valueOf(bodyCount));
 	}
 	
 	public static void sendClientGameState(String username, String formattedWord, String characters, int bodyCount) {
@@ -109,6 +112,8 @@ public class ClientManager {
 			currentClient = clients.get(++currentClientIndex);
 		}
 		
+		var nudgeTimer = new TimedMessage(NUDGE_TIME);
+		nudgeTimer.setNudgeTask();
 		sendNextGuessMessage();
 	}
 
@@ -146,8 +151,22 @@ public class ClientManager {
 		return false;
 	}
 	
-	public void sendCurrentClientNudge() {
+	/**
+	 * Sends the current client a nudge 
+	 */
+	public static void sendCurrentClientNudge() {
 		
+		currentClient.sendMessage(MessageType.Nudge, "");
+		var timeoutTimer = new TimedMessage(TIMEOUT_TIME);
+		timeoutTimer.setTimeoutTask();
+	}
+	
+	public static void disconnectCurrentClient() {
+		
+		var timedoutUsername = currentClient.getUsername();
+		clients.remove(currentClient);
+		broadcastMessage(MessageType.UserTimeout, timedoutUsername);
+		switchToNextClientTurn();
 	}
 	
 	private static void sendNextGuessMessage() {
