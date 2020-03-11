@@ -125,7 +125,7 @@ public class ClientManager {
 		}
 		
 		var nudgeTimer = new TimedMessage(NUDGE_TIME);
-		nudgeTimer.setNudgeTask(currentClient.getUsername());
+		nudgeTimer.setNudgeTask(currentClient.getUsername(), currentClient.getGuessCount());
 		sendNextGuessMessage();
 	}
 
@@ -169,16 +169,16 @@ public class ClientManager {
 	 * 
 	 * @precondition none
 	 * @postcondition none
-	 * 
+	 * @param previousGuessCount the previous guess count
 	 * @param username Username of the user
 	 */
-	public static void sendCurrentClientNudge(String username) {
+	public static void sendCurrentClientNudge(String username, int previousGuessCount) {
 		
-		if (currentClient.getUsername().equalsIgnoreCase(username)) {
+		if (currentClient.getUsername().equalsIgnoreCase(username) && currentClient.getGuessCount() == previousGuessCount) {
 			
 			currentClient.sendMessage(MessageType.Nudge, "");
 			var timeoutTimer = new TimedMessage(TIMEOUT_TIME);
-			timeoutTimer.setTimeoutTask(currentClient.getUsername());
+			timeoutTimer.setTimeoutTask(currentClient.getUsername(), currentClient.getGuessCount());
 		}
 	}
 	
@@ -187,16 +187,16 @@ public class ClientManager {
 	 * 
 	 * @precondition none
 	 * @postcondition 
-	 * 
+	 * @param previousGuessCount the previous guess count
 	 * @param username Username of the user
 	 */
-	public static void disconnectCurrentClient(String username) {
+	public static void disconnectCurrentClient(String username, int previousGuessCount) {
 		
-		if (currentClient.getUsername().equalsIgnoreCase(username)) {
+		if (currentClient.getUsername().equalsIgnoreCase(username) && currentClient.getGuessCount() == previousGuessCount) {
 			
-			var timedoutUsername = currentClient.getUsername();
+			currentClient.closeStreams();
 			clients.remove(currentClient);
-			broadcastMessage(MessageType.UserTimeout, timedoutUsername);
+			broadcastMessage(MessageType.UserTimeout, username);
 			switchToNextClientTurn();
 		}
 	}
@@ -211,6 +211,16 @@ public class ClientManager {
 	public static void broadcastWinner() {
 		
 		broadcastMessage(MessageType.UserWon, currentClient.getUsername());
+	}
+	
+	/**
+	 * Increments the current client guess count.
+	 * @precondition none
+	 * @postcondition currentClient.getGuessCount()++
+	 */
+	public static void incrementCurrentClientGuessCount() {
+		
+		currentClient.incrementGuessCount();
 	}
 	
 	private static void sendNextGuessMessage() {

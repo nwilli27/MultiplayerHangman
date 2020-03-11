@@ -26,6 +26,7 @@ public class WordManager {
 	public WordManager() {
 		this.guessedCharacters = new ArrayList<String>();
 		this.validCharacters = new ArrayList<String>();
+		this.previousGuessedWord = "";
 	}
 	
 	/**
@@ -41,8 +42,11 @@ public class WordManager {
 			
 			this.previousGuessedWord = guess;
 			var guessedWordRight = this.word.equalsIgnoreCase(guess);
+			
 			if (!guessedWordRight) {
 				this.invalidGuessCount++;
+			} else {
+				this.addRestOfWord();
 			}
 		} else {
 
@@ -122,21 +126,6 @@ public class WordManager {
 		
 		this.word = word;
 	}
-	
-	private List<Character> getWordCharacters() {
-		
-		List<Character> characters = new ArrayList<Character>();
-		var word = this.word.replace(" ", "");
-		
-		for (var currChar : word.toCharArray()) {
-			
-			if (!characters.contains(currChar)) {
-				characters.add(currChar);
-			}
-		}
-		
-		return characters;
-	}
 
 	/**
 	 * Gets all the guessed characters and combines them into a string
@@ -151,6 +140,30 @@ public class WordManager {
 		}
 		
 		return combined;
+	}
+	
+	private void addRestOfWord() {
+		
+		for (var character : this.word.toCharArray()) {
+			if (!this.validCharacters.contains(String.valueOf(character))) {
+				this.validCharacters.add(String.valueOf(character));
+			}
+		}
+	}
+	
+	private List<Character> getWordCharacters() {
+		
+		List<Character> characters = new ArrayList<Character>();
+		var word = this.word.replace(" ", "");
+		
+		for (var currChar : word.toCharArray()) {
+			
+			if (!characters.contains(currChar)) {
+				characters.add(currChar);
+			}
+		}
+		
+		return characters;
 	}
 	
 }

@@ -30,19 +30,21 @@ public class TimedMessage {
 	 * time
 	 * 
 	 * @param username Username of player to be timed out
+	 * @param currentGuessCount the guess count
 	 */
-	public void setTimeoutTask(String username) {
-		this.timer.schedule(new RemindTask(TimedTaskType.FinalTimeout, this.timer, username), this.seconds * 1000);
+	public void setTimeoutTask(String username, int currentGuessCount) {
+		this.timer.schedule(new RemindTask(TimedTaskType.FinalTimeout, this.timer, username, currentGuessCount), this.seconds * 1000);
 	}
 
 	/**
 	 * Sets the task to nudge a user if they haven't acted in a given amount of time
 	 * to alert them to act
 	 * 
-	 * @param username Username of player to be nudged 
+	 * @param username Username of player to be nudged
+	 * @param currentGuessCount the guess count 
 	 */
-	public void setNudgeTask(String username) { 
-		this.timer.schedule(new RemindTask(TimedTaskType.Nudge, this.timer, username), this.seconds * 1000); 
+	public void setNudgeTask(String username, int currentGuessCount) { 
+		this.timer.schedule(new RemindTask(TimedTaskType.Nudge, this.timer, username, currentGuessCount), this.seconds * 1000); 
     }
 
 }
