@@ -197,11 +197,11 @@ public class ClientManager {
 	public static void disconnectCurrentClient(String username, int previousGuessCount) {
 		
 		if (currentClient.getUsername().equalsIgnoreCase(username) && currentClient.getGuessCount() == previousGuessCount) {
-			
+
+			broadcastMessage(MessageType.UserTimeout, username);
 			currentClient.sendMessage(MessageType.Logout, "");
 			switchToNextClientTurn();
 			clients.remove(currentClient);
-			broadcastMessage(MessageType.UserTimeout, username);
 		}
 	}
 	

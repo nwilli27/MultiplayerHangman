@@ -57,7 +57,7 @@ public class MainPageController {
 			var currentBodyPart = bodyParts.get(i);
 			currentBodyPart.enableShapes();
 		}
-		if (amount == 6) {
+		if (amount >= 6) {
 			guessButton.setDisable(true);
 			alertForTurn("The game is over, you have lost");
 			gameStatus.setText("GAME OVER");

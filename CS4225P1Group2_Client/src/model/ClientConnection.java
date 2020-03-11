@@ -71,12 +71,13 @@ public class ClientConnection implements Runnable {
 
 		Message firstMessage = null;
 		var tempList = new ArrayList<Message>(ClientConnection.incomingMessages);
-		this.removeMessage(type);
+
 		for (var message : tempList) {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
 					firstMessage = message;
+					this.removeMessage(type);
 					break;
 				}
 			}
@@ -87,13 +88,11 @@ public class ClientConnection implements Runnable {
 	private void removeMessage(MessageType type) {
 		for (var message : ClientConnection.incomingMessages) {
 
-			if (message.getType() == type) {
+			if (message.getType() == MessageType.GuessUpdate || type == MessageType.BodyCount) {
 				if (!message.isCompleted()) {
-					if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
 
-						ClientConnection.incomingMessages.remove(message);
-						return;
-					}
+					ClientConnection.incomingMessages.remove(message);
+					return;
 				}
 			}
 		}

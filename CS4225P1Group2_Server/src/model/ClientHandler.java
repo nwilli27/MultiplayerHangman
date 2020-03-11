@@ -62,6 +62,9 @@ public class ClientHandler implements Runnable {
 		try {
 			this.outputStream.writeObject(serializedMessage);
 			this.outputStream.flush();
+
+		} catch (SocketException err) {
+			System.out.println("The client " + this.username + " disconnected.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
