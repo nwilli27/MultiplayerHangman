@@ -23,12 +23,12 @@ public class TimedMessage {
         this.seconds = seconds;
 	}
 	
-	public void setTimeoutTask() {
-		this.timer.schedule(new RemindTask(TimedTaskType.FinalTimeout, this.timer), this.seconds * 1000);
+	public void setTimeoutTask(String username) {
+		this.timer.schedule(new RemindTask(TimedTaskType.FinalTimeout, this.timer, username), this.seconds * 1000);
 	}
 	
-	public void setNudgeTask() {
-		this.timer.schedule(new RemindTask(TimedTaskType.Nudge, this.timer), this.seconds * 1000);
+	public void setNudgeTask(String username) {
+		this.timer.schedule(new RemindTask(TimedTaskType.Nudge, this.timer, username), this.seconds * 1000);
 	}
 
 	/**
@@ -40,10 +40,12 @@ public class TimedMessage {
         
     	private TimedTaskType type;
     	private Timer timer;
+    	private String username;
     	
-    	public RemindTask(TimedTaskType taskType, Timer timer) {
+    	public RemindTask(TimedTaskType taskType, Timer timer, String username) {
     		this.type = taskType;
     		this.timer = timer;
+    		this.username = username;
     	}
     	
 		public void run() {
@@ -51,11 +53,11 @@ public class TimedMessage {
 			switch (this.type) {
 				
 				case Nudge:
-					ClientManager.sendCurrentClientNudge();
+					ClientManager.sendCurrentClientNudge(this.username);
 					break;
 					
 				case FinalTimeout:
-					ClientManager.disconnectCurrentClient();
+					ClientManager.disconnectCurrentClient(this.username);
 					break;
 					
 			}

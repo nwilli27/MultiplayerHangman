@@ -85,7 +85,10 @@ public class GameManager {
 		if (!this.wordManager.isOutOfGuesses() || !this.wordManager.isWordComplete()) {
 			
 			ClientManager.switchToNextClientTurn();
-		} 
+		} else if (this.wordManager.isWordComplete()) {
+			
+			ClientManager.broadcastWinner();
+		}
 	}
 
 }
