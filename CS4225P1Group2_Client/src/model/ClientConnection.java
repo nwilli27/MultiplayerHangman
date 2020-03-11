@@ -54,35 +54,35 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
-	private void handleResponse(String response, String responseType) throws IOException {
-		switch (responseType) {
-		case "nudge":
-			this.controller.showServerMessage("");
-			break;
-		case "playerConnect":
-			this.controller.showServerMessage("User " + response + " has joined the game.");
-			break;
-		case "playerExit":
-			this.controller.showServerMessage("User" + response + " has left the game.");
-			break;
-		case "incorrectGuess":
-			this.controller.showServerMessage("");
-			this.controller.handleNextWrongGuess();
-			break;
-		case "correctGuess":
-			this.controller.showServerMessage("");
-			break;
-		case "wordGuess":
-			this.controller.showServerMessage(response + " was guessed.");
-		case "characterGuess":
-			this.controller.updateGuessedCharacters();
-		case "taken":
-			break;
-		default:
-			break;
-		}
-
-	}
+//	private void handleResponse(String response, String responseType) throws IOException {
+//		switch (responseType) {
+//		case "nudge":
+//			this.controller.showServerMessage("");
+//			break;
+//		case "playerConnect":
+//			this.controller.showServerMessage("User " + response + " has joined the game.");
+//			break;
+//		case "playerExit":
+//			this.controller.showServerMessage("User" + response + " has left the game.");
+//			break;
+//		case "incorrectGuess":
+//			this.controller.showServerMessage("");
+//			this.controller.handleNextWrongGuess();
+//			break;
+//		case "correctGuess":
+//			this.controller.showServerMessage("");
+//			break;
+//		case "wordGuess":
+//			this.controller.showServerMessage(response + " was guessed.");
+//		case "characterGuess":
+//			this.controller.updateGuessedCharacters();
+//		case "taken":
+//			break;
+//		default:
+//			break;
+//		}
+//
+//	}
 
 	/**
 	 * Sends a message to the server
@@ -100,14 +100,15 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
-	public Message getFirstOfMessage(String messageType) {
+	public Message getFirstOfMessage(MessageType type) {
 
 		Message firstMessage = null;
 		for (var message : ClientConnection.incomingMessages) {
 
-			if (message.getMessage().split("#")[0].equalsIgnoreCase(messageType)) {
+			if (message.getType() == type) {
 				firstMessage = message;
-				break;
+				incomingMessages.remove(message);
+				return firstMessage;
 			}
 		}
 		return firstMessage;
