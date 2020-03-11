@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import view.LoginPage;
 import view.MainPage;
@@ -29,6 +30,8 @@ public class ClientConnection implements Runnable {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 
+	private static ArrayList<Message> incomingMessages;
+
 	/**
 	 * Creates a listener object with the given username and controller
 	 * 
@@ -36,14 +39,17 @@ public class ClientConnection implements Runnable {
 	 * @param con  controller for the mainpage
 	 */
 	public ClientConnection() {
-
+		incomingMessages = new ArrayList<Message>();
 	}
 
 	@Override
 	public void run() {
 
-		while(true) {
-			
+		while (true) {
+			var message =  this.read();
+			if (message != null) {
+				ClientConnection.incomingMessages.add(message);
+			}
 		}
 	}
 
@@ -93,7 +99,20 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
-	public String read() {
+	public Message getFirstOfMessage(String messageType) {
+
+		Message firstMessage = null;
+		for (var message : ClientConnection.incomingMessages) {
+
+			if (message.getMessage().split("#")[0].equalsIgnoreCase(messageType)) {
+				firstMessage = message;
+				break;
+			}
+		}
+		return firstMessage;
+	}
+
+	private Message read() {
 
 		Message message = null;
 		try {
@@ -103,7 +122,7 @@ public class ClientConnection implements Runnable {
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
-		return message.getMessage();
+		return message;
 
 	}
 
