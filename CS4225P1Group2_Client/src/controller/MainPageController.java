@@ -1,5 +1,6 @@
 package controller;
 
+import enums.MessageType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import model.Message;
@@ -20,11 +21,10 @@ public class MainPageController {
 
 
 	public void handleGuess(String guess) {
-		LoginController.getClient().send("guess#" + guess);
+		LoginController.getClient().send(MessageType.Guess, guess);
 		
-		var incomingMessage = LoginController.getClient().read();
 		
-		if(incomingMessage.split("#")[0] == "characterGuess") {
+		if(LoginController.getClient().getFirstOfMessage("characterGuess") != null) {
 			messageFromServer.setText("Hello");
 		}
 		

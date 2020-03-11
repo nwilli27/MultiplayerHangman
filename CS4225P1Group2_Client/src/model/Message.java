@@ -2,30 +2,41 @@ package model;
 
 import java.io.Serializable;
 
+import enums.MessageType;
+
 /**
- * Message class to be serialized and sent to server
- * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
- *
+ * Encapsulates a message to be serializable.
+ * @author Nolan W, Carson B, Tristen R
  */
 public class Message implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 	private String message;
+	private MessageType type;
 
 	/**
-	 * Creates a message object with the given string as the message
-	 * @param message Message to be sent
+	 * Constructor to initialize a message.
+	 * @precondition none
+	 * @param message to send
 	 */
-	public Message(String message) {
+	public Message(MessageType type, String message) {
 		this.message = message;
+		this.type = type;
 	}
 	
 	/**
-	 * Gets the message to be sent
-	 * @return the message to be sent
+	 * Returns the message.
+	 * @return the messsage.
 	 */
 	public String getMessage() {
 		return this.message;
+	}
+	
+	/**
+	 * Returns the type of message.
+	 * @return the type of message.
+	 */
+	public MessageType getType() {
+		return this.type;
 	}
 }

@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import enums.MessageType;
 import view.LoginPage;
 import view.MainPage;
 
@@ -89,9 +90,9 @@ public class ClientConnection implements Runnable {
 	 * @param msg Message to be sent
 	 * @throws IOException Exception
 	 */
-	public void send(String msg) {
+	public void send(MessageType type, String msg) {
 		try {
-			var message = new Message(msg);
+			var message = new Message(type, msg);
 			this.output.writeObject(message);
 			this.output.flush();
 		} catch (IOException e) {

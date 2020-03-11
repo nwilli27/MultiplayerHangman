@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+import enums.MessageType;
 import javafx.scene.text.Text;
 import model.ClientConnection;
 import model.Message;
@@ -24,12 +25,9 @@ public class LoginController {
 
 	public boolean handleLogin(String username) {
 		this.startThreads();
-		client.send("login#" + username);
+		client.send(MessageType.Login, username);
 
-		var incomingMessage = client.read();
-
-		return (incomingMessage.split("#")[0].equalsIgnoreCase("playerConnect"));
-
+		return (client.getFirstOfMessage("playerConnect") != null);
 	}
 
 	public static ClientConnection getClient() {
