@@ -76,9 +76,7 @@ public class ClientConnection implements Runnable {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
-					if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
-						this.removeGuess(type);
-					}
+					this.removeUiUpdateMsgs(type);
 					return message;
 				}
 			}
@@ -86,23 +84,29 @@ public class ClientConnection implements Runnable {
 		return firstMessage;
 	}
 
+	private void removeUiUpdateMsgs(MessageType type) {
+		if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
+			this.removeGuess(type);
+		}
+	}
+
 	private void removeGuess(MessageType type) {
 		for (var message : ClientConnection.incomingMessages) {
 
-			if (message.getType() == type) {
-				if (!message.isCompleted()) {
-					if (type == MessageType.GuessUpdate) {
+			if (message.getType() == type && !message.isCompleted()) {
+				
+				if (type == MessageType.GuessUpdate) {
 
-						ClientConnection.incomingMessages.remove(message);
-						return;
-					}
-
-					if (type == MessageType.BodyCount) {
-
-						ClientConnection.incomingMessages.remove(message);
-						return;
-					}
+					ClientConnection.incomingMessages.remove(message);
+					return;
 				}
+
+				if (type == MessageType.BodyCount) {
+
+					ClientConnection.incomingMessages.remove(message);
+					return;
+				}
+				
 			}
 		}
 	}

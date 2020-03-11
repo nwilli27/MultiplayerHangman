@@ -37,8 +37,8 @@ public class GameManager {
 		
 		ClientManager.incrementCurrentClientGuessCount();
 		this.wordManager.makeGuess(guess);
-		ClientManager.broadcastGuessUpdate(this.wordManager.getFormattedWord(), guess, this.wordManager.getInvalidGuessCount());
 		this.checkGameState();
+		ClientManager.broadcastGuessUpdate(this.wordManager.getFormattedWord(), guess, this.wordManager.getInvalidGuessCount());
 	}
 	
 	/**
@@ -87,12 +87,18 @@ public class GameManager {
 	}
 
 	private void checkGameState() {
+		
 		if (this.wordManager.isWordComplete()) {
 			
 			ClientManager.broadcastWinner();
-		} else if (!this.wordManager.isOutOfGuesses() || !this.wordManager.isWordComplete()) {
+			
+		} else if (!this.wordManager.isOutOfGuesses()) {
 			
 			ClientManager.switchToNextClientTurn();
+			
+		} else {
+			
+			this.wordManager.addRestOfWord();
 		}
 	}
 

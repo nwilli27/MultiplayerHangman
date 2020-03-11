@@ -15,6 +15,7 @@ public class ClientHandler implements Runnable {
 
 	private String username;
 	private int guessCount;
+	private boolean isDisconnected;
 
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
@@ -64,7 +65,8 @@ public class ClientHandler implements Runnable {
 			this.outputStream.flush();
 
 		} catch (SocketException err) {
-			System.out.println("The client " + this.username + " disconnected.");
+			
+			this.handleSocketException();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -121,7 +123,7 @@ public class ClientHandler implements Runnable {
 			
 		} catch (SocketException err) {
 
-			System.out.println("The client " + this.username + " disconnected.");
+			this.handleSocketException();
 			
 		} catch (ClassNotFoundException e) {
 			
@@ -134,6 +136,14 @@ public class ClientHandler implements Runnable {
 			System.out.println("The client " + this.username + " disconnected.");
 		}
 		
+	}
+
+	private void handleSocketException() {
+		if (!this.isDisconnected) {
+			this.closeStreams();
+			this.isDisconnected = true;
+			System.out.println("The client " + this.username + " disconnected.");
+		}
 	}
 
 }

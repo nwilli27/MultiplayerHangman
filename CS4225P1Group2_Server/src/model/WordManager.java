@@ -142,7 +142,12 @@ public class WordManager {
 		return combined;
 	}
 	
-	private void addRestOfWord() {
+	/**
+	 * Adds the rest of the valid characters needed to finish the word.
+	 * @precondition none
+	 * @postcondition this.validCharacters.size()++
+	 */
+	public void addRestOfWord() {
 		
 		for (var character : this.word.toCharArray()) {
 			if (!this.validCharacters.contains(String.valueOf(character))) {
