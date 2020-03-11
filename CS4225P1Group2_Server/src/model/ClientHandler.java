@@ -3,6 +3,7 @@ package model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.SocketException;
 
 import enums.MessageType;
 
@@ -107,25 +108,25 @@ public class ClientHandler implements Runnable {
 	@Override
 	public void run() {
 		
-		System.out.println(this.username + " is now in its own thread running.");
-		
-		try {
+		while (true) {
 			
-			while (true) {
+			try {
+				
 				var incomingRequest = (Message) this.inputStream.readObject();
 				RequestHandler.handleRequest(incomingRequest, this.username);
-			}
 				
-		} catch (ClassNotFoundException error) {
-			
-			error.printStackTrace();
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		} catch (Exception err) {
-			
-			System.out.println("The client " + this.username + " disconnected.");
-			this.closeStreams();
+			} catch (SocketException err) {
+				
+				System.out.println("The client " + this.username + " disconnected.");
+				this.closeStreams();
+				
+			} catch (ClassNotFoundException e) {
+				
+				e.printStackTrace();
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
 		}
 	}
 
