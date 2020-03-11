@@ -30,7 +30,6 @@ public class MainPageController {
 	public void handleGuess(String guess) {
 		LoginController.getClient().send(MessageType.Guess, guess);
 
-
 	}
 
 	private static void showBodyParts(int amount) {
@@ -47,18 +46,35 @@ public class MainPageController {
 	}
 
 	public static void userGuessed(String username, String userGuess) {
+		if (!guessedLetters.getText().contains(userGuess)) {
+
+			guessedLetters.appendText(userGuess + System.lineSeparator());
+		}
 		messageFromServer.appendText(username + " guessed " + userGuess + "..." + System.lineSeparator());
 
+	}
+
+	public static void setUpGame(String formattedWord, String charsGuessed, int bodyCount) {
+		addWordGuess(formattedWord);
+		bodyPartGuesses(bodyCount);
+
+		var letters = charsGuessed.split("");
+		for (var letter : letters) {
+			guessedLetters.appendText(letter + System.lineSeparator());
+		}
+	}
+	
+	public static void enableButton() {
+		guessButton.setDisable(false);
 	}
 
 	public static void addWordGuess(String word) {
 		wordGuessText.setText(word);
 
 	}
-	
+
 	public static void bodyPartGuesses(int count) {
 		showBodyParts(count);
 	}
-	
 
 }

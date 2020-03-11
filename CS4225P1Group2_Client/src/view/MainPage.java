@@ -91,8 +91,6 @@ public class MainPage {
 
 	@FXML
     private TextArea messageFromServerText;	
-
-	private ArrayList<String> lettersGuessed;
 	
 	private ArrayList<BodyPart> bodyParts;
 	
@@ -101,9 +99,9 @@ public class MainPage {
 	@FXML
 	void initialize() {
 		this.hideAll();
-		this.lettersGuessed = new ArrayList<String>();
 		this.bodyParts = new ArrayList<BodyPart>();
 		this.addBodyParts();
+		this.guessButton.setDisable(true);
 		this.controller = new MainPageController(this.messageFromServerText, this.guessedLettersTextArea, this.guessButton, this.wordGuessBox, this.bodyParts);
 	}
 
@@ -143,18 +141,16 @@ public class MainPage {
 
 			String guess = this.guessTextField.getText();
 			if (guess.length() == 1) {
-				if (this.lettersGuessed.contains(guess)) {
+				if (this.guessedLettersTextArea.getText().contains(guess)) {
 
 					this.errorTextField.setText(guess + " has already been guessed.");
 
 				} else {
 
 					this.errorTextField.setText("");
-					this.lettersGuessed.add(guess);
-					this.setGuessedLettersextArea();
+					this.guessedLettersTextArea.appendText(guess + System.lineSeparator());
 					this.controller.handleGuess(guess);
-					//this.setWrongGuesses(bodyCount);
-					System.out.println("letter guess");
+					this.guessButton.setDisable(true);
 				}
 			} else {
 				this.errorTextField.setText("");
@@ -164,14 +160,6 @@ public class MainPage {
 		}
 
 		this.guessTextField.setText("");
-	}
-	
-
-	private void setGuessedLettersextArea() {
-		this.guessedLettersTextArea.setText("");
-		for (var letter : this.lettersGuessed) {
-			this.guessedLettersTextArea.appendText(letter + System.lineSeparator());
-		}
 	}
 
 	private void hideAll() {
@@ -215,46 +203,6 @@ public class MainPage {
 	public void updateGuessedCharacters() {
 		// TODO Auto-generated method stub
 
-	}
-
-
-
-	public void setWrongGuesses(int amount) {
-
-		if (amount == 0) {
-			this.hideAll();
-		} else if (amount == 1) {
-			this.showHead();
-		} else if (amount == 2) {
-			this.showHead();
-			this.showBody();
-		} else if (amount == 3) {
-			this.showHead();
-			this.showBody();
-			this.showLeftArm();
-		} else if (amount == 4) {
-			this.showHead();
-			this.showBody();
-			this.showLeftArm();
-			this.showRightArm();
-		} else if (amount == 5) {
-			this.showHead();
-			this.showBody();
-			this.showLeftArm();
-			this.showRightArm();
-			this.showLeftLeg();
-		} else if (amount == 6) {
-			this.showHead();
-			this.showBody();
-			this.showLeftArm();
-			this.showRightArm();
-			this.showLeftLeg();
-			this.showRightLeg();
-			this.guessTextField.setDisable(true);
-			this.guessButton.setDisable(true);
-			this.gameStatusText.setText("GAME OVER");
-			this.gameStatusText.setVisible(true);
-		}
 	}
 
 	private void showHead() {
