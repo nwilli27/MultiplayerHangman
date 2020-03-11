@@ -159,7 +159,7 @@ public class MainPageController {
 	 * @param message Message from server
 	 */
 	public void showServerMessage(String message) {
-
+		
 	}
 
 	/**
