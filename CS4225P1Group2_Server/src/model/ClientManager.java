@@ -216,6 +216,7 @@ public class ClientManager {
 		
 		if (clients.size() == 0) {
 			currentClient = client;
+			client.sendMessage(MessageType.YourGuessTurn, "");
 		}
 	}
 	
