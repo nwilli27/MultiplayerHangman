@@ -27,6 +27,7 @@ public class LoginController {
 		this.startThreads();
 		client.send(MessageType.Login, username);
 
+		
 		return (client.getFirstOfMessage("playerConnect") != null);
 	}
 
