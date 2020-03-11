@@ -1,12 +1,10 @@
 package controller;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import enums.MessageType;
 import javafx.scene.text.Text;
 import model.ClientConnection;
-import model.Message;
 import model.ServerMessageReader;
 
 public class LoginController {
@@ -34,12 +32,21 @@ public class LoginController {
 			e.printStackTrace();
 		}
 
-		var msg = client.getFirstOfMessage(MessageType.ValidUser);
-		if(msg != null) {
+		var validMsg = client.getFirstOfMessage(MessageType.ValidUser);
+		var usernameTakenMsg = client.getFirstOfMessage(MessageType.TakenUser);
+		var maxUsersMsg = client.getFirstOfMessage(MessageType.MaxUsers);
+		
+		if(validMsg != null) {
 			client.send(MessageType.NewUser, username);
 			return true;
-		} else {
+		} else if (usernameTakenMsg != null){
+			usernameTakenText.setText("Sorry that username is taken");
 			return  false;
+		} else if (maxUsersMsg != null) {
+			errorText.setText("Server is currently full");
+			return false;
+		} else {
+			return false;
 		}
 		
 		
