@@ -116,18 +116,21 @@ public class ClientManager {
 	 * @postcondition: currentClient == currentClient.getIndex + 1
 	 */
 	public static void switchToNextClientTurn() {
-		var totalClientMax = clients.size() - 1;
-		var currentClientIndex = clients.indexOf(currentClient);
 		
-		if (currentClientIndex == totalClientMax) {
-			currentClient = clients.get(0);
-		} else {
-			currentClient = clients.get(++currentClientIndex);
+		if (clients.size() > 0) {
+			var totalClientMax = clients.size() - 1;
+			var currentClientIndex = clients.indexOf(currentClient);
+			
+			if (currentClientIndex == totalClientMax) {
+				currentClient = clients.get(0);
+			} else {
+				currentClient = clients.get(++currentClientIndex);
+			}
+			
+			var nudgeTimer = new TimedMessage(NUDGE_TIME);
+			nudgeTimer.setNudgeTask(currentClient.getUsername(), currentClient.getGuessCount());
+			sendNextGuessMessage();
 		}
-		
-		var nudgeTimer = new TimedMessage(NUDGE_TIME);
-		nudgeTimer.setNudgeTask(currentClient.getUsername(), currentClient.getGuessCount());
-		sendNextGuessMessage();
 	}
 
 	/**
