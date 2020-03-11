@@ -7,23 +7,29 @@ import javafx.application.Platform;
 
 public class ServerMessageReader implements Runnable {
 
-
 	@Override
 	public void run() {
+
+		Message previousGuess = null;
 
 		while (true) {
 
 			var loggedIn = LoginController.getClient().getFirstOfMessage(MessageType.ValidUser);
-			var guess = LoginController.getClient().getFirstOfMessage(MessageType.GuessValue);
+			var guess = LoginController.getClient().getFirstOfMessage(MessageType.GuessUpdate);
 
 			if (guess != null) {
 
-				guess.setIsCompleted(true);
-				Platform.runLater(() -> { 
-					MainPageController.userGuessed(guess.getMessage());
-				} );
+				var splitMessage = guess.getMessage().split("#");
+				var username = splitMessage[0];
+				var userGuess = splitMessage[1];
+				var formattedWord = splitMessage[2];
+				Platform.runLater(() -> {
+					MainPageController.userGuessed(username, userGuess);
+					MainPageController.addWordGuess(formattedWord);
+				});
+
 			}
-			
+
 			if (loggedIn != null) {
 
 				var user = LoginController.getClient().getFirstOfMessage(MessageType.NewUser);
@@ -32,9 +38,11 @@ public class ServerMessageReader implements Runnable {
 
 					user.setIsCompleted(true);
 
-					Platform.runLater(() -> { MainPageController.newUserLoggedin(user.getMessage()); } );
+					Platform.runLater(() -> {
+						MainPageController.newUserLoggedin(user.getMessage());
+					});
 				}
-				
+
 			}
 
 		}

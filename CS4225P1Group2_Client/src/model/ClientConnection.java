@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import enums.MessageType;
 import view.LoginPage;
@@ -54,36 +55,6 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
-//	private void handleResponse(String response, String responseType) throws IOException {
-//		switch (responseType) {
-//		case "nudge":
-//			this.controller.showServerMessage("");
-//			break;
-//		case "playerConnect":
-//			this.controller.showServerMessage("User " + response + " has joined the game.");
-//			break;
-//		case "playerExit":
-//			this.controller.showServerMessage("User" + response + " has left the game.");
-//			break;
-//		case "incorrectGuess":
-//			this.controller.showServerMessage("");
-//			this.controller.handleNextWrongGuess();
-//			break;
-//		case "correctGuess":
-//			this.controller.showServerMessage("");
-//			break;
-//		case "wordGuess":
-//			this.controller.showServerMessage(response + " was guessed.");
-//		case "characterGuess":
-//			this.controller.updateGuessedCharacters();
-//		case "taken":
-//			break;
-//		default:
-//			break;
-//		}
-//
-//	}
-
 	/**
 	 * Sends a message to the server
 	 * 
@@ -108,11 +79,29 @@ public class ClientConnection implements Runnable {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
+					if(type == MessageType.GuessUpdate) {
+						this.removeGuess(type);
+					}
 					return message;
 				}
 			}
 		}
 		return firstMessage;
+	}
+	
+	private void removeGuess(MessageType type) {
+		for (var message : ClientConnection.incomingMessages) {
+
+			if (message.getType() == type) {
+				if (!message.isCompleted()) {
+					if(type == MessageType.GuessUpdate) {
+						
+						ClientConnection.incomingMessages.remove(message);
+						return;
+					}
+				}
+			}
+		}
 	}
 
 	private Message read() {

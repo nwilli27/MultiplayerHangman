@@ -99,7 +99,7 @@ public class MainPage {
 	void initialize() {
 		this.hideAll();
 		this.lettersGuessed = new ArrayList<String>();
-		this.controller = new MainPageController(this.messageFromServerText, this.guessedLettersTextArea, this.guessButton);
+		this.controller = new MainPageController(this.messageFromServerText, this.guessedLettersTextArea, this.guessButton, this.wordGuessBox);
 	}
 
 	@FXML
@@ -118,7 +118,8 @@ public class MainPage {
 					this.errorTextField.setText("");
 					this.lettersGuessed.add(guess);
 					this.setGuessedLettersextArea();
-					this.controller.handleGuess(guess);
+					var bodyCount = this.controller.handleGuess(guess);
+					this.setWrongGuesses(bodyCount);
 					System.out.println("letter guess");
 				}
 			} else {
@@ -130,6 +131,7 @@ public class MainPage {
 
 		this.guessTextField.setText("");
 	}
+	
 
 	private void setGuessedLettersextArea() {
 		this.guessedLettersTextArea.setText("");
@@ -181,14 +183,7 @@ public class MainPage {
 
 	}
 
-	/**
-	 * Updates the hangman word with the guessed and the blank characters
-	 * 
-	 * @param word The word to update with the new value
-	 */
-	public void updateWordBox(String word) {
-		this.wordGuessBox.setText(word);
-	}
+
 
 	public void setWrongGuesses(int amount) {
 
