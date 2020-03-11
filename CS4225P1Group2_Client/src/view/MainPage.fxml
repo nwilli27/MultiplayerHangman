@@ -7,17 +7,21 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.QuadCurve?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainPageController">
    <children>
-      <TextArea fx:id="guessedLettersTextArea" editable="false" layoutX="465.0" layoutY="86.0" prefHeight="200.0" prefWidth="200.0" />
+      <TextArea fx:id="guessedLettersTextArea" editable="false" layoutX="465.0" layoutY="86.0" prefHeight="200.0" prefWidth="200.0">
+         <font>
+            <Font size="25.0" />
+         </font></TextArea>
       <Text layoutX="523.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Guessed Letters" />
       <Line fx:id="hmTallLine" endX="50.0" endY="100.0" layoutX="225.0" layoutY="186.0" startX="50.0" startY="-100.0" />
       <Line fx:id="hmHorizontalLine" endX="50.0" layoutX="224.0" layoutY="86.0" startX="-50.0" />
       <Line fx:id="hmShortLine" endY="1.0" layoutX="173.0" layoutY="124.0" startY="-38.0" />
       <Line fx:id="hmBaseLine" endX="50.0" layoutX="325.0" layoutY="287.0" startX="-150.0" />
-      <TextField fx:id="guessTextField" layoutX="302.0" layoutY="469.0" />
+      <TextField fx:id="guessTextField" layoutX="298.0" layoutY="464.0" />
       <Button fx:id="guessButton" layoutX="471.0" layoutY="464.0" mnemonicParsing="false" onMouseClicked="#handleGuessButtonClicked" text="Guess" />
       <Text fx:id="guessText" layoutX="318.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your guess here" />
       <Circle fx:id="head" fill="WHITE" layoutX="173.0" layoutY="156.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
@@ -35,5 +39,6 @@
       <Text fx:id="wordGuessBox" layoutX="275.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="195.13671875" />
       <TextArea fx:id="messageFromServerText" editable="false" layoutX="14.0" layoutY="423.0" prefHeight="162.0" prefWidth="234.0" />
       <Text fx:id="serverLabel" layoutX="14.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server:" />
+      <Text fx:id="errorTextField" fill="RED" layoutX="275.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="195.13671875" />
    </children>
 </AnchorPane>

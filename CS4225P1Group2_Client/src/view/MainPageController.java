@@ -1,5 +1,6 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.application.Platform;
@@ -14,12 +15,10 @@ import javafx.scene.shape.QuadCurve;
 import javafx.scene.text.Text;
 
 public class MainPageController {
-	
-	//private int 
 
 	@FXML
 	private Text serverLabel;
-	
+
 	@FXML
 	private TextArea guessedLettersTextArea;
 
@@ -43,6 +42,9 @@ public class MainPageController {
 
 	@FXML
 	private Text guessText;
+
+	@FXML
+	private Text errorTextField;
 
 	@FXML
 	private Circle head;
@@ -82,26 +84,54 @@ public class MainPageController {
 
 	@FXML
 	private Text wordGuessBox;
-	
+
 	@FXML
-    private TextArea messageFromServerText;
-	
+	private TextArea messageFromServerText;
+
+	private ArrayList<String> lettersGuessed;
 
 	@FXML
 	void initialize() {
 		this.hideAll();
+		this.lettersGuessed = new ArrayList<String>();
 	}
 
 	@FXML
 	void handleGuessButtonClicked(MouseEvent event) {
-		Platform.runLater(() -> {
-			this.messageFromServerText.appendText("hello");
+
+		if (!this.guessTextField.getText().isEmpty()) {
+
+			String guess = this.guessTextField.getText();
+			if (guess.length() == 1) {
+				if (this.lettersGuessed.contains(guess)) {
+
+					this.errorTextField.setText(guess + " has already been guessed.");
+
+				} else {
+
+					this.errorTextField.setText("");
+					this.lettersGuessed.add(guess);
+					this.setGuessedLettersextArea();
+					// SEND LETTER GUESS
+					System.out.println("letter guess");
+				}
+			} else {
+				this.errorTextField.setText("");
+				// SEND WORD GUESS
+				System.out.println("word guess");
+			}
 		}
-		);
-//		this.controller.handleGuess(this.guessTextField.getText());
+
+		this.guessTextField.setText("");
 	}
-	
-	
+
+	private void setGuessedLettersextArea() {
+		this.guessedLettersTextArea.setText("");
+		for (var letter : this.lettersGuessed) {
+			this.guessedLettersTextArea.appendText(letter + System.lineSeparator());
+		}
+	}
+
 	private void hideAll() {
 		this.hideHead();
 		this.hideLeftArm();
@@ -110,7 +140,7 @@ public class MainPageController {
 		this.hideRightLeg();
 		this.hideBody();
 	}
-	
+
 	private void showAll() {
 		this.showHead();
 		this.showLeftArm();
@@ -172,7 +202,7 @@ public class MainPageController {
 	private void hideRightLeg() {
 		this.rightLeg.setVisible(false);
 	}
-	
+
 	private void showBody() {
 		this.body.setVisible(true);
 	}
@@ -183,11 +213,11 @@ public class MainPageController {
 
 	/**
 	 * Shows message from server on gui
+	 * 
 	 * @param message Message from server
 	 */
 	public void showServerMessage(String message) {
 
-		
 	}
 
 	/**
@@ -195,7 +225,7 @@ public class MainPageController {
 	 */
 	public void handleNextWrongGuess() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -203,7 +233,16 @@ public class MainPageController {
 	 */
 	public void updateGuessedCharacters() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	/**
+	 * Updates the hangman word with the guessed and the blank characters
+	 * 
+	 * @param word The word to update with the new value
+	 */
+	public void updateWordBox(String word) {
+		this.wordGuessBox.setText(word);
 	}
 
 }
