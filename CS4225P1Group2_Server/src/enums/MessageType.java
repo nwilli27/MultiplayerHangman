@@ -20,6 +20,7 @@ public enum MessageType {
 	GameState,
 	GuessUpdate,
 	BodyCount,
-	Nudge
+	Nudge,
+	UserWon
 	
 }

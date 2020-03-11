@@ -17,6 +17,7 @@ public class ClientManager {
 	
 	private static List<ClientHandler> clients;
 	private static ClientHandler currentClient;
+	private static ClientHandler previousClient;
 	
 	/**
 	 * Sends a message to all Clients.
@@ -116,6 +117,7 @@ public class ClientManager {
 	public static void switchToNextClientTurn() {
 		var totalClientMax = clients.size() - 1;
 		var currentClientIndex = clients.indexOf(currentClient);
+		previousClient = currentClient;
 		
 		if (currentClientIndex == totalClientMax) {
 			currentClient = clients.get(0);
@@ -123,8 +125,8 @@ public class ClientManager {
 			currentClient = clients.get(++currentClientIndex);
 		}
 		
-		//var nudgeTimer = new TimedMessage(NUDGE_TIME);
-		//nudgeTimer.setNudgeTask();
+		var nudgeTimer = new TimedMessage(NUDGE_TIME);
+		nudgeTimer.setNudgeTask(currentClient.getUsername());
 		sendNextGuessMessage();
 	}
 
@@ -169,11 +171,14 @@ public class ClientManager {
 	 * @precondition none
 	 * @postcondition none
 	 */
-	public static void sendCurrentClientNudge() {
+	public static void sendCurrentClientNudge(String username) {
 		
-		currentClient.sendMessage(MessageType.Nudge, "");
-		var timeoutTimer = new TimedMessage(TIMEOUT_TIME);
-		timeoutTimer.setTimeoutTask();
+		if (currentClient.getUsername().equalsIgnoreCase(username)) {
+			
+			currentClient.sendMessage(MessageType.Nudge, "");
+			var timeoutTimer = new TimedMessage(TIMEOUT_TIME);
+			timeoutTimer.setTimeoutTask(currentClient.getUsername());
+		}
 	}
 	
 	/**
@@ -181,12 +186,27 @@ public class ClientManager {
 	 * @precondition none
 	 * @postcondition 
 	 */
-	public static void disconnectCurrentClient() {
+	public static void disconnectCurrentClient(String username) {
 		
-		var timedoutUsername = currentClient.getUsername();
-		clients.remove(currentClient);
-		broadcastMessage(MessageType.UserTimeout, timedoutUsername);
-		switchToNextClientTurn();
+		if (currentClient.getUsername().equalsIgnoreCase(username)) {
+			
+			var timedoutUsername = currentClient.getUsername();
+			clients.remove(currentClient);
+			broadcastMessage(MessageType.UserTimeout, timedoutUsername);
+			switchToNextClientTurn();
+		}
+	}
+	
+	/**
+	 * Broadcasts to all clients that the current user has finished the word or
+	 * guessed the correct word.
+	 * 
+	 * @precondition none
+	 * @postcondition none
+	 */
+	public static void broadcastWinner() {
+		
+		broadcastMessage(MessageType.UserWon, currentClient.getUsername());
 	}
 	
 	private static void sendNextGuessMessage() {

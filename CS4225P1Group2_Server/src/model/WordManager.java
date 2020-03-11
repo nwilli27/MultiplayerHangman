@@ -12,6 +12,7 @@ public class WordManager {
 	private static final int MAX_GUESS_COUNT = 6;
 	
 	private String word;
+	private String previousGuessedWord;
 	private List<String> guessedCharacters;
 	private List<String> validCharacters;
 	private int invalidGuessCount;
@@ -38,6 +39,7 @@ public class WordManager {
 		
 		if (guess.length() > 1) {
 			
+			this.previousGuessedWord = guess;
 			var guessedWordRight = this.word.equalsIgnoreCase(guess);
 			if (!guessedWordRight) {
 				this.invalidGuessCount++;
@@ -103,7 +105,7 @@ public class WordManager {
 	public boolean isWordComplete() {
 		
 		var wordCharacters = this.getWordCharacters();
-		return this.validCharacters.size() == wordCharacters.size();
+		return this.validCharacters.size() == wordCharacters.size() || this.previousGuessedWord.equalsIgnoreCase(this.word);
 	}
 	
 	/**
