@@ -71,9 +71,11 @@ public class ClientHandler implements Runnable {
 		
 		try {
 			
-			var incomingRequest = this.inputStream.readObject().toString();
-			RequestHandler.handleRequest(incomingRequest);
-			
+			while (true) {
+				var incomingRequest = this.inputStream.readObject().toString();
+				RequestHandler.handleRequest(incomingRequest);
+			}
+				
 		} catch (ClassNotFoundException error) {
 			
 			error.printStackTrace();
