@@ -21,6 +21,7 @@ public enum MessageType {
 	GuessUpdate,
 	BodyCount,
 	Nudge,
-	UserWon
+	UserWon,
+	Logout
 	
 }

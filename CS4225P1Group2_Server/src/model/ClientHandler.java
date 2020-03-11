@@ -107,26 +107,27 @@ public class ClientHandler implements Runnable {
 	 */
 	@Override
 	public void run() {
-		
-		while (true) {
+	
+		try {
 			
-			try {
-				
+			while (true) {
+			
 				var incomingRequest = (Message) this.inputStream.readObject();
 				RequestHandler.handleRequest(incomingRequest, this.username);
-				
-			} catch (SocketException err) {
-				
-				System.out.println("The client " + this.username + " disconnected.");
-				this.closeStreams();
-				
-			} catch (ClassNotFoundException e) {
-				
-				e.printStackTrace();
-			} catch (IOException e) {
-				
-				e.printStackTrace();
 			}
+			
+		} catch (SocketException err) {
+			
+			ClientManager.handleClientDisconnect(this.username);
+			System.out.println("The client " + this.username + " disconnected.");
+			this.closeStreams();
+			
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
 		}
 	}
 
