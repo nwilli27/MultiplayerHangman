@@ -1,14 +1,9 @@
 package view;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import application.Main;
 import controller.MainPageController;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -17,7 +12,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class MainPage {
 
