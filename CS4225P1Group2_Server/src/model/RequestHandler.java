@@ -28,17 +28,17 @@ public class RequestHandler {
 		switch (request.getType())
 		{
 			case Guess:
-				var guessedCharacter = parsedRequest[1];
+				var guessedCharacter = parsedRequest[0];
 				gameManager.handleGuess(guessedCharacter);
 				break;
 			
 			case Timeout:
-				var timeoutUser = parsedRequest[1];
+				var timeoutUser = parsedRequest[0];
 				gameManager.handleTimeout(timeoutUser);
 				break;
 			
 			case Disconnect:
-				var disconnectUser = parsedRequest[1];
+				var disconnectUser = parsedRequest[0];
 				gameManager.handleDisconnect(disconnectUser);
 				break;
 				
