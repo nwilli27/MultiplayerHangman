@@ -177,7 +177,7 @@ public class ClientManager {
 		
 		if (currentClient.getUsername().equalsIgnoreCase(username) && currentClient.getGuessCount() == previousGuessCount) {
 			
-			currentClient.sendMessage(MessageType.Nudge, "");
+			currentClient.sendMessage(MessageType.Nudge, String.valueOf(TIMEOUT_TIME));
 			var timeoutTimer = new TimedMessage(TIMEOUT_TIME);
 			timeoutTimer.setTimeoutTask(currentClient.getUsername(), currentClient.getGuessCount());
 		}
@@ -195,10 +195,11 @@ public class ClientManager {
 		
 		if (currentClient.getUsername().equalsIgnoreCase(username) && currentClient.getGuessCount() == previousGuessCount) {
 			
+			currentClient.sendMessage(MessageType.Logout, "");
 			currentClient.closeStreams();
+			switchToNextClientTurn();
 			clients.remove(currentClient);
 			broadcastMessage(MessageType.UserTimeout, username);
-			switchToNextClientTurn();
 		}
 	}
 	
