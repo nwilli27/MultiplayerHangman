@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import javafx.scene.shape.Shape;
 
+/**
+ * Class to hold all of the visual hangman objects for the wrong guesses
+ * 
+ * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
+ *
+ */
 public class BodyPart {
 
 	private ArrayList<Shape> parts;

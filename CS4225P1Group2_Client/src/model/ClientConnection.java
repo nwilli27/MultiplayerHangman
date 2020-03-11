@@ -115,6 +115,9 @@ public class ClientConnection implements Runnable {
 
 	}
 
+	/**
+	 * Creates a socket with the specified host and port
+	 */
 	public void initializeStreams() {
 		try {
 			this.socket = new Socket(HOST, PORT);

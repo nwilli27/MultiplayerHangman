@@ -13,6 +13,12 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
 import javafx.scene.text.Text;
 
+/**
+ * Code behind for the main page of the application
+ * 
+ * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
+ *
+ */
 public class MainPage {
 
 	@FXML

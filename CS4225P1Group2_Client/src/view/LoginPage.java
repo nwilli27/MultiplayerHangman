@@ -14,9 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 /**
- * Controller for the login page
+ * Code behind for the login page
  * 
  * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
  *
@@ -40,13 +39,13 @@ public class LoginPage {
 
 	@FXML
 	private Text userNameTakenText;
-	
+
 	private LoginController controller;
 
 	@FXML
 	void initialize() {
 		this.controller = new LoginController(this.errorText, this.userNameTakenText);
-		
+
 	}
 
 	@FXML
@@ -69,5 +68,5 @@ public class LoginPage {
 		}
 
 	}
-	
+
 }
