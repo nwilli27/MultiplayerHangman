@@ -149,9 +149,9 @@ public class ClientManager {
 		for (var client : clients) {
 			
 			if (client.equals(currentClient)) {	
-				client.sendMessage(MessageType.YourGuess, "");
+				client.sendMessage(MessageType.YourGuessTurn, "");
 			} else {
-				client.sendMessage(MessageType.OtherGuess, currentClient.getUsername());
+				client.sendMessage(MessageType.OtherGuessTurn, currentClient.getUsername());
 			}
 		}
 	}

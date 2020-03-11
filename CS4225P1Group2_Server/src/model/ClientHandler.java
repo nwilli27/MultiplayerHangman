@@ -74,7 +74,7 @@ public class ClientHandler implements Runnable {
 		try {
 			
 			while (true) {
-				var incomingRequest = this.inputStream.readObject().toString();
+				var incomingRequest = (Message) this.inputStream.readObject();
 				RequestHandler.handleRequest(incomingRequest);
 			}
 				

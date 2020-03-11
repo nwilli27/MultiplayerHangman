@@ -6,11 +6,12 @@ public enum MessageType {
 	Guess,
 	TakenUser,
 	MaxUsers,
-	YourGuess,
-	OtherGuess,
+	YourGuessTurn,
+	OtherGuessTurn,
 	Disconnect,
 	GuessValue,
 	UpdatedWord,
 	BodyCount,
 	NewUser,
+	Timeout
 }
