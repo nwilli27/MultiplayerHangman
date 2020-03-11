@@ -13,6 +13,7 @@ import enums.MessageType;
 public class ClientHandler implements Runnable {
 
 	private String username;
+	private int guessCount;
 
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
@@ -82,7 +83,22 @@ public class ClientHandler implements Runnable {
 
 			e.printStackTrace();
 		}
-		
+	}
+	
+	/**
+	 * Increments the clients guess counter by 1.
+	 * @postcondition this.guessCounter += 1
+	 */
+	public void incrementGuessCount() {
+		this.guessCount++;
+	}
+	
+	/**
+	 * Returns the total # of guesses
+	 * @return the guess counter 
+	 */
+	public int getGuessCount() {
+		return this.guessCount;
 	}
 
 	/**
@@ -97,7 +113,7 @@ public class ClientHandler implements Runnable {
 			
 			while (true) {
 				var incomingRequest = (Message) this.inputStream.readObject();
-				RequestHandler.handleRequest(incomingRequest);
+				RequestHandler.handleRequest(incomingRequest, this.username);
 			}
 				
 		} catch (ClassNotFoundException error) {

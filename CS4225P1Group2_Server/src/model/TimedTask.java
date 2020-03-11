@@ -14,6 +14,7 @@ class RemindTask extends TimerTask {
 	private TimedTaskType type;
 	private Timer timer;
 	private String username;
+	private int currentGuessCount;
 
 	/**
 	 * Creates a RemindTask object with the given timer, username, and task type
@@ -21,11 +22,13 @@ class RemindTask extends TimerTask {
 	 * @param taskType The TaskType
 	 * @param timer    The Timer
 	 * @param username The username
+	 * @param currentGuessCount of the user
 	 */
-	RemindTask(TimedTaskType taskType, Timer timer, String username) {
+	RemindTask(TimedTaskType taskType, Timer timer, String username, int currentGuessCount) {
 		this.type = taskType;
 		this.timer = timer;
 		this.username = username;
+		this.currentGuessCount = currentGuessCount;
 	}
 
 	/**
@@ -38,11 +41,11 @@ class RemindTask extends TimerTask {
 		switch (this.type) {
 
 			case Nudge:
-				ClientManager.sendCurrentClientNudge(this.username);
+				ClientManager.sendCurrentClientNudge(this.username, this.currentGuessCount);
 				break;
 
 			case FinalTimeout:
-				ClientManager.disconnectCurrentClient(this.username);
+				ClientManager.disconnectCurrentClient(this.username, this.currentGuessCount);
 				break;
 
 			default:

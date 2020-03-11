@@ -35,6 +35,7 @@ public class GameManager {
 			throw new IllegalArgumentException("Guess can not be null");
 		}
 		
+		ClientManager.incrementCurrentClientGuessCount();
 		this.wordManager.makeGuess(guess);
 		ClientManager.broadcastGuessUpdate(this.wordManager.getFormattedWord(), guess, this.wordManager.getInvalidGuessCount());
 		this.checkGameState();

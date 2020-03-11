@@ -20,8 +20,9 @@ public class RequestHandler {
 	 * Parses the request and handles different requests from clients.
 	 * @precondition: none
 	 * @param request message to parse
+	 * @param userWhoRequest the one who requested
 	 */
-	public static void handleRequest(Message request) {
+	public static void handleRequest(Message request, String userWhoRequest) {
 		
 		var parsedRequest = request.getMessage().split(DELIMITER);
 		
@@ -39,8 +40,7 @@ public class RequestHandler {
 				break;
 			
 			case Disconnect:
-				var disconnectUser = parsedRequest[0];
-				gameManager.handleDisconnect(disconnectUser);
+				gameManager.handleDisconnect(userWhoRequest);
 				break;
 				
 			default:
