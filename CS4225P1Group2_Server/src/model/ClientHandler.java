@@ -64,6 +64,26 @@ public class ClientHandler implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Closes the in and out streams of the current client.
+	 * 
+	 * @precondition none
+	 * @postcondition none
+	 */
+	public void closeStreams() {
+		
+		try {
+			
+			this.inputStream.close();
+			this.outputStream.close();
+			
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		
+	}
 
 	/**
 	 * Implemented by runnable, 

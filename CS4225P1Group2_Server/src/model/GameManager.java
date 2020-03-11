@@ -66,6 +66,11 @@ public class GameManager {
 		}
 	}
 	
+	/**
+	 * Sends the client of type user name everything needed to fill there ui 
+	 * with current game information.
+	 * @param username 
+	 */
 	public void sendNewUserGameState(String username) {
 		
 		ClientManager.sendClientGameState(username, this.wordManager.getFormattedWord(), this.wordManager.getCombinedGuessedCharacters(), this.wordManager.getInvalidGuessCount());

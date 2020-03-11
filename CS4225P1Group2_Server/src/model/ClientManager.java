@@ -11,7 +11,7 @@ import enums.MessageType;
  */
 public class ClientManager {
 
-	private static final int MAX_CLIENT_COUNT = 4;
+	private static final int MAX_CLIENT_COUNT = 2;
 	private static final int NUDGE_TIME = 15;
 	private static final int TIMEOUT_TIME = 10;
 	
@@ -20,6 +20,7 @@ public class ClientManager {
 	
 	/**
 	 * Sends a message to all Clients.
+	 * 
 	 * @precondition: message != null
 	 * @param message to be sent
 	 * @param type the type of message
@@ -38,6 +39,7 @@ public class ClientManager {
 	/**
 	 * Handles a client disconnection. It removes a client of the user name and
 	 * then broadcasts a message to all other clients.
+	 * 
 	 * @precondition: user name != null
 	 * @param username the user name to remove
 	 */
@@ -54,6 +56,7 @@ public class ClientManager {
 	
 	/**
 	 * Sends a message to all clients of a new guess made by a client.
+	 * 
 	 * @precondition: formattedWord && guess != null
 	 * @param formattedWord the word to display to all clients
 	 * @param guess the guess made by the current client
@@ -65,6 +68,14 @@ public class ClientManager {
 		broadcastMessage(MessageType.BodyCount, String.valueOf(bodyCount));
 	}
 	
+	/**
+	 * Sends the current game state to a specified user name (client).
+	 * 
+	 * @param username the user to give the game state to
+	 * @param formattedWord the current word status
+	 * @param characters the guessed characters combined into a string
+	 * @param bodyCount the # of body parts to enable on stick man
+	 */
 	public static void sendClientGameState(String username, String formattedWord, String characters, int bodyCount) {
 		
 		var client = getClient(username);
@@ -112,8 +123,8 @@ public class ClientManager {
 			currentClient = clients.get(++currentClientIndex);
 		}
 		
-		var nudgeTimer = new TimedMessage(NUDGE_TIME);
-		nudgeTimer.setNudgeTask();
+		//var nudgeTimer = new TimedMessage(NUDGE_TIME);
+		//nudgeTimer.setNudgeTask();
 		sendNextGuessMessage();
 	}
 
@@ -152,7 +163,11 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Sends the current client a nudge 
+	 * Sends the current client a nudge they only have 
+	 * a set time before being disconnected.
+	 * 
+	 * @precondition none
+	 * @postcondition none
 	 */
 	public static void sendCurrentClientNudge() {
 		
@@ -161,6 +176,11 @@ public class ClientManager {
 		timeoutTimer.setTimeoutTask();
 	}
 	
+	/**
+	 * Disconnects the current client from the server.
+	 * @precondition none
+	 * @postcondition 
+	 */
 	public static void disconnectCurrentClient() {
 		
 		var timedoutUsername = currentClient.getUsername();
