@@ -72,11 +72,10 @@ public class Server implements Runnable {
 			var request = (Message) this.serverInputStream.readObject();
 			var requestMsg = request.getMessage();
 			var requestTokens = requestMsg.split("#");
-			var requestType = requestTokens[0];
 			
-			switch (requestType) {
+			switch (request.getType()) {
 			
-				case "login":
+				case Login:
 					var username = requestTokens[1];
 					this.handleCreateClientRequest(username);
 					

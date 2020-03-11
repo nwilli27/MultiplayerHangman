@@ -21,26 +21,28 @@ public class RequestHandler {
 	 * @precondition: none
 	 * @param request
 	 */
-	public static void handleRequest(String request) {
+	public static void handleRequest(Message request) {
 		
-		var parsedRequest = request.split(DELIMITER);
-		var requestType = parsedRequest[0];
+		var parsedRequest = request.getMessage().split(DELIMITER);
 		
-		switch (requestType)
+		switch (request.getType())
 		{
-			case "guess":
+			case Guess:
 				var guessedCharacter = parsedRequest[1];
 				gameManager.handleGuess(guessedCharacter);
 				break;
 			
-			case "timeout":
+			case Timeout:
 				var timeoutUser = parsedRequest[1];
 				gameManager.handleTimeout(timeoutUser);
 				break;
 			
-			case "disconnect":
+			case Disconnect:
 				var disconnectUser = parsedRequest[1];
 				gameManager.handleDisconnect(disconnectUser);
+				break;
+				
+			default:
 				break;
 				
 		}
