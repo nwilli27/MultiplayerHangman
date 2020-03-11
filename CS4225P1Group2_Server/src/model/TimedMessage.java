@@ -2,9 +2,13 @@ package model;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
 import enums.TimedTaskType;
 
+/**
+ * Class holds functionality for a timed message.
+ * @author Nolan W, Carsen B, Tristen R
+ *
+ */
 public class TimedMessage {
 
 	private Timer timer;
@@ -20,11 +24,11 @@ public class TimedMessage {
 	}
 	
 	public void setTimeoutTask() {
-		this.timer.schedule(new RemindTask(TimedTaskType.FinalTimeout), this.seconds * 1000);
+		this.timer.schedule(new RemindTask(TimedTaskType.FinalTimeout, this.timer), this.seconds * 1000);
 	}
 	
 	public void setNudgeTask() {
-		this.timer.schedule(new RemindTask(TimedTaskType.Nudge), this.seconds * 1000);
+		this.timer.schedule(new RemindTask(TimedTaskType.Nudge, this.timer), this.seconds * 1000);
 	}
 
 	/**
@@ -35,9 +39,11 @@ public class TimedMessage {
     class RemindTask extends TimerTask {
         
     	private TimedTaskType type;
+    	private Timer timer;
     	
-    	public RemindTask(TimedTaskType taskType) {
+    	public RemindTask(TimedTaskType taskType, Timer timer) {
     		this.type = taskType;
+    		this.timer = timer;
     	}
     	
 		public void run() {
@@ -45,12 +51,15 @@ public class TimedMessage {
 			switch (this.type) {
 				
 				case Nudge:
-					
+					ClientManager.sendCurrentClientNudge();
+					break;
 					
 				case FinalTimeout:
+					ClientManager.disconnectCurrentClient();
+					break;
 					
 			}
-            timer.cancel();
+            this.timer.cancel();
         }
 
     }

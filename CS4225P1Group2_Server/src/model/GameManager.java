@@ -64,7 +64,6 @@ public class GameManager {
 		if (username == null) {
 			throw new IllegalArgumentException("Username can not be null.");
 		}
-		
 	}
 	
 	public void sendNewUserGameState(String username) {

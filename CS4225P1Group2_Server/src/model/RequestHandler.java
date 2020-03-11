@@ -38,11 +38,6 @@ public class RequestHandler {
 				gameManager.handleGuess(guessedCharacter);
 				break;
 			
-			case Timeout:
-				var timeoutUser = parsedRequest[0];
-				gameManager.handleTimeout(timeoutUser);
-				break;
-			
 			case Disconnect:
 				var disconnectUser = parsedRequest[0];
 				gameManager.handleDisconnect(disconnectUser);
