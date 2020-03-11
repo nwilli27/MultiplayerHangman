@@ -36,7 +36,6 @@ public class LoginController {
 
 		var msg = client.getFirstOfMessage(MessageType.ValidUser);
 		if(msg != null) {
-			msg.setIsCompleted(true);
 			client.send(MessageType.NewUser, username);
 			return true;
 		} else {
