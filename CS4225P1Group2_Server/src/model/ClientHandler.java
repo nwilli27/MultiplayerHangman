@@ -117,10 +117,8 @@ public class ClientHandler implements Runnable {
 			}
 			
 		} catch (SocketException err) {
-			
-			ClientManager.handleClientDisconnect(this.username);
+
 			System.out.println("The client " + this.username + " disconnected.");
-			this.closeStreams();
 			
 		} catch (ClassNotFoundException e) {
 			
@@ -128,7 +126,11 @@ public class ClientHandler implements Runnable {
 		} catch (IOException e) {
 			
 			e.printStackTrace();
+		} catch (Exception err) {
+			
+			System.out.println("The client " + this.username + " disconnected.");
 		}
+		
 	}
 
 }
