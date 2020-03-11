@@ -7,6 +7,11 @@ import javafx.scene.text.Text;
 import model.ClientConnection;
 import model.ServerMessageReader;
 
+/**
+ * Controller for the login page
+ * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
+ *
+ */
 public class LoginController {
 
 	private static Text errorText;
@@ -15,6 +20,11 @@ public class LoginController {
 
 	private Thread[] threadPool;
 
+	/**
+	 * Creates a login controller object with the given text fields
+	 * @param error Error Text
+	 * @param usernameTaken username Taken text
+	 */
 	public LoginController(Text error, Text usernameTaken) {
 		errorText = error;
 		usernameTakenText = usernameTaken;
@@ -22,6 +32,11 @@ public class LoginController {
 
 	}
 
+	/**
+	 * Handles the log in of a user
+	 * @param username username of the user
+	 * @return True if log in was successful, false if not
+	 */
 	public boolean handleLogin(String username) {
 		this.startThreads();
 		client.send(MessageType.Login, username);
@@ -36,13 +51,17 @@ public class LoginController {
 		var usernameTakenMsg = client.getFirstOfMessage(MessageType.TakenUser);
 		var maxUsersMsg = client.getFirstOfMessage(MessageType.MaxUsers);
 		
-		if(validMsg != null) {
+		if (validMsg != null) {
 			client.send(MessageType.NewUser, username);
 			return true;
-		} else if (usernameTakenMsg != null){
+		} else if (usernameTakenMsg != null) {
+			usernameTakenMsg.setIsCompleted(true);
+			usernameTakenText.setVisible(true);
 			usernameTakenText.setText("Sorry that username is taken");
 			return  false;
 		} else if (maxUsersMsg != null) {
+			maxUsersMsg.setIsCompleted(true);
+			errorText.setVisible(true);
 			errorText.setText("Server is currently full");
 			return false;
 		} else {
@@ -52,6 +71,10 @@ public class LoginController {
 		
 	}
 
+	/**
+	 * Returns the client
+	 * @return Returns the client
+	 */
 	public static ClientConnection getClient() {
 		return client;
 	}

@@ -5,11 +5,15 @@ import controller.MainPageController;
 import enums.MessageType;
 import javafx.application.Platform;
 
+/**
+ * Class that listens for specific responses from the server
+ * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
+ *
+ */
 public class ServerMessageReader implements Runnable {
 
 	@Override
 	public void run() {
-
 
 		while (true) {
 
@@ -18,6 +22,7 @@ public class ServerMessageReader implements Runnable {
 			var guess = LoginController.getClient().getFirstOfMessage(MessageType.GuessUpdate);
 			var part = LoginController.getClient().getFirstOfMessage(MessageType.BodyCount);
 			var turn = LoginController.getClient().getFirstOfMessage(MessageType.YourGuessTurn);
+			var otherTurn = LoginController.getClient().getFirstOfMessage(MessageType.OtherGuessTurn);
 
 			if (loggedIn != null) {
 
@@ -28,7 +33,7 @@ public class ServerMessageReader implements Runnable {
 					user.setIsCompleted(true);
 
 					Platform.runLater(() -> {
-						MainPageController.newUserLoggedin(user.getMessage());
+						MainPageController.handleNewUserLogin(user.getMessage());
 					});
 				}
 
@@ -40,18 +45,19 @@ public class ServerMessageReader implements Runnable {
 				var formattedWord = messageSplit[0];
 				var charsGuessed = messageSplit[1];
 				var bodyCount = Integer.parseInt(messageSplit[2]);
-				
+
 				Platform.runLater(() -> {
 					MainPageController.setUpGame(formattedWord, charsGuessed, bodyCount);
 				});
 			}
-			
+
 			if (turn != null) {
 
 				turn.setIsCompleted(true);
 
 				Platform.runLater(() -> {
 					MainPageController.enableButton();
+					MainPageController.alertForTurn("You are now choosing");
 				});
 
 			}
@@ -75,6 +81,16 @@ public class ServerMessageReader implements Runnable {
 				var count = Integer.parseInt(message);
 				Platform.runLater(() -> {
 					MainPageController.bodyPartGuesses(count);
+				});
+
+			}
+
+			if (otherTurn != null) {
+
+				otherTurn.setIsCompleted(true);
+
+				Platform.runLater(() -> {
+					MainPageController.alertForTurn(otherTurn.getMessage() + " is now choosing");
 				});
 
 			}

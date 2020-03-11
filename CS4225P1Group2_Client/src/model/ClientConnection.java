@@ -24,10 +24,6 @@ public class ClientConnection implements Runnable {
 	private static final String HOST = "localhost";
 	private static final int PORT = 4225;
 
-	private static String username;
-
-	private MainPage controller;
-
 	private Socket socket;
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
@@ -35,10 +31,8 @@ public class ClientConnection implements Runnable {
 	private static ArrayList<Message> incomingMessages;
 
 	/**
-	 * Creates a listener object with the given username and controller
+	 * Creates a client connection object and initializes the incoming messages
 	 * 
-	 * @param name username of the person logged in
-	 * @param con  controller for the mainpage
 	 */
 	public ClientConnection() {
 		incomingMessages = new ArrayList<Message>();
@@ -58,8 +52,8 @@ public class ClientConnection implements Runnable {
 	/**
 	 * Sends a message to the server
 	 * 
-	 * @param msg Message to be sent
-	 * @throws IOException Exception
+	 * @param type The type of message being sent
+	 * @param msg  The content of the message being sent
 	 */
 	public void send(MessageType type, String msg) {
 		try {
@@ -71,6 +65,13 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
+	/**
+	 * Gets the first message of the specified type from incoming messages
+	 * 
+	 * @param type Type of message to look for
+	 * @return Returns the first message of the specified type from incoming
+	 *         messages
+	 */
 	public Message getFirstOfMessage(MessageType type) {
 
 		Message firstMessage = null;
@@ -82,7 +83,8 @@ public class ClientConnection implements Runnable {
 					if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
 						this.removeMessage(type);
 					}
-					return message;
+					firstMessage = message;
+					break;
 				}
 			}
 		}
@@ -94,13 +96,7 @@ public class ClientConnection implements Runnable {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
-					if (type == MessageType.GuessUpdate) {
-
-						ClientConnection.incomingMessages.remove(message);
-						return;
-					}
-
-					if (type == MessageType.BodyCount) {
+					if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
 
 						ClientConnection.incomingMessages.remove(message);
 						return;
