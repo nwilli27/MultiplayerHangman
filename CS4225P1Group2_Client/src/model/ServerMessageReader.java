@@ -28,12 +28,14 @@ public class ServerMessageReader implements Runnable {
 			var disconnect = LoginController.getClient().getFirstOfMessage(MessageType.Disconnect);
 			var nudge = LoginController.getClient().getFirstOfMessage(MessageType.Nudge);
 			var timeout = LoginController.getClient().getFirstOfMessage(MessageType.UserTimeout);
+			var logout = LoginController.getClient().getFirstOfMessage(MessageType.Logout);
 
 			this.handleLoggedIn(loggedIn);
 			this.handleInitialState(initialState);
 			this.handleDisconnect(disconnect);
 			this.handleNudge(nudge);
 			this.handleUserTimeout(timeout);
+			this.handleLogout(logout);
 			this.handleUserTurn(turn);
 			this.handleUserGuess(guess);
 			this.handleBodyPartCount(part);
@@ -115,6 +117,16 @@ public class ServerMessageReader implements Runnable {
 			Platform.runLater(() -> {
 				MainPageController.alertForTurn(timeout.getMessage() + " has been disconnected");
 			});
+
+		}
+	}
+
+	private void handleLogout(Message logout) {
+		if (logout != null) {
+
+			logout.setIsCompleted(true);
+
+			System.exit(0);
 
 		}
 	}
