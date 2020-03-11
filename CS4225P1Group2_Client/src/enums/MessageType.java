@@ -4,6 +4,7 @@ public enum MessageType {
 
 	Login,
 	Guess,
+	ValidUser,
 	TakenUser,
 	MaxUsers,
 	YourGuessTurn,

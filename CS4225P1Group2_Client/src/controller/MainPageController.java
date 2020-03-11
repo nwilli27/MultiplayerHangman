@@ -45,12 +45,15 @@ public class MainPageController {
 		messageFromServer.appendText("User " + username + " guessed " + formattedGuess + "..." + System.lineSeparator());
 		
 		
-		
-		
+	}
 	
+	public static void newUserLoggedin(String message) {
+		messageFromServer.appendText(message + " has logged in..." + System.lineSeparator());
 		
-		
-
+	}
+	
+	public static void userGuessed(String message) {
+		messageFromServer.appendText(message + " letter guessed..." + System.lineSeparator());
 		
 	}
 
