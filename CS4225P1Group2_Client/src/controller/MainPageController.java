@@ -24,9 +24,9 @@ public class MainPageController {
 		LoginController.getClient().send(MessageType.Guess, guess);
 		
 		
-		if(LoginController.getClient().getFirstOfMessage("characterGuess") != null) {
-			messageFromServer.setText("Hello");
-		}
+//		if(LoginController.getClient().getFirstOfMessage("characterGuess") != null) {
+//			messageFromServer.setText("Hello");
+//		}
 		
 	}
 

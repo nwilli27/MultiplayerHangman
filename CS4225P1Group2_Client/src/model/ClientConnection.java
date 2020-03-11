@@ -107,7 +107,7 @@ public class ClientConnection implements Runnable {
 
 			if (message.getType() == type) {
 				firstMessage = message;
-				incomingMessages.remove(message);
+				message.setIsCompleted(true);
 				return firstMessage;
 			}
 		}

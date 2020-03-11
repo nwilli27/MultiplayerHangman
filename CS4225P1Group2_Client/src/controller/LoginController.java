@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import enums.MessageType;
 import javafx.scene.text.Text;
@@ -26,9 +27,22 @@ public class LoginController {
 	public boolean handleLogin(String username) {
 		this.startThreads();
 		client.send(MessageType.Login, username);
-
 		
-		return (client.getFirstOfMessage("playerConnect") != null);
+		try {
+			TimeUnit.MILLISECONDS.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		var msg = client.getFirstOfMessage(MessageType.NewUser);
+		if(msg != null) {
+			msg.setIsCompleted(true);
+			return true;
+		} else {
+			return  false;
+		}
+		
+		
 	}
 
 	public static ClientConnection getClient() {
@@ -40,8 +54,9 @@ public class LoginController {
 		client = new ClientConnection();
 		client.initializeStreams();
 		ServerMessageReader reader = new ServerMessageReader();
-		this.threadPool[0] = new Thread(reader);
-		this.threadPool[1] = new Thread(client);
+		this.threadPool[0] = new Thread(client);
+		this.threadPool[1] = new Thread(reader);
+		
 
 		this.threadPool[0].start();
 		this.threadPool[1].start();
