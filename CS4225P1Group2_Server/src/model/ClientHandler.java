@@ -122,6 +122,10 @@ public class ClientHandler implements Runnable {
 		} catch (IOException e) {
 
 			e.printStackTrace();
+		} catch (Exception err) {
+			
+			System.out.println("The client " + this.username + " disconnected.");
+			this.closeStreams();
 		}
 	}
 
