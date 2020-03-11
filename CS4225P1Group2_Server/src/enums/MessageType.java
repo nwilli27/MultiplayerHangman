@@ -15,9 +15,9 @@ public enum MessageType {
 	YourGuessTurn,
 	OtherGuessTurn,
 	Disconnect,
-	GuessValue,
-	UpdatedWord,
-	BodyCount,
 	NewUser,
-	Timeout
+	Timeout,
+	GameState,
+	GuessUpdate
+	
 }

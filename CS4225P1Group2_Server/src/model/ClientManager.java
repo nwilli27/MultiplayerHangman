@@ -59,9 +59,13 @@ public class ClientManager {
 	 */
 	public static void broadcastGuessUpdate(String formattedWord, String guess, int bodyCount) {
 		
-		broadcastMessage(MessageType.GuessValue, guess + "#" + currentClient.getUsername());
-		broadcastMessage(MessageType.UpdatedWord, formattedWord);
-		broadcastMessage(MessageType.BodyCount, Integer.toString(bodyCount));
+		broadcastMessage(MessageType.GuessUpdate, currentClient.getUsername() + "#" + guess + "#" + formattedWord + "#" + bodyCount);
+	}
+	
+	public static void sendClientGameState(String username, String formattedWord, String characters, int bodyCount) {
+		
+		var client = getClient(username);
+		client.sendMessage(MessageType.GameState, formattedWord + "#" + characters + "#" + bodyCount);
 	}
 	
 	/**
@@ -140,6 +144,10 @@ public class ClientManager {
 		}
 		
 		return false;
+	}
+	
+	public void sendCurrentClientNudge() {
+		
 	}
 	
 	private static void sendNextGuessMessage() {

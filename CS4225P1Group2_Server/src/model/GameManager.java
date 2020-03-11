@@ -65,7 +65,11 @@ public class GameManager {
 			throw new IllegalArgumentException("Username can not be null.");
 		}
 		
+	}
+	
+	public void sendNewUserGameState(String username) {
 		
+		ClientManager.sendClientGameState(username, this.wordManager.getFormattedWord(), this.wordManager.getCombinedGuessedCharacters(), this.wordManager.getInvalidGuessCount());
 	}
 	
 	public void handleNewUser(String username) {
