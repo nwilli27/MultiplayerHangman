@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import enums.MessageType;
+
 /**
  * Class handles interactions with a distinct client.
  * @author Nolan W, Carsen B, Tristen R
@@ -50,9 +52,9 @@ public class ClientHandler implements Runnable {
 	 * @precondition none
 	 * @param message to send
 	 */
-	public void sendMessage(String message) {
+	public void sendMessage(MessageType type, String message) {
 		
-		var serializedMessage = new Message(message);
+		var serializedMessage = new Message(type, message);
 		
 		try {
 			this.outputStream.writeObject(serializedMessage);

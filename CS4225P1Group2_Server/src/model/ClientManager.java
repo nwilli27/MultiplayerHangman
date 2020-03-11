@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import enums.MessageType;
+
 /**
  * Handles interaction with all the Client Handlers
  * @author Nolan W, Carsen B, Tristen R
@@ -19,14 +21,14 @@ public class ClientManager {
 	 * @precondition: message != null
 	 * @param message to be sent
 	 */
-	public static void broadcastMessage(String message) {
+	public static void broadcastMessage(MessageType type, String message) {
 		
 		if (message == null) {
 			throw new IllegalArgumentException("Message can not be null to send.");
 		}
 
 		for (var client : clients) {
-			client.sendMessage(message);
+			client.sendMessage(type, message);
 		}
 	}
 	
@@ -44,7 +46,7 @@ public class ClientManager {
 		
 		var clientToDisconnect = getClient(username);
 		clients.remove(clientToDisconnect);
-		broadcastMessage("disconnect#" + username);
+		broadcastMessage(MessageType.Disconnect, username);
 	}
 	
 	/**
@@ -56,9 +58,9 @@ public class ClientManager {
 	 */
 	public static void broadcastGuessUpdate(String formattedWord, String guess, int bodyCount) {
 		
-		broadcastMessage("userGuess#" + guess + "#" + currentClient.getUsername());
-		broadcastMessage("updatedWord#" + formattedWord);
-		broadcastMessage("bodyCount#" + bodyCount);
+		broadcastMessage(MessageType.GuessValue, guess + "#" + currentClient.getUsername());
+		broadcastMessage(MessageType.UpdatedWord, formattedWord);
+		broadcastMessage(MessageType.BodyCount, Integer.toString(bodyCount));
 	}
 	
 	/**
@@ -147,9 +149,9 @@ public class ClientManager {
 		for (var client : clients) {
 			
 			if (client.equals(currentClient)) {	
-				client.sendMessage("yourGuess");
+				client.sendMessage(MessageType.YourGuess, "");
 			} else {
-				client.sendMessage("clientChoosing#" + currentClient.getUsername());
+				client.sendMessage(MessageType.OtherGuess, currentClient.getUsername());
 			}
 		}
 	}

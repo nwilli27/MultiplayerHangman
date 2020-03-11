@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import enums.MessageType;
+
 /**
  * Class holds the client handling and initialization of the game.
  * @author Nolan W, Carsen B, Tristen R
@@ -88,7 +90,7 @@ public class Server implements Runnable {
 		
 		if (ClientManager.hasMaxClients()) {
 			
-			this.sendConnectingClientMsg("userLimit#" + username);
+			this.sendConnectingClientMsg(username, MessageType.MaxUsers);
 			
 		} else {
 			
@@ -99,18 +101,18 @@ public class Server implements Runnable {
 				var thread = new Thread(client);
 				thread.start();
 				
-				ClientManager.broadcastMessage("playerConnect#" + username);
+				ClientManager.broadcastMessage(MessageType.NewUser, username);
 				
 			} else {
 
-				this.sendConnectingClientMsg("taken#" + username);
+				this.sendConnectingClientMsg(username, MessageType.TakenUser);
 			}
 		}
 	}
 	
-	private void sendConnectingClientMsg(String message) throws IOException {
+	private void sendConnectingClientMsg(String message, MessageType type) throws IOException {
 		
-		this.serverOutputStream.writeObject(new Message(message));
+		this.serverOutputStream.writeObject(new Message(type, message));
 	}
 	
 	private void setupSocket() {
