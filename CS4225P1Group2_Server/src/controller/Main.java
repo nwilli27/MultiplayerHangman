@@ -8,6 +8,10 @@ import model.Server;
  */
 public class Main {
 
+	/**
+	 * Program launch point.
+	 * @param args none
+	 */
 	public static void main(String[] args) {
 		
 		Server server = new Server();

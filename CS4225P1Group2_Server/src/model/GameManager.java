@@ -1,11 +1,14 @@
 package model;
 
+import enums.MessageType;
+
 /**
  * Manages the current Game state.
  * @author Nolan W, Carsen B, Tristen R
  */
 public class GameManager {
 
+	private Dictionary dictionary;
 	private WordManager wordManager;
 
 	/**
@@ -15,7 +18,8 @@ public class GameManager {
 	 */
 	public GameManager() {
 		this.wordManager = new WordManager();
-		this.wordManager.setWord(Dictionary.getNewWordToGuess());
+		this.dictionary = new Dictionary();
+		this.wordManager.setWord(this.dictionary.getNewWordToGuess());
 	}
 
 	/**
@@ -50,8 +54,23 @@ public class GameManager {
 		ClientManager.handleClientDisconnect(username);
 	}
 
+	/**
+	 * Handles the process for a timeout
+	 * @precondition username != null
+	 * @param username the client to timeout
+	 */
 	public void handleTimeout(String username) {
-		// TODO
+		
+		if (username == null) {
+			throw new IllegalArgumentException("Username can not be null.");
+		}
+		
+		
+	}
+	
+	public void handleNewUser(String username) {
+		
+		ClientManager.broadcastMessage(MessageType.NewUser, username);
 	}
 
 	private void checkGameState() {

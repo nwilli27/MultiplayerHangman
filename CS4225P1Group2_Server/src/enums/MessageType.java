@@ -1,5 +1,10 @@
 package enums;
 
+/**
+ * Holds the different types of messages.
+ * @author Nolan W, Carsen B, Tristen R
+ *
+ */
 public enum MessageType {
 
 	Login,

@@ -7,7 +7,7 @@ package model;
 public class RequestHandler {
 
 	private static GameManager gameManager;
-	private static String DELIMITER = "#";
+	private static final String DELIMITER = "#";
 	
 	/**
 	 * Initializes the game.
@@ -19,14 +19,18 @@ public class RequestHandler {
 	/**
 	 * Parses the request and handles different requests from clients.
 	 * @precondition: none
-	 * @param request
+	 * @param request message to parse
 	 */
 	public static void handleRequest(Message request) {
 		
 		var parsedRequest = request.getMessage().split(DELIMITER);
 		
-		switch (request.getType())
-		{
+		switch (request.getType()) {
+		
+			case NewUser:
+				var username = parsedRequest[0];
+				gameManager.handleNewUser(username);
+		
 			case Guess:
 				var guessedCharacter = parsedRequest[0];
 				gameManager.handleGuess(guessedCharacter);

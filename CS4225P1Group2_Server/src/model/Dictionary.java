@@ -12,26 +12,35 @@ import java.util.Scanner;
  */
 public class Dictionary {
 	
-	public static List<String> dictionary = new ArrayList<String>();
+	private List<String> dictionary;
+	
+	/**
+	 * Constructor for dictionary.
+	 * @precondition none
+	 * @postcondition this.dictionary.size() == 0
+	 */
+	public Dictionary() {
+		this.dictionary = new ArrayList<String>();
+	}
 	
 	/**
 	 * Returns a word randomly from the dictionary.
 	 * @precondition: none
 	 * @return a random word for the game.
 	 */
-	public static String getNewWordToGuess() {
+	public String getNewWordToGuess() {
 
-		if (dictionary.isEmpty()) {
+		if (this.dictionary.isEmpty()) {
 			try {
 				File file = new File("dictionary.txt");
 				Scanner sc = new Scanner(file);
 
 				while (sc.hasNextLine()) {
-					dictionary.add(sc.nextLine().trim());
+					this.dictionary.add(sc.nextLine().trim());
 				}
 				Random random = new Random();
 				sc.close();
-				return dictionary.get(random.nextInt(dictionary.size() - 1));
+				return this.dictionary.get(random.nextInt(this.dictionary.size() - 1));
 
 			} catch (Exception exc) {
 				System.out.println(exc.getStackTrace());
@@ -39,7 +48,7 @@ public class Dictionary {
 		} else {
 
 			Random random = new Random();
-			return dictionary.get(random.nextInt(dictionary.size() - 1));
+			return this.dictionary.get(random.nextInt(this.dictionary.size() - 1));
 		}
 
 		return null;
