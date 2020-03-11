@@ -14,9 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 /**
- * Controller for the login page
+ * Code behind for the login page
  * 
  * @author Carson Bedrosian, Tristen Rivera, Nolan Williams
  *
@@ -40,13 +39,13 @@ public class LoginPage {
 
 	@FXML
 	private Text userNameTakenText;
-	
+
 	private LoginController controller;
 
 	@FXML
 	void initialize() {
 		this.controller = new LoginController(this.errorText, this.userNameTakenText);
-		
+
 	}
 
 	@FXML
@@ -57,7 +56,7 @@ public class LoginPage {
 			this.errorText.setVisible(true);
 			return;
 		} else {
-			if(this.controller.handleLogin(this.usernameTextField.getText())) {
+			if (this.controller.handleLogin(this.usernameTextField.getText())) {
 				Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(Main.class.getResource(Main.MAIN_PAGE_VIEW));
@@ -69,13 +68,5 @@ public class LoginPage {
 		}
 
 	}
-	
-	/**
-	 * Shows a message from the server on the gui
-	 * @param message the message to be shown
-	 */
-	public void showServerMessage(String message) { //TODO Get rid of this
-		this.userNameTakenText.setText(message);
 
-	}
 }

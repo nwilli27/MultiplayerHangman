@@ -2,7 +2,7 @@ package enums;
 
 /**
  * Holds the different types of messages.
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  *
  */
 public enum MessageType {
@@ -20,6 +20,8 @@ public enum MessageType {
 	GameState,
 	GuessUpdate,
 	BodyCount,
-	Nudge
+	Nudge,
+	UserWon,
+	Logout
 	
 }

@@ -1,17 +1,12 @@
 package model;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import enums.MessageType;
-import view.LoginPage;
-import view.MainPage;
 
 /**
  * Class that sends and receives messages from server
@@ -24,10 +19,6 @@ public class ClientConnection implements Runnable {
 	private static final String HOST = "localhost";
 	private static final int PORT = 4225;
 
-	private static String username;
-
-	private MainPage controller;
-
 	private Socket socket;
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
@@ -35,10 +26,8 @@ public class ClientConnection implements Runnable {
 	private static ArrayList<Message> incomingMessages;
 
 	/**
-	 * Creates a listener object with the given username and controller
+	 * Creates a client connection object and initializes the incoming messages
 	 * 
-	 * @param name username of the person logged in
-	 * @param con  controller for the mainpage
 	 */
 	public ClientConnection() {
 		incomingMessages = new ArrayList<Message>();
@@ -58,8 +47,8 @@ public class ClientConnection implements Runnable {
 	/**
 	 * Sends a message to the server
 	 * 
-	 * @param msg Message to be sent
-	 * @throws IOException Exception
+	 * @param type The type of message being sent
+	 * @param msg  The content of the message being sent
 	 */
 	public void send(MessageType type, String msg) {
 		try {
@@ -71,18 +60,24 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
+	/**
+	 * Gets the first message of the specified type from incoming messages
+	 * 
+	 * @param type Type of message to look for
+	 * @return Returns the first message of the specified type from incoming
+	 *         messages
+	 */
 	public Message getFirstOfMessage(MessageType type) {
 
 		Message firstMessage = null;
 		var tempList = new ArrayList<Message>(ClientConnection.incomingMessages);
+		this.removeMessage(type);
 		for (var message : tempList) {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
-					if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
-						this.removeMessage(type);
-					}
-					return message;
+					firstMessage = message;
+					break;
 				}
 			}
 		}
@@ -94,13 +89,7 @@ public class ClientConnection implements Runnable {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
-					if (type == MessageType.GuessUpdate) {
-
-						ClientConnection.incomingMessages.remove(message);
-						return;
-					}
-
-					if (type == MessageType.BodyCount) {
+					if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
 
 						ClientConnection.incomingMessages.remove(message);
 						return;
@@ -124,11 +113,14 @@ public class ClientConnection implements Runnable {
 
 	}
 
+	/**
+	 * Creates a socket with the specified host and port
+	 */
 	public void initializeStreams() {
 		try {
 			this.socket = new Socket(HOST, PORT);
-			output = new ObjectOutputStream(this.socket.getOutputStream());
-			input = new ObjectInputStream(this.socket.getInputStream());
+			this.output = new ObjectOutputStream(this.socket.getOutputStream());
+			this.input = new ObjectInputStream(this.socket.getInputStream());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
