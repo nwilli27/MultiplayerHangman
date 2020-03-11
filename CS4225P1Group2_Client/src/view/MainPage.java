@@ -1,9 +1,9 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
-import javafx.application.Platform;
+
+import controller.MainPageController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -14,7 +14,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
 import javafx.scene.text.Text;
 
-public class MainPageController {
+public class MainPage {
 
 	@FXML
 	private Text serverLabel;
@@ -92,11 +92,14 @@ public class MainPageController {
     private TextArea messageFromServerText;	
 
 	private ArrayList<String> lettersGuessed;
+	
+	private MainPageController controller;
 
 	@FXML
 	void initialize() {
 		this.hideAll();
 		this.lettersGuessed = new ArrayList<String>();
+		this.controller = new MainPageController(this.messageFromServerText, this.guessedLettersTextArea, this.guessButton);
 	}
 
 	@FXML
@@ -115,7 +118,7 @@ public class MainPageController {
 					this.errorTextField.setText("");
 					this.lettersGuessed.add(guess);
 					this.setGuessedLettersextArea();
-					// SEND LETTER GUESS
+					this.controller.handleGuess(guess);
 					System.out.println("letter guess");
 				}
 			} else {
