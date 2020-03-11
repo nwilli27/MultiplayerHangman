@@ -1,6 +1,5 @@
 package model;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,18 +24,9 @@ public class ClientManager {
 		if (message == null) {
 			throw new IllegalArgumentException("Message can not be null to send.");
 		}
-		
-		var messageSerialized = new Message(message);
-		
-		for (var client : clients) {
 
-			try {
-				var outputStream = client.getOutputStream();
-				outputStream.writeObject(messageSerialized);
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		for (var client : clients) {
+			client.sendMessage(message);
 		}
 	}
 	
@@ -66,12 +56,7 @@ public class ClientManager {
 	 */
 	public static void broadcastGuessUpdate(String formattedWord, String guess, int bodyCount) {
 		
-		if (guess.length() > 1) {
-			broadcastMessage("wordGuess#" + guess + "#" + currentClient.getUsername());
-		} else {
-			broadcastMessage("characterGuess#" + guess + "#" + currentClient.getUsername());
-		}
-		
+		broadcastMessage("userGuess#" + guess + "#" + currentClient.getUsername());
 		broadcastMessage("updatedWord#" + formattedWord);
 		broadcastMessage("bodyCount#" + bodyCount);
 	}
@@ -120,7 +105,7 @@ public class ClientManager {
 			currentClient = clients.get(++currentClientIndex);
 		}
 		
-		broadcastMessage("clientChoosing#" + currentClient.getUsername());
+		sendNextGuessMessage();
 	}
 
 	/**
@@ -155,6 +140,18 @@ public class ClientManager {
 		}
 		
 		return false;
+	}
+	
+	private static void sendNextGuessMessage() {
+		
+		for (var client : clients) {
+			
+			if (client.equals(currentClient)) {	
+				client.sendMessage("yourGuess");
+			} else {
+				client.sendMessage("clientChoosing#" + currentClient.getUsername());
+			}
+		}
 	}
 	
 	private static ClientHandler getClient(String username) {

@@ -44,6 +44,22 @@ public class ClientHandler implements Runnable {
 	public ObjectOutputStream getOutputStream() {
 		return outputStream;
 	}
+	
+	/**
+	 * Sends a message to the client.
+	 * @precondition none
+	 * @param message to send
+	 */
+	public void sendMessage(String message) {
+		
+		var serializedMessage = new Message(message);
+		
+		try {
+			this.outputStream.writeObject(serializedMessage);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Implemented by runnable, 
