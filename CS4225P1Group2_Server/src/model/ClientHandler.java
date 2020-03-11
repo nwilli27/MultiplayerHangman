@@ -8,7 +8,7 @@ import enums.MessageType;
 
 /**
  * Class handles interactions with a distinct client.
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  */
 public class ClientHandler implements Runnable {
 

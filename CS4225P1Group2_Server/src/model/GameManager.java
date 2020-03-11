@@ -4,7 +4,7 @@ import enums.MessageType;
 
 /**
  * Manages the current Game state.
- * @author Nolan W, Carsen B, Tristen R
+ * @author Nolan W, Carson B, Tristen R
  */
 public class GameManager {
 
@@ -69,25 +69,29 @@ public class GameManager {
 	/**
 	 * Sends the client of type user name everything needed to fill there ui 
 	 * with current game information.
-	 * @param username 
+	 * @param username Username of the user
 	 */
 	public void sendNewUserGameState(String username) {
 		
 		ClientManager.sendClientGameState(username, this.wordManager.getFormattedWord(), this.wordManager.getCombinedGuessedCharacters(), this.wordManager.getInvalidGuessCount());
 	}
 	
+	/**
+	 * Broadcasts a message alerting users of a new user joining
+	 * @param username Username of the new user
+	 */
 	public void handleNewUser(String username) {
 		
 		ClientManager.broadcastMessage(MessageType.NewUser, username);
 	}
 
 	private void checkGameState() {
-		if (!this.wordManager.isOutOfGuesses() || !this.wordManager.isWordComplete()) {
-			
-			ClientManager.switchToNextClientTurn();
-		} else if (this.wordManager.isWordComplete()) {
+		if (this.wordManager.isWordComplete()) {
 			
 			ClientManager.broadcastWinner();
+		} else if (!this.wordManager.isOutOfGuesses() || !this.wordManager.isWordComplete()) {
+			
+			ClientManager.switchToNextClientTurn();
 		}
 	}
 
