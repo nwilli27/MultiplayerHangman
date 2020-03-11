@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import enums.MessageType;
@@ -7,67 +8,57 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import model.Message;
+import view.BodyPart;
 
 public class MainPageController {
 
-	
 	private static TextArea messageFromServer;
 	private static TextArea guessedLetters;
 	private static Button guessButton;
 	private static Text wordGuessText;
-	
-	
-	public MainPageController(TextArea messageFromServerText, TextArea guessedLettersTextArea, Button guessBtn, Text wordGuessBox) {
+	private static ArrayList<BodyPart> bodyParts;
+
+	public MainPageController(TextArea messageFromServerText, TextArea guessedLettersTextArea, Button guessBtn,
+			Text wordGuessBox, ArrayList<BodyPart> parts) {
 		messageFromServer = messageFromServerText;
 		guessedLetters = guessedLettersTextArea;
 		guessButton = guessBtn;
 		wordGuessText = wordGuessBox;
+		bodyParts = parts;
 	}
 
-
-	public int handleGuess(String guess) {
+	public void handleGuess(String guess) {
 		LoginController.getClient().send(MessageType.Guess, guess);
-		
-		try {
-			TimeUnit.MILLISECONDS.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		var bodyCount = 0;
-		var incomingGuessMessage = LoginController.getClient().getFirstOfMessage(MessageType.GuessUpdate);
-		if(incomingGuessMessage != null) {
-			var userGuess = incomingGuessMessage.getMessage().split("#")[1];
-			var username = incomingGuessMessage.getMessage().split("#")[0];
-			var formattedWord = incomingGuessMessage.getMessage().split("#")[2];
-			 bodyCount = Integer.parseInt(incomingGuessMessage.getMessage().split("#")[3]);
-			
-			messageFromServer.appendText("User " + username + " guessed " + userGuess + "..." + System.lineSeparator());
-			wordGuessText.setText(formattedWord);
-			incomingGuessMessage.setIsCompleted(true);
-		}
-		
 
-		return bodyCount;
-		
-		
+
 	}
-	
+
+	private static void showBodyParts(int amount) {
+		for (int i = 0; i < amount; i++) {
+			var currentBodyPart = bodyParts.get(i);
+			currentBodyPart.enableShapes();
+		}
+
+	}
+
 	public static void newUserLoggedin(String message) {
 		messageFromServer.appendText(message + " has logged in..." + System.lineSeparator());
-		
+
 	}
-	
+
 	public static void userGuessed(String username, String userGuess) {
-		messageFromServer.appendText(username + " guessed "  + userGuess + "..." + System.lineSeparator());
-		
+		messageFromServer.appendText(username + " guessed " + userGuess + "..." + System.lineSeparator());
+
 	}
-	
+
 	public static void addWordGuess(String word) {
 		wordGuessText.setText(word);
-		
+
 	}
 	
+	public static void bodyPartGuesses(int count) {
+		showBodyParts(count);
+	}
 	
 
 }

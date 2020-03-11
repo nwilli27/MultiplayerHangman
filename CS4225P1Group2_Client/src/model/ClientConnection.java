@@ -79,8 +79,8 @@ public class ClientConnection implements Runnable {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
-					if(type == MessageType.GuessUpdate) {
-						this.removeGuess(type);
+					if (type == MessageType.GuessUpdate || type == MessageType.BodyCount) {
+						this.removeMessage(type);
 					}
 					return message;
 				}
@@ -88,14 +88,20 @@ public class ClientConnection implements Runnable {
 		}
 		return firstMessage;
 	}
-	
-	private void removeGuess(MessageType type) {
+
+	private void removeMessage(MessageType type) {
 		for (var message : ClientConnection.incomingMessages) {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {
-					if(type == MessageType.GuessUpdate) {
-						
+					if (type == MessageType.GuessUpdate) {
+
+						ClientConnection.incomingMessages.remove(message);
+						return;
+					}
+
+					if (type == MessageType.BodyCount) {
+
 						ClientConnection.incomingMessages.remove(message);
 						return;
 					}

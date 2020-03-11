@@ -16,6 +16,7 @@ public class ServerMessageReader implements Runnable {
 
 			var loggedIn = LoginController.getClient().getFirstOfMessage(MessageType.ValidUser);
 			var guess = LoginController.getClient().getFirstOfMessage(MessageType.GuessUpdate);
+			var part = LoginController.getClient().getFirstOfMessage(MessageType.BodyCount);
 
 			if (guess != null) {
 
@@ -26,6 +27,16 @@ public class ServerMessageReader implements Runnable {
 				Platform.runLater(() -> {
 					MainPageController.userGuessed(username, userGuess);
 					MainPageController.addWordGuess(formattedWord);
+				});
+
+			}
+			
+			if (part != null) {
+
+				var message = part.getMessage();
+				var count = Integer.parseInt(message);
+				Platform.runLater(() -> {
+					MainPageController.bodyPartGuesses(count);
 				});
 
 			}

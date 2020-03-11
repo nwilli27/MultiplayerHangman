@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
 public class MainPage {
@@ -93,13 +94,46 @@ public class MainPage {
 
 	private ArrayList<String> lettersGuessed;
 	
+	private ArrayList<BodyPart> bodyParts;
+	
 	private MainPageController controller;
 
 	@FXML
 	void initialize() {
 		this.hideAll();
 		this.lettersGuessed = new ArrayList<String>();
-		this.controller = new MainPageController(this.messageFromServerText, this.guessedLettersTextArea, this.guessButton, this.wordGuessBox);
+		this.bodyParts = new ArrayList<BodyPart>();
+		this.addBodyParts();
+		this.controller = new MainPageController(this.messageFromServerText, this.guessedLettersTextArea, this.guessButton, this.wordGuessBox, this.bodyParts);
+	}
+
+	private void addBodyParts() {
+		var head = new BodyPart();
+		head.addPart(this.leftEye1);
+		head.addPart(this.leftEye2);
+		head.addPart(this.rightEye1);
+		head.addPart(this.rightEye2);
+		head.addPart(this.mouthUpper);
+		head.addPart(this.mouthLower);
+		head.addPart(this.head);
+		var body = new BodyPart();
+		body.addPart(this.body);
+		var leftArm = new BodyPart();
+		leftArm.addPart(this.leftArm);
+		var rightArm = new BodyPart();
+		rightArm.addPart(this.rightArm);
+		var leftLeg = new BodyPart();
+		leftLeg.addPart(this.leftLeg);
+		var rightLeg = new BodyPart();
+		rightLeg.addPart(this.rightLeg);
+		
+		
+		this.bodyParts.add(head);
+		this.bodyParts.add(body);
+		this.bodyParts.add(leftArm);
+		this.bodyParts.add(rightArm);
+		this.bodyParts.add(leftLeg);
+		this.bodyParts.add(rightLeg);
 	}
 
 	@FXML
@@ -118,8 +152,8 @@ public class MainPage {
 					this.errorTextField.setText("");
 					this.lettersGuessed.add(guess);
 					this.setGuessedLettersextArea();
-					var bodyCount = this.controller.handleGuess(guess);
-					this.setWrongGuesses(bodyCount);
+					this.controller.handleGuess(guess);
+					//this.setWrongGuesses(bodyCount);
 					System.out.println("letter guess");
 				}
 			} else {

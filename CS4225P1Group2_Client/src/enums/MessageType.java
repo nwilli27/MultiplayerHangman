@@ -2,7 +2,7 @@ package enums;
 
 /**
  * Holds the different types of messages.
- * @author Nolan W, Carson B, Tristen R
+ * @author Nolan W, Carsen B, Tristen R
  *
  */
 public enum MessageType {
@@ -16,8 +16,10 @@ public enum MessageType {
 	OtherGuessTurn,
 	Disconnect,
 	NewUser,
-	Timeout,
+	UserTimeout,
 	GameState,
-	GuessUpdate
+	GuessUpdate,
+	BodyCount,
+	Nudge
 	
 }
