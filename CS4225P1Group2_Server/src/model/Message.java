@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Encapsulates a message to be serializable.
- * @author Nolan W
+ * @author Nolan W, Carsen B, Tristen R
  */
 public class Message implements Serializable {
 

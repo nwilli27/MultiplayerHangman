@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Handles interaction with all the Client Handlers
- * @author Nolan W
+ * @author Nolan W, Carsen B, Tristen R
  */
 public class ClientManager {
 
@@ -31,7 +31,7 @@ public class ClientManager {
 		for (var client : clients) {
 
 			try {
-				var outputStream = client.getOutgoingMessages();
+				var outputStream = client.getOutputStream();
 				outputStream.writeObject(messageSerialized);
 				
 			} catch (IOException e) {

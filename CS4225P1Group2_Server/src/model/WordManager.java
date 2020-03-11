@@ -3,6 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class manages the chosen word and the guesses.
+ * @author Nolan W, Carsen B, Tristen R
+ */
 public class WordManager {
 
 	private static final int MAX_GUESS_COUNT = 6;
@@ -10,15 +14,22 @@ public class WordManager {
 	private String word;
 	private List<String> guessedCharacters;
 	private List<String> validCharacters;
-	private int invalidGuessCounter;
+	private int invalidGuessCount;
 	
+	/**
+	 * Constructor for the word manager.
+	 * @precondition none
+	 * @postcondition this.guessedCharacters.size() == 0
+	 * 				 this.validCharacters.size() == 0
+	 */
 	public WordManager() {
 		this.guessedCharacters = new ArrayList<String>();
 		this.validCharacters = new ArrayList<String>();
 	}
 	
 	/**
-	 * Handles guessing a character.
+	 * Handles a guess. Distinguishes guess between character guess or word guess,
+	 * checks if word or character is invalid, else adds to invalidGuessCount. 
 	 * @precondition: none
 	 * @postcondition: none
 	 * @param guess the character guessed
@@ -30,62 +41,88 @@ public class WordManager {
 			
 			var guessedWordRight = this.word.equalsIgnoreCase(guess);
 			if (!guessedWordRight) {
-				this.invalidGuessCounter++;
+				this.invalidGuessCount++;
 			}
 		} else {
 
-			var hasBeenGuessed = this.checkToAddGuess(guess);
-			var isValid = this.word.contains(guess); 
+			this.guessedCharacters.add(guess);
 			
-			if (!hasBeenGuessed && isValid) {
+			if (this.word.contains(guess)) {
 				this.validCharacters.add(guess);
 			} else {
-				this.invalidGuessCounter++;
+				this.invalidGuessCount++;
 			}
 		}
 	}
-
-	public int getInvalidGuessCounter() {
-		return this.invalidGuessCounter;
+	
+	/**
+	 * Returns the number of invalid guesses.
+	 * @return the number of invalid guesses.
+	 */
+	public int getInvalidGuessCount() {
+		return this.invalidGuessCount;
 	}
 	
+	/**
+	 * Returns whether the invalid guess counter equals the max.
+	 * @return true = invalid guesses = max; otherwise false
+	 */
 	public boolean isOutOfGuesses() {
 		
-		return this.invalidGuessCounter == MAX_GUESS_COUNT;
+		return this.invalidGuessCount == MAX_GUESS_COUNT;
 	}
 
-	private boolean checkToAddGuess(String guessedCharacter) {
-		
-		if (!this.hasGuessedAlready(guessedCharacter)) {
-			return this.guessedCharacters.add(guessedCharacter);
-		} else {
-			return false;
-		}
-	}
-	
-	public String formattedCurrentWord() {
+	/**
+	 * Returns the chosen word formatted with only valid characters,
+	 * the rest as underscores. "B_nn_n_" for word bannana
+	 * @precondition none
+	 * @return the formatted word
+	 */
+	public String getFormattedWord() {
 		
 		var output = "";
 		
 		for (char character : this.word.toCharArray()) {
 			
 			if (this.validCharacters.contains(String.valueOf(character))) {
-				output += character;
+				output += character + " ";
+			} else if (character == ' ') {
+				output += " ";
 			} else {
-				output += "_";
+				output += "_ ";
 			}
 		}
 		
 		return output;
 	}
 	
+	/**
+	 * Returns whether the word is complete or not.
+	 * @precondition: none
+	 * @return
+	 */
 	public boolean isWordComplete() {
 		
 		var wordCharacters = this.getWordCharacters();
 		return this.validCharacters.size() == wordCharacters.size();
 	}
 	
-	public List<Character> getWordCharacters() {
+	/**
+	 * Sets the word.
+	 * @precondition: word != null
+	 * @postcondition: this.word = word
+	 * @param word to set
+	 */
+	public void setWord(String word) {
+		
+		if (word == null) {
+			throw new IllegalArgumentException("Word can not be null.");
+		}
+		
+		this.word = word;
+	}
+	
+	private List<Character> getWordCharacters() {
 		
 		List<Character> characters = new ArrayList<Character>();
 		var word = this.word.replace(" ", "");
@@ -98,22 +135,6 @@ public class WordManager {
 		}
 		
 		return characters;
-	}
-	
-	public boolean hasGuessedAlready(String guessedCharacter) {
-		return this.guessedCharacters.contains(guessedCharacter);
-	}
-
-	public String getWord() {
-		return this.word;
-	}
-
-	public void setWord(String word) {
-		this.word = word;
-	}
-
-	public List<String> getGuessedCharacters() {
-		return this.guessedCharacters;
 	}
 	
 }
