@@ -101,7 +101,6 @@ public class Server implements Runnable {
 				thread.start();
 				
 				this.sendConnectingClientMsg(MessageType.ValidUser, "");
-				ClientManager.broadcastMessage(MessageType.NewUser, username);
 				
 			} else {
 

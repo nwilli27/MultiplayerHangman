@@ -20,6 +20,7 @@ public class ClientManager {
 	 * Sends a message to all Clients.
 	 * @precondition: message != null
 	 * @param message to be sent
+	 * @param type the type of message
 	 */
 	public static void broadcastMessage(MessageType type, String message) {
 		
@@ -98,12 +99,9 @@ public class ClientManager {
 		var totalClientMax = clients.size() - 1;
 		var currentClientIndex = clients.indexOf(currentClient);
 		
-		if (currentClientIndex == totalClientMax)
-		{
+		if (currentClientIndex == totalClientMax) {
 			currentClient = clients.get(0);
-		}
-		else
-		{
+		} else {
 			currentClient = clients.get(++currentClientIndex);
 		}
 		
@@ -169,8 +167,7 @@ public class ClientManager {
 
 	private static void checkToSetCurrentClient(ClientHandler client) {
 		
-		if (clients.size() == 0)
-		{
+		if (clients.size() == 0) {
 			currentClient = client;
 		}
 	}

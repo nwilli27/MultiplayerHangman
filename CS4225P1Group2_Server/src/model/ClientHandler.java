@@ -19,9 +19,9 @@ public class ClientHandler implements Runnable {
 	
 	/**
 	 * Constructor for a handler that interacts with a client.
-	 * @param username
-	 * @param clientSocket
-	 * @param output
+	 * @param username name of client
+	 * @param output the stream for output
+	 * @param input the stream for input
 	 */
 	public ClientHandler(String username, ObjectOutputStream output, ObjectInputStream input) {
 		this.username = username;
@@ -44,12 +44,13 @@ public class ClientHandler implements Runnable {
 	 * @return the handlers output stream.
 	 */
 	public ObjectOutputStream getOutputStream() {
-		return outputStream;
+		return this.outputStream;
 	}
 	
 	/**
 	 * Sends a message to the client.
 	 * @precondition none
+	 * @param type of message
 	 * @param message to send
 	 */
 	public void sendMessage(MessageType type, String message) {

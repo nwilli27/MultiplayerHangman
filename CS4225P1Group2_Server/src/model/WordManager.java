@@ -33,7 +33,6 @@ public class WordManager {
 	 * @precondition: none
 	 * @postcondition: none
 	 * @param guess the character guessed
-	 * @return true if valid guess; otherwise false
 	 */
 	public void makeGuess(String guess) {
 		
@@ -99,7 +98,7 @@ public class WordManager {
 	/**
 	 * Returns whether the word is complete or not.
 	 * @precondition: none
-	 * @return
+	 * @return true if valid characters form word; otherwise false;
 	 */
 	public boolean isWordComplete() {
 		
