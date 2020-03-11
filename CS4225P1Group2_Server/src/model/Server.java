@@ -94,13 +94,13 @@ public class Server implements Runnable {
 		} else {
 			
 			if (!ClientManager.doesClientExists(username)) {
-			
+
+				this.sendConnectingClientMsg(MessageType.ValidUser, "");
 				var client = new ClientHandler(username, this.serverOutputStream, this.serverInputStream);
 				ClientManager.addClient(client);
 				var thread = new Thread(client);
 				thread.start();
 				
-				this.sendConnectingClientMsg(MessageType.ValidUser, "");
 				
 			} else {
 

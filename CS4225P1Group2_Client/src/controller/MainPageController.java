@@ -52,5 +52,9 @@ public class MainPageController {
 		
 	}
 	
+	public static void userGuessed(String message) {
+		messageFromServer.appendText(message + " letter guessed..." + System.lineSeparator());
+		
+	}
 
 }

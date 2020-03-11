@@ -103,7 +103,8 @@ public class ClientConnection implements Runnable {
 	public Message getFirstOfMessage(MessageType type) {
 
 		Message firstMessage = null;
-		for (var message : ClientConnection.incomingMessages) {
+		var tempList = new ArrayList<Message>(ClientConnection.incomingMessages);
+		for (var message : tempList) {
 
 			if (message.getType() == type) {
 				if (!message.isCompleted()) {

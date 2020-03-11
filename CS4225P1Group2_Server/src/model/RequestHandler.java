@@ -30,6 +30,7 @@ public class RequestHandler {
 			case NewUser:
 				var username = parsedRequest[0];
 				gameManager.handleNewUser(username);
+				break;
 		
 			case Guess:
 				var guessedCharacter = parsedRequest[0];
