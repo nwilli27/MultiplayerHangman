@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.concurrent.TimeUnit;
+
 import enums.MessageType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -23,10 +25,32 @@ public class MainPageController {
 	public void handleGuess(String guess) {
 		LoginController.getClient().send(MessageType.Guess, guess);
 		
+		try {
+			TimeUnit.MILLISECONDS.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
-//		if(LoginController.getClient().getFirstOfMessage("characterGuess") != null) {
-//			messageFromServer.setText("Hello");
-//		}
+		var incomingGuessMessage = LoginController.getClient().getFirstOfMessage(MessageType.GuessValue);
+		incomingGuessMessage.setIsCompleted(true);
+		
+		var incomingUpdateMessage = LoginController.getClient().getFirstOfMessage(MessageType.UpdatedWord);
+		incomingUpdateMessage.setIsCompleted(true);
+		
+		var incomingBodyCountMessage = LoginController.getClient().getFirstOfMessage(MessageType.BodyCount);
+		incomingBodyCountMessage.setIsCompleted(true);
+		
+		var formattedGuess = incomingGuessMessage.getMessage().split("#")[0];
+		var username = incomingGuessMessage.getMessage().split("#")[1];
+		messageFromServer.appendText("User " + username + " guessed " + formattedGuess + "..." + System.lineSeparator());
+		
+		
+		
+		
+	
+		
+		
+
 		
 	}
 

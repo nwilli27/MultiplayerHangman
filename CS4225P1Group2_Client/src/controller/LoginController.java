@@ -29,7 +29,7 @@ public class LoginController {
 		client.send(MessageType.Login, username);
 		
 		try {
-			TimeUnit.MILLISECONDS.sleep(1000);
+			TimeUnit.MILLISECONDS.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

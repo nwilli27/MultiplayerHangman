@@ -47,7 +47,7 @@ public class ClientConnection implements Runnable {
 	public void run() {
 
 		while (true) {
-			var message =  this.read();
+			var message = this.read();
 			if (message != null) {
 				ClientConnection.incomingMessages.add(message);
 			}
@@ -106,9 +106,11 @@ public class ClientConnection implements Runnable {
 		for (var message : ClientConnection.incomingMessages) {
 
 			if (message.getType() == type) {
-				firstMessage = message;
-				message.setIsCompleted(true);
-				return firstMessage;
+				if (!message.isCompleted()) {
+					firstMessage = message;
+					message.setIsCompleted(true);
+					return firstMessage;
+				}
 			}
 		}
 		return firstMessage;
