@@ -1,11 +1,27 @@
 package model;
 
+/**
+ * Handles request to manage game state and clients.
+ * @author Nolan W
+ */
 public class RequestHandler {
 
 	private static GameManager gameManager;
 	private static String DELIMITER = "#";
 	
-	public void handleRequest(String request) {
+	/**
+	 * Initializes the game.
+	 */
+	public static void intializeGame() {
+		gameManager = new GameManager();
+	}
+	
+	/**
+	 * Parses the request and handles different requests from clients.
+	 * @precondition: none
+	 * @param request
+	 */
+	public static void handleRequest(String request) {
 		
 		var parsedRequest = request.split(DELIMITER);
 		var requestType = parsedRequest[0];

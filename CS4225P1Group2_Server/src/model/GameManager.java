@@ -1,70 +1,66 @@
 package model;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-
+/**
+ * Manages the current Game state.
+ * @author Nolan W
+ */
 public class GameManager {
 
 	private WordManager wordManager;
-	private ArrayList<String> dictionary;
 
+	/**
+	 * Constructor for the Game Manager.
+	 * @precondition: none
+	 * @postcondition: this.dictionary.size() == 0
+	 */
 	public GameManager() {
 		this.wordManager = new WordManager();
-		this.dictionary = new ArrayList<String>();
+		this.wordManager.setWord(Dictionary.getNewWordToGuess());
 	}
 
-	public String getNewWordToGuess() {
-
-		if (this.dictionary.isEmpty()) {
-			try {
-				File file = new File("dictionary.txt");
-				Scanner sc = new Scanner(file);
-
-				while (sc.hasNextLine()) {
-					this.dictionary.add(sc.nextLine().trim());
-				}
-				Random random = new Random();
-				sc.close();
-				return this.dictionary.get(random.nextInt(this.dictionary.size() - 1));
-
-			} catch (Exception exc) {
-				System.out.println(exc.getStackTrace());
-			}
-		} else {
-
-			Random random = new Random();
-
-			return this.dictionary.get(random.nextInt(this.dictionary.size() - 1));
+	/**
+	 * Handles a client character/word guess.
+	 * Hands guess to word manager and then broadcasts the results to all clients.
+	 * Checks if out of guesses or if word is complete and broadcasts outcome.
+	 * @precondition: guess != null
+	 * @param guess the guess made by a client
+	 */
+	public void handleGuess(String guess) {
+		
+		if (guess == null) {
+			throw new IllegalArgumentException("Guess can not be null");
 		}
+		
+		this.wordManager.makeGuess(guess);
+		ClientManager.broadcastGuessUpdate(this.wordManager.formattedCurrentWord(), guess, this.wordManager.getInvalidGuessCounter());
 
-		return null;
+		this.checkGameState();
 	}
+	
+	/**
+	 * Handles a client disconnect of the specified user name.
+	 * @precondition: user name != null
+	 * @param username the user to disconnect
+	 */
+	public void handleDisconnect(String username) {
 
-	public void handleGuess(String character) {
-		
-		this.wordManager.makeGuess(character);
-		ClientManager.broadcastGuessUpdate(this.wordManager.formattedCurrentWord(), character, this.wordManager.getInvalidGuessCounter());
-
-		if (this.wordManager.isOutOfGuesses()) {
-			
-			ClientManager.broadcastMessage("gameOver");
-		} else if (this.wordManager.isWordComplete()) {
-			
-			ClientManager.broadcastMessage("wordComplete");
+		if (username == null) {
+			throw new IllegalArgumentException("Username can not be null");
 		}
 		
-		ClientManager.switchToNextClientTurn();
+		ClientManager.handleClientDisconnect(username);
 	}
 
 	public void handleTimeout(String username) {
 		// TODO
 	}
 
-	public void handleDisconnect(String username) {
-
-		ClientManager.handleClientDisconnect(username);
+	private void checkGameState() {
+		if (this.wordManager.isOutOfGuesses() || this.wordManager.isWordComplete()) {
+			
+			ClientManager.switchToNextClientTurn();
+			// send client its there turn to choose, broadcast everyone else current user is choosing
+		} 
 	}
 
 }

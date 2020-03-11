@@ -24,6 +24,11 @@ public class Server implements Runnable {
 		this.setupSocket();
 	}
 	
+	/**
+	 * Handles first connection with new clients and handles their requests.
+	 * @precondition: none
+	 * @postcondition: none
+	 */
 	@Override
 	public void run() {
 		
@@ -111,24 +116,6 @@ public class Server implements Runnable {
 		} catch (Exception e) {
 			System.err.println("IOException:  " + e + " -- most probably the server is already started.");
 			System.exit(-1);
-		}
-	}
-
-	/**
-	 * Stops the server
-	 * 
-	 * @precondition none
-	 * @postcondition Server is stopped
-	 * 
-	 */
-	public void stop() {
-		try {
-			this.serverSocket.close();
-			this.clientSocket.close();
-			this.serverInputStream.close();
-			this.serverOutputStream.close();
-		} catch (IOException e) {
-			System.err.println(e);
 		}
 	}
 
